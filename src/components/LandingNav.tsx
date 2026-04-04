@@ -8,14 +8,11 @@ import Link from 'next/link';
 function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2">
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10">
-        <Shield className="h-4 w-4 text-accent" strokeWidth={1.5} />
+      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black">
+        <Shield className="h-4 w-4 text-yellow-50" strokeWidth={1.5} />
       </div>
       <span className="text-lg font-semibold text-foreground">
-        Push
-        <span className="text-orange-600">
-          Back
-        </span>
+        Push<span className="text-orange-600">Back</span>
       </span>
     </Link>
   );
@@ -31,15 +28,15 @@ export default function LandingNav() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
-      <div className="mx-auto max-w-5xl px-6 pt-4">
-        <nav className="flex items-center justify-between rounded-2xl glass-card px-6 py-3">
+      <div className="mx-auto max-w-6xl px-6 pt-4">
+        <nav className="flex items-center justify-between rounded-2xl bg-yellow-50/80 backdrop-blur-xl border border-black/[0.04] px-6 py-3 shadow-sm">
           <Logo />
 
           {/* Desktop links */}
           <div className="hidden sm:flex items-center gap-6">
-            <a href="#features" className="text-sm text-muted hover:text-foreground transition-colors">
+            <Link href="/#features" className="text-sm text-muted hover:text-foreground transition-colors">
               Features
-            </a>
+            </Link>
             <Link href="/pricing" className="text-sm text-muted hover:text-foreground transition-colors">
               Pricing
             </Link>
@@ -48,7 +45,7 @@ export default function LandingNav() {
           {/* Desktop sign-in */}
           <Link
             href="/login"
-            className="hidden sm:inline-flex rounded-lg border border-black/[0.08] px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-accent/40 hover:bg-black/[0.04]"
+            className="hidden sm:inline-flex rounded-full bg-black px-5 py-2 text-sm font-medium text-yellow-50 transition-all hover:bg-neutral-800"
           >
             Sign In
           </Link>
@@ -68,7 +65,7 @@ export default function LandingNav() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[60] flex flex-col items-center bg-background/80 backdrop-blur-xl"
+            className="fixed inset-0 z-[60] flex flex-col items-center bg-yellow-50/95 backdrop-blur-xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
