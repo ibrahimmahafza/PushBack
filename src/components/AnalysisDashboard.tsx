@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion } from "motion/react";
 import {
   ArrowLeft,
@@ -10,6 +10,8 @@ import {
   FileText,
   AlertTriangle,
   CheckCircle2,
+  X,
+  ArrowDown,
 } from "lucide-react";
 import type { ContractAnalysis, Clause } from "@/lib/types";
 import TopThreeFight from "./TopThreeFight";
@@ -139,10 +141,27 @@ export default function AnalysisDashboard({
   onStartSparring,
 }: AnalysisDashboardProps) {
   const risk = RISK_STYLES[analysis.overallRisk] ?? RISK_STYLES.medium;
+  const [severityFilter, setSeverityFilter] = useState<"red" | "amber" | "green" | null>(null);
+  const clausesSectionRef = useRef<HTMLElement>(null);
+
   const sortedClauses = [...analysis.clauses].sort(
     (a, b) =>
       (SEVERITY_ORDER[a.severity] ?? 2) - (SEVERITY_ORDER[b.severity] ?? 2)
   );
+
+  const visibleClauses = severityFilter
+    ? sortedClauses.filter((c) => c.severity === severityFilter)
+    : sortedClauses;
+
+  function handleStatClick(severity: "red" | "amber" | "green" | null) {
+    setSeverityFilter(severity);
+    setTimeout(() => {
+      if (!clausesSectionRef.current) return;
+      const rect = clausesSectionRef.current.getBoundingClientRect();
+      const HEADER_OFFSET = 80; // sticky header height + breathing room
+      window.scrollTo({ top: window.scrollY + rect.top - HEADER_OFFSET, behavior: "smooth" });
+    }, 50);
+  }
 
   // Severity counts
   const counts = useMemo(() => {
@@ -200,10 +219,10 @@ export default function AnalysisDashboard({
 
   // Stats config
   const stats = [
-    { label: "Total Clauses", value: animatedTotal, icon: FileText, colorClass: "bg-accent/15 text-accent" },
-    { label: "Issues", value: animatedRed, icon: AlertTriangle, colorClass: "bg-danger/15 text-danger-light" },
-    { label: "Warnings", value: animatedAmber, icon: Shield, colorClass: "bg-warning/15 text-warning-light" },
-    { label: "Fair", value: animatedGreen, icon: CheckCircle2, colorClass: "bg-safe/15 text-safe-light" },
+    { label: "Total Clauses", value: animatedTotal, icon: FileText, colorClass: "bg-accent/15 text-accent", severity: null as null, clickable: false },
+    { label: "Issues", value: animatedRed, icon: AlertTriangle, colorClass: "bg-danger/15 text-danger-light", severity: "red" as const, clickable: true },
+    { label: "Warnings", value: animatedAmber, icon: Shield, colorClass: "bg-warning/15 text-warning-light", severity: "amber" as const, clickable: true },
+    { label: "Fair", value: animatedGreen, icon: CheckCircle2, colorClass: "bg-safe/15 text-safe-light", severity: "green" as const, clickable: true },
   ];
 
   return (
@@ -215,18 +234,44 @@ export default function AnalysisDashboard({
     >
       {/* ── Stats Row ──────────────────────────────────────────────── */}
       <motion.div variants={fadeUp} className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {stats.map((s) => (
-          <div
-            key={s.label}
-            className="glass-card rounded-xl p-4 flex flex-col items-center text-center gap-2"
-          >
-            <div className={`rounded-full p-2 ${s.colorClass}`}>
-              <s.icon className="h-4 w-4" />
+        {stats.map((s) => {
+          const isActive = severityFilter === s.severity && s.clickable;
+          const card = (
+            <div
+              className={`glass-card rounded-xl p-4 flex flex-col items-center text-center gap-2 transition-all duration-200 ${
+                s.clickable
+                  ? "cursor-pointer hover:scale-[1.03] hover:brightness-110 select-none"
+                  : ""
+              } ${isActive ? "ring-2 ring-white/20 brightness-110 scale-[1.03]" : ""}`}
+            >
+              <div className={`rounded-full p-2 ${s.colorClass}`}>
+                <s.icon className="h-4 w-4" />
+              </div>
+              <span className="text-2xl font-bold text-foreground">{s.value}</span>
+              <span className="text-xs text-muted">{s.label}</span>
+              {s.clickable && (
+                <ArrowDown
+                  className={`h-3 w-3 transition-all duration-300 ${
+                    isActive
+                      ? "text-foreground/60 translate-y-0.5"
+                      : "text-muted/40 animate-bounce"
+                  }`}
+                />
+              )}
             </div>
-            <span className="text-2xl font-bold text-foreground">{s.value}</span>
-            <span className="text-xs text-muted">{s.label}</span>
-          </div>
-        ))}
+          );
+          return s.clickable ? (
+            <button
+              key={s.label}
+              onClick={() => handleStatClick(isActive ? null : s.severity)}
+              className="text-left"
+            >
+              {card}
+            </button>
+          ) : (
+            <div key={s.label}>{card}</div>
+          );
+        })}
       </motion.div>
 
       {/* ── Charts Row ─────────────────────────────────────────────── */}
@@ -401,16 +446,32 @@ export default function AnalysisDashboard({
       </motion.div>
 
       {/* ── All Clauses ────────────────────────────────────────────── */}
-      <motion.section variants={fadeUp}>
-        <div className="flex items-center gap-3 mb-5">
+      <motion.section variants={fadeUp} ref={clausesSectionRef}>
+        <div className="flex items-center gap-3 mb-5 flex-wrap">
           <h2 className="text-xl font-bold text-foreground tracking-tight">
-            All Clauses
+            {severityFilter === "red"
+              ? "Issues"
+              : severityFilter === "amber"
+              ? "Warnings"
+              : severityFilter === "green"
+              ? "Fair Clauses"
+              : "All Clauses"}
           </h2>
           <span className="inline-flex items-center rounded-full bg-surface-light/60 px-2.5 py-0.5 text-xs font-medium text-muted">
-            {analysis.clauses.length}
+            {visibleClauses.length}
           </span>
+          {severityFilter && (
+            <button
+              onClick={() => setSeverityFilter(null)}
+              className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-surface-light/40 px-3 py-1 text-xs text-muted hover:text-foreground transition-colors cursor-pointer"
+            >
+              <X className="h-3 w-3" />
+              Show all
+            </button>
+          )}
         </div>
         <motion.div
+          key={severityFilter ?? "all"}
           className="space-y-4"
           initial="hidden"
           animate="show"
@@ -422,16 +483,22 @@ export default function AnalysisDashboard({
             },
           }}
         >
-          {sortedClauses.map((clause, i) => (
-            <ClauseCard
-              key={`${clause.title}-${i}`}
-              clause={clause}
-              index={i}
-              onPractice={
-                onStartSparring ? () => onStartSparring(clause) : undefined
-              }
-            />
-          ))}
+          {visibleClauses.length === 0 ? (
+            <div className="glass-card rounded-2xl p-8 text-center text-sm text-muted">
+              No clauses in this category.
+            </div>
+          ) : (
+            visibleClauses.map((clause, i) => (
+              <ClauseCard
+                key={`${clause.title}-${i}`}
+                clause={clause}
+                index={i}
+                onPractice={
+                  onStartSparring ? () => onStartSparring(clause) : undefined
+                }
+              />
+            ))
+          )}
         </motion.div>
       </motion.section>
     </motion.div>
