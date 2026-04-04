@@ -16,7 +16,123 @@ import {
   HeartHandshake,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useRef, useCallback } from 'react';
 import { cn } from '@/lib/utils';
+
+/* ------------------------------------------------------------------ */
+/*  Interactive background — mouse-following gradient                   */
+/* ------------------------------------------------------------------ */
+function InteractiveBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef({ x: 0.5, y: 0.3 });
+  const blobsRef = useRef([
+    { x: 0.2, y: 0.3, vx: 0.0003, vy: 0.0002, r: 0.25, color: [255, 237, 213] },  // warm peach
+    { x: 0.7, y: 0.2, vx: -0.0002, vy: 0.0003, r: 0.3, color: [254, 249, 195] },   // soft yellow
+    { x: 0.5, y: 0.7, vx: 0.0004, vy: -0.0001, r: 0.22, color: [255, 228, 230] },  // blush pink
+    { x: 0.3, y: 0.8, vx: -0.0003, vy: -0.0002, r: 0.18, color: [219, 234, 254] }, // light blue
+    { x: 0.8, y: 0.6, vx: 0.0002, vy: 0.0004, r: 0.2, color: [220, 252, 231] },    // mint
+  ]);
+  const rafRef = useRef<number>(0);
+
+  const draw = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const w = canvas.width;
+    const h = canvas.height;
+    const mx = mouseRef.current.x;
+    const my = mouseRef.current.y;
+
+    // Clear with base color
+    ctx.fillStyle = '#fefce8';
+    ctx.fillRect(0, 0, w, h);
+
+    // Draw blobs
+    for (const blob of blobsRef.current) {
+      // Drift naturally
+      blob.x += blob.vx;
+      blob.y += blob.vy;
+
+      // Bounce off edges
+      if (blob.x < 0 || blob.x > 1) blob.vx *= -1;
+      if (blob.y < 0 || blob.y > 1) blob.vy *= -1;
+
+      // Subtle attraction toward mouse
+      blob.x += (mx - blob.x) * 0.001;
+      blob.y += (my - blob.y) * 0.001;
+
+      const cx = blob.x * w;
+      const cy = blob.y * h;
+      const r = blob.r * Math.min(w, h);
+
+      const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      gradient.addColorStop(0, `rgba(${blob.color.join(',')}, 0.4)`);
+      gradient.addColorStop(0.5, `rgba(${blob.color.join(',')}, 0.15)`);
+      gradient.addColorStop(1, `rgba(${blob.color.join(',')}, 0)`);
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+    }
+
+    // Mouse spotlight — warm glow that follows cursor
+    const spotR = Math.min(w, h) * 0.35;
+    const spotGrad = ctx.createRadialGradient(mx * w, my * h, 0, mx * w, my * h, spotR);
+    spotGrad.addColorStop(0, 'rgba(253, 224, 183, 0.2)');
+    spotGrad.addColorStop(0.5, 'rgba(253, 224, 183, 0.06)');
+    spotGrad.addColorStop(1, 'rgba(253, 224, 183, 0)');
+    ctx.fillStyle = spotGrad;
+    ctx.fillRect(0, 0, w, h);
+
+    // Subtle grain overlay
+    const imageData = ctx.getImageData(0, 0, w, h);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 16) { // every 4th pixel for perf
+      const noise = (Math.random() - 0.5) * 8;
+      data[i] = Math.min(255, Math.max(0, data[i] + noise));
+      data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise));
+      data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise));
+    }
+    ctx.putImageData(imageData, 0, 0);
+
+    rafRef.current = requestAnimationFrame(draw);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const resize = () => {
+      // Lower res for performance — 0.5x device pixels
+      canvas.width = window.innerWidth * 0.5;
+      canvas.height = window.innerHeight * 0.5;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const onMouseMove = (e: MouseEvent) => {
+      mouseRef.current = { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight };
+    };
+    window.addEventListener('mousemove', onMouseMove);
+
+    rafRef.current = requestAnimationFrame(draw);
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', onMouseMove);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [draw]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 w-full h-full pointer-events-none z-0"
+      style={{ imageRendering: 'auto' }}
+    />
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  Marquee component                                                  */
@@ -133,11 +249,42 @@ export default function Home() {
   const m3 = marqueeData.slice(8);
 
   return (
-    <div className="relative min-h-screen w-full bg-yellow-50">
+    <div className="relative min-h-screen w-full">
+      {/* Interactive canvas background */}
+      <InteractiveBackground />
+
+      {/* Floating decorative shapes */}
+      <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden">
+        <motion.div
+          className="absolute w-64 h-64 rounded-full border border-orange-200/30"
+          style={{ top: '10%', right: '5%' }}
+          animate={{ y: [0, 20, 0], rotate: [0, 10, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute w-40 h-40 rounded-full border border-blue-200/20"
+          style={{ bottom: '20%', left: '8%' }}
+          animate={{ y: [0, -15, 0], rotate: [0, -8, 0] }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute w-20 h-20 rounded-full bg-orange-200/10"
+          style={{ top: '40%', left: '15%' }}
+          animate={{ y: [0, 25, 0], x: [0, 10, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute w-32 h-32 rounded-full bg-rose-200/8"
+          style={{ top: '60%', right: '12%' }}
+          animate={{ y: [0, -20, 0], x: [0, -8, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </div>
+
       {/* ── NAV ── */}
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="mx-auto max-w-6xl px-6 pt-4">
-          <nav className="flex items-center justify-between rounded-2xl bg-yellow-50/80 backdrop-blur-xl border border-black/[0.04] px-6 py-3 shadow-sm">
+          <nav className="flex items-center justify-between rounded-2xl bg-white/60 backdrop-blur-xl border border-black/[0.04] px-6 py-3 shadow-sm">
             <Link href="/" className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black">
                 <Shield className="h-4 w-4 text-yellow-50" strokeWidth={1.5} />
@@ -161,7 +308,7 @@ export default function Home() {
       </header>
 
       {/* ── HERO ── */}
-      <section className="relative pt-32 sm:pt-44 pb-20">
+      <section className="relative z-10 pt-32 sm:pt-44 pb-20">
         <div className="mx-auto max-w-5xl px-5 md:px-10">
           <div className="flex flex-col items-center text-center space-y-6">
             <motion.div
@@ -259,7 +406,7 @@ export default function Home() {
       </section>
 
       {/* ── FEATURES (4-col with dashed borders, matching reference) ── */}
-      <section id="features" className="relative bg-yellow-50 border-t border-dashed border-neutral-400">
+      <section id="features" className="relative z-10 border-t border-dashed border-neutral-300/60 bg-white/30 backdrop-blur-sm">
         <div className="mx-auto max-w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-dashed divide-neutral-400 sm:divide-x">
             {features.map((feature, i) => {
@@ -288,7 +435,7 @@ export default function Home() {
       </section>
 
       {/* ── HOW IT WORKS (3 step cards) ── */}
-      <section className="bg-yellow-50 py-20 border-t border-dashed border-neutral-400">
+      <section className="relative z-10 py-20 border-t border-dashed border-neutral-300/60">
         <div className="mx-auto max-w-5xl px-5 md:px-10">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -306,7 +453,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.15 }}
-                className="rounded-2xl border border-black/[0.06] bg-white/60 backdrop-blur-sm p-6 hover:shadow-md transition-shadow"
+                className="rounded-2xl border border-black/[0.06] bg-white/50 backdrop-blur-md p-6 hover:shadow-md hover:bg-white/70 transition-all"
               >
                 <div className={cn('flex items-center justify-center w-12 h-12 rounded-xl mb-5', step.iconBg)}>
                   <step.icon className={cn('w-6 h-6', step.iconColor)} strokeWidth={1.5} />
@@ -331,7 +478,7 @@ export default function Home() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="border-t border-dashed border-neutral-400 bg-yellow-50">
+      <footer className="relative z-10 border-t border-dashed border-neutral-300/60 bg-white/20 backdrop-blur-sm">
         <div className="mx-auto max-w-5xl px-6 py-16">
           <div className="flex flex-col items-center text-center">
             <Link href="/" className="flex items-center gap-2 mb-4">
