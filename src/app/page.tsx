@@ -240,7 +240,7 @@ const features = [
 const stats = [
   { value: '3 Steps', label: 'Upload → Analyze → Practice' },
   { value: '< 30s', label: 'AI analysis time' },
-  { value: 'AI-Powered', label: 'Claude + Gemini analysis' },
+  { value: 'AI-Powered', label: 'Powered by Claude Sonnet 4.5' },
 ];
 
 /* ------------------------------------------------------------------ */

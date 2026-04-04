@@ -4,7 +4,7 @@
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
-![AI](https://img.shields.io/badge/AI-Gemini%202.5%20Pro-orange?logo=google)
+![AI](https://img.shields.io/badge/AI-Claude%20Sonnet%204.5-blueviolet?logo=anthropic)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
@@ -58,7 +58,7 @@ Select any risky clause and enter a **negotiation sparring session**:
                │
 ┌──────────────▼──────────────────────────────────┐
 │              AI Layer                            │
-│  Google Gemini 2.5 Pro via Vercel AI SDK         │
+│  Claude Sonnet 4.5 via Vercel AI SDK         │
 │  Structured output (generateObject) + streaming  │
 │  Type-safe schemas with Zod                      │
 └──────────────┬──────────────────────────────────┘
@@ -77,7 +77,7 @@ Select any risky clause and enter a **negotiation sparring session**:
 |-------|-----------|-----|
 | **Framework** | Next.js 16 (App Router) | Server components, API routes, edge runtime |
 | **Language** | TypeScript 5 | Type safety across the entire stack |
-| **AI** | Google Gemini 2.5 Pro | Fast structured output, streaming support |
+| **AI** | Claude Sonnet 4.5 | Fast structured output, streaming support |
 | **AI SDK** | Vercel AI SDK v6 | `generateObject()` for typed responses, `streamText()` for chat |
 | **Validation** | Zod v4 | Runtime schema validation for AI outputs and API inputs |
 | **Auth** | Supabase SSR + Google OAuth | Secure cookie-based auth with social login |
@@ -103,7 +103,7 @@ Select any risky clause and enter a **negotiation sparring session**:
 ### Prerequisites
 - Node.js 18+
 - A Supabase project with Google OAuth configured
-- A Google AI API key (for Gemini)
+- A Claude API key (Anthropic)
 
 ### Installation
 
@@ -128,7 +128,7 @@ Create a `.env.local` file with:
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-# Google AI (Gemini)
+# Claude (Anthropic)
 GOOGLE_GENERATIVE_AI_API_KEY=your_google_ai_api_key
 ```
 
