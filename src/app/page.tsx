@@ -1,10 +1,202 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { Shield, ArrowRight, FileText, Swords, ScrollText, ChevronDown } from 'lucide-react';
+import {
+  Shield,
+  ArrowRight,
+  FileText,
+  Swords,
+  ScrollText,
+  CheckCircle2,
+  Sparkles,
+  ChevronDown,
+} from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import LandingNav from '@/components/LandingNav';
+import { cn } from '@/lib/utils';
+
+/* ------------------------------------------------------------------ */
+/*  Elegant Shape (floating glass pill, 21st.dev style)                */
+/* ------------------------------------------------------------------ */
+function ElegantShape({
+  className,
+  delay = 0,
+  width = 400,
+  height = 100,
+  rotate = 0,
+  gradient = 'from-white/[0.08]',
+}: {
+  className?: string;
+  delay?: number;
+  width?: number;
+  height?: number;
+  rotate?: number;
+  gradient?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -150, rotate: rotate - 15 }}
+      animate={{ opacity: 1, y: 0, rotate }}
+      transition={{
+        duration: 2.4,
+        delay,
+        ease: [0.23, 0.86, 0.39, 0.96],
+        opacity: { duration: 1.2 },
+      }}
+      className={cn('absolute', className)}
+    >
+      <motion.div
+        animate={{ y: [0, 15, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ width, height }}
+        className="relative"
+      >
+        <div
+          className={cn(
+            'absolute inset-0 rounded-full',
+            'bg-gradient-to-r to-transparent',
+            gradient,
+            'backdrop-blur-[2px] border-2 border-white/[0.15]',
+            'shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]',
+            'after:absolute after:inset-0 after:rounded-full',
+            'after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]',
+          )}
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Glow Card (mouse-tracking spotlight effect)                        */
+/* ------------------------------------------------------------------ */
+const glowColorMap: Record<string, { base: number; spread: number }> = {
+  blue: { base: 220, spread: 200 },
+  cyan: { base: 190, spread: 200 },
+  teal: { base: 170, spread: 200 },
+};
+
+function GlowCard({
+  children,
+  className = '',
+  glowColor = 'blue',
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  glowColor?: string;
+  delay?: number;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const syncPointer = (e: PointerEvent) => {
+      if (cardRef.current) {
+        cardRef.current.style.setProperty('--x', e.clientX.toFixed(2));
+        cardRef.current.style.setProperty('--xp', (e.clientX / window.innerWidth).toFixed(2));
+        cardRef.current.style.setProperty('--y', e.clientY.toFixed(2));
+        cardRef.current.style.setProperty('--yp', (e.clientY / window.innerHeight).toFixed(2));
+      }
+    };
+    document.addEventListener('pointermove', syncPointer);
+    return () => document.removeEventListener('pointermove', syncPointer);
+  }, []);
+
+  const { base, spread } = glowColorMap[glowColor] ?? glowColorMap.blue;
+
+  return (
+    <motion.div
+      ref={cardRef}
+      data-glow
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay }}
+      style={{
+        '--base': base,
+        '--spread': spread,
+        '--radius': '14',
+        '--border': '3',
+        '--backdrop': 'hsl(0 0% 60% / 0.12)',
+        '--backup-border': 'var(--backdrop)',
+        '--size': '200',
+        '--outer': '1',
+        '--border-size': 'calc(var(--border, 2) * 1px)',
+        '--spotlight-size': 'calc(var(--size, 150) * 1px)',
+        '--hue': 'calc(var(--base) + (var(--xp, 0) * var(--spread, 0)))',
+        backgroundImage: `radial-gradient(
+          var(--spotlight-size) var(--spotlight-size) at
+          calc(var(--x, 0) * 1px)
+          calc(var(--y, 0) * 1px),
+          hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.1)), transparent
+        )`,
+        backgroundColor: 'var(--backdrop, transparent)',
+        backgroundSize: 'calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)))',
+        backgroundPosition: '50% 50%',
+        backgroundAttachment: 'fixed',
+        border: 'var(--border-size) solid var(--backup-border)',
+        position: 'relative',
+        touchAction: 'none',
+      } as React.CSSProperties}
+      className={cn(
+        'w-full h-full rounded-2xl relative backdrop-blur-[5px] p-6',
+        className,
+      )}
+    >
+      <div data-glow />
+      {children}
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Glow card CSS (injected once)                                      */
+/* ------------------------------------------------------------------ */
+const GLOW_STYLES = `
+  [data-glow]::before,
+  [data-glow]::after {
+    pointer-events: none;
+    content: "";
+    position: absolute;
+    inset: calc(var(--border-size, 2px) * -1);
+    border: var(--border-size, 2px) solid transparent;
+    border-radius: calc(var(--radius, 14) * 1px);
+    background-attachment: fixed;
+    background-size: calc(100% + (2 * var(--border-size, 2px))) calc(100% + (2 * var(--border-size, 2px)));
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+    mask-clip: padding-box, border-box;
+    mask-composite: intersect;
+  }
+  [data-glow]::before {
+    background-image: radial-gradient(
+      calc(var(--spotlight-size, 150px) * 0.75) calc(var(--spotlight-size, 150px) * 0.75) at
+      calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+      hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 50) * 1%) / var(--border-spot-opacity, 1)), transparent 100%
+    );
+    filter: brightness(2);
+  }
+  [data-glow]::after {
+    background-image: radial-gradient(
+      calc(var(--spotlight-size, 150px) * 0.5) calc(var(--spotlight-size, 150px) * 0.5) at
+      calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+      hsl(0 100% 100% / var(--border-light-opacity, 1)), transparent 100%
+    );
+  }
+  [data-glow] [data-glow] {
+    position: absolute; inset: 0;
+    will-change: filter;
+    opacity: var(--outer, 1);
+    border-radius: calc(var(--radius, 14) * 1px);
+    border-width: calc(var(--border-size, 2px) * 20);
+    filter: blur(calc(var(--border-size, 2px) * 10));
+    background: none; pointer-events: none; border: none;
+  }
+  [data-glow] > [data-glow]::before {
+    inset: -10px; border-width: 10px;
+  }
+`;
 
 /* ------------------------------------------------------------------ */
 /*  Feature cards data                                                 */
@@ -12,30 +204,33 @@ import LandingNav from '@/components/LandingNav';
 const features = [
   {
     icon: FileText,
-    title: 'Upload Your Contract',
+    title: 'Upload & Analyze',
     description:
-      'Drop a PDF or paste text. We extract every clause and break it down in plain language.',
+      'Drop a PDF or paste text. AI extracts every clause and rates it by severity: dangerous, concerning, or fair.',
     iconColor: 'text-blue-400',
     iconBg: 'bg-blue-500/10',
-    glowColor: 'rgba(59,130,246,0.12)',
+    glowColor: 'blue',
+    bullets: ['PDF & text support', 'Severity-coded clauses'],
   },
   {
     icon: Swords,
-    title: 'AI-Powered Analysis',
+    title: 'Practice Negotiating',
     description:
-      'Get severity-coded clauses, leverage points, and a clear breakdown of what actually matters.',
+      'Spar against an AI counterparty who responds like a real HR manager, landlord, or client. Get coaching after each exchange.',
     iconColor: 'text-cyan-400',
     iconBg: 'bg-cyan-500/10',
-    glowColor: 'rgba(6,182,212,0.12)',
+    glowColor: 'cyan',
+    bullets: ['Realistic AI counterparty', 'Real-time coaching notes'],
   },
   {
     icon: ScrollText,
-    title: 'Practice Pushing Back',
+    title: 'Get Your Script',
     description:
-      'Spar against an AI counterparty. Build confidence and leave with a ready-to-use script.',
+      'Walk away with exact phrases to say, ask, and insist on. Personalized from your sparring session.',
     iconColor: 'text-teal-400',
     iconBg: 'bg-teal-500/10',
-    glowColor: 'rgba(20,184,166,0.12)',
+    glowColor: 'teal',
+    bullets: ['Ready-to-use phrases', 'Tone & delivery tips'],
   },
 ];
 
@@ -44,228 +239,122 @@ const features = [
 /* ------------------------------------------------------------------ */
 const stats = [
   { value: '3 Steps', label: 'Upload → Analyze → Practice' },
-  { value: '< 2 Minutes', label: 'From upload to insights' },
+  { value: '< 30s', label: 'AI analysis time' },
   { value: 'AI-Powered', label: 'Claude + Gemini analysis' },
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Dot grid positions — generated client-side only to avoid           */
-/*  hydration mismatch from Math.random()                              */
+/*  Fade-up variants                                                   */
 /* ------------------------------------------------------------------ */
-function useDotGrid(count: number) {
-  const [dots, setDots] = useState<
-    { id: number; x: number; y: number; size: number; opacity: number }[]
-  >([]);
-
-  useEffect(() => {
-    setDots(
-      Array.from({ length: count }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 1.5 + 0.5,
-        opacity: Math.random() * 0.25 + 0.05,
-      })),
-    );
-  }, [count]);
-
-  return dots;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Easing presets                                                     */
-/* ------------------------------------------------------------------ */
-const easeOut = [0.22, 1, 0.36, 1] as const;
+const fadeUpVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1,
+      delay: 0.5 + i * 0.2,
+      ease: [0.25, 0.4, 0.25, 1] as const,
+    },
+  }),
+};
 
 /* ------------------------------------------------------------------ */
 /*  Main Page                                                          */
 /* ------------------------------------------------------------------ */
 export default function Home() {
-  const dots = useDotGrid(60);
-
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background">
+    <div className="relative min-h-screen w-full flex flex-col items-center overflow-hidden bg-[#030303]">
+      <style dangerouslySetInnerHTML={{ __html: GLOW_STYLES }} />
       <LandingNav />
 
-      {/* ============================================================ */}
-      {/*  ANIMATED GRADIENT MESH — 3 BLUE-TONE ORBS                   */}
-      {/* ============================================================ */}
-      <div
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-        aria-hidden="true"
-      >
-        {/* Orb 1 — primary blue, top-left */}
-        <motion.div
-          className="absolute -top-40 -left-40 h-[650px] w-[650px] rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.04) 50%, transparent 70%)',
-          }}
-          animate={{ x: [0, 90, 0], y: [0, 50, 0], scale: [1, 1.12, 1] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-        />
+      {/* Gradient backdrop */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.05] via-transparent to-cyan-500/[0.05] blur-3xl" />
 
-        {/* Orb 2 — cyan, center-right */}
-        <motion.div
-          className="absolute -right-24 top-1/4 h-[520px] w-[520px] rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(6,182,212,0.14) 0%, rgba(6,182,212,0.03) 50%, transparent 70%)',
-          }}
-          animate={{ x: [0, -70, 0], y: [0, 90, 0], scale: [1.05, 0.92, 1.05] }}
-          transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
-        />
-
-        {/* Orb 3 — teal, bottom-center */}
-        <motion.div
-          className="absolute -bottom-44 left-1/3 h-[560px] w-[560px] rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(20,184,166,0.11) 0%, rgba(20,184,166,0.02) 50%, transparent 70%)',
-          }}
-          animate={{ x: [0, 50, -30, 0], y: [0, -50, 0], scale: [1, 1.15, 1] }}
-          transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
-        />
+      {/* Elegant floating shapes */}
+      <div className="absolute inset-0 overflow-hidden">
+        <ElegantShape delay={0.3} width={600} height={140} rotate={12} gradient="from-blue-500/[0.15]" className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]" />
+        <ElegantShape delay={0.5} width={500} height={120} rotate={-15} gradient="from-cyan-500/[0.15]" className="right-[-5%] md:right-[0%] top-[70%] md:top-[75%]" />
+        <ElegantShape delay={0.4} width={300} height={80} rotate={-8} gradient="from-teal-500/[0.15]" className="left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]" />
+        <ElegantShape delay={0.6} width={200} height={60} rotate={20} gradient="from-indigo-500/[0.15]" className="right-[15%] md:right-[20%] top-[10%] md:top-[15%]" />
       </div>
 
-      {/* ============================================================ */}
-      {/*  DOT GRID OVERLAY                                             */}
-      {/* ============================================================ */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      >
-        {dots.map((d) => (
-            <div
-              key={d.id}
-              className="absolute rounded-full bg-white"
-              style={{
-                width: d.size,
-                height: d.size,
-                left: `${d.x}%`,
-                top: `${d.y}%`,
-                opacity: d.opacity,
-              }}
-            />
-        ))}
-      </div>
-
-      {/* Radial vignette for depth */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-        style={{
-          background:
-            'radial-gradient(ellipse 80% 60% at 50% 40%, transparent 0%, rgba(3,7,18,0.6) 100%)',
-        }}
-      />
+      {/* Edge vignette */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/80 pointer-events-none" />
 
       {/* ============================================================ */}
-      {/*  HERO CONTENT                                                 */}
+      {/*  HERO                                                         */}
       {/* ============================================================ */}
-      <div className="relative z-10 mx-auto max-w-5xl px-6 pt-28 pb-20 sm:pt-36">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 md:px-6 pt-32 sm:pt-40">
         <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 36 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: easeOut }}
+          custom={0}
+          variants={fadeUpVariants}
+          initial="hidden"
+          animate="visible"
+          className="text-center mb-12"
         >
-          {/* ---- Shield icon with pulsing glow ---- */}
-          <div className="relative mb-10 inline-flex items-center justify-center">
-            {/* Pulse ring — outer */}
-            <motion.div
-              className="absolute rounded-2xl border border-accent/20"
-              style={{ width: 80, height: 80, inset: 0, margin: 'auto' }}
-              animate={{ scale: [1, 1.5, 1.5], opacity: [0.5, 0, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeOut' }}
-            />
-            {/* Pulse ring — inner */}
-            <motion.div
-              className="absolute rounded-2xl border border-accent/30"
-              style={{ width: 80, height: 80, inset: 0, margin: 'auto' }}
-              animate={{ scale: [1, 1.3, 1.3], opacity: [0.7, 0, 0] }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: 'easeOut',
-                delay: 0.6,
-              }}
-            />
-            {/* Glass container */}
-            <motion.div
-              className="relative z-10 rounded-2xl glass-card p-5"
-              animate={{
-                boxShadow: [
-                  '0 0 20px rgba(59,130,246,0.1), 0 0 60px rgba(59,130,246,0.05)',
-                  '0 0 32px rgba(59,130,246,0.25), 0 0 80px rgba(59,130,246,0.1)',
-                  '0 0 20px rgba(59,130,246,0.1), 0 0 60px rgba(59,130,246,0.05)',
-                ],
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <Shield className="h-12 w-12 text-accent" strokeWidth={1.5} />
-            </motion.div>
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8">
+            <Sparkles className="h-4 w-4 text-blue-400" />
+            <span className="text-sm text-white/60 tracking-wide">
+              AI-Powered Contract Intelligence
+            </span>
           </div>
 
-          {/* ---- Title ---- */}
-          <h1 className="text-6xl font-bold tracking-tight text-foreground sm:text-8xl">
-            Push
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                backgroundImage:
-                  'linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #22d3ee 100%)',
-              }}
-            >
-              Back
+          {/* Title */}
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight">
+            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+              Understand.
+            </span>
+            <br />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-white/90 to-cyan-300">
+              Push Back.
             </span>
           </h1>
 
-          {/* ---- Tagline ---- */}
+          {/* Tagline */}
           <motion.p
-            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl"
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6, ease: 'easeOut' }}
+            custom={1}
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            className="text-lg md:text-xl text-white/40 mb-12 leading-relaxed font-light max-w-2xl mx-auto"
           >
-            Understand your contract. Practice the conversation.
-            <br className="hidden sm:inline" />
-            <span className="font-medium text-foreground/85">
-              {' '}
-              Leave with confidence.
-            </span>
+            Upload any contract. Get severity-coded analysis in seconds.
+            Practice negotiating with AI. Leave with a ready-to-use script.
           </motion.p>
 
-          {/* ---- CTA Buttons ---- */}
+          {/* CTA Buttons */}
           <motion.div
-            className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6, ease: 'easeOut' }}
+            custom={2}
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
           >
-            {/* Primary CTA — green */}
             <Link
               href="/login"
-              className="group relative inline-flex cursor-pointer items-center gap-2.5 overflow-hidden rounded-xl bg-safe px-9 py-4 text-base font-semibold text-white shadow-lg shadow-safe/20 transition-all duration-300 hover:bg-safe/90 hover:shadow-[0_0_30px_rgba(34,197,94,0.3),0_0_60px_rgba(34,197,94,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-safe focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="group relative cursor-pointer isolate overflow-hidden px-8 py-4 rounded-full font-semibold text-base text-white bg-gradient-to-b from-accent to-blue-600 border border-accent/50 shadow-[0_0_24px_rgba(59,130,246,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(59,130,246,0.5),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all duration-500 active:translate-y-0.5"
             >
-              {/* Shimmer sweep */}
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              <span className="relative">Get Started Free</span>
-              <ArrowRight className="relative h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_50%_50%,rgba(147,197,253,0.15),transparent_70%)]" />
+              <span className="relative z-10 flex items-center gap-2">
+                Get Started Free
+                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </span>
             </Link>
 
-            {/* Secondary CTA — glass outline */}
             <button
               type="button"
-              className="group inline-flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-8 py-4 text-base font-medium text-foreground/80 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              onClick={() => {
-                document
-                  .getElementById('features')
-                  ?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              className="px-8 py-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl text-white hover:bg-white/10 transition-all font-semibold cursor-pointer"
+              onClick={() =>
+                document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })
+              }
             >
-              <span>See How It Works</span>
-              <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5" />
+              <span className="flex items-center gap-2">
+                See How It Works
+                <ChevronDown className="h-4 w-4" />
+              </span>
             </button>
           </motion.div>
         </motion.div>
@@ -274,20 +363,21 @@ export default function Home() {
         {/*  STATS ROW                                                    */}
         {/* ============================================================ */}
         <motion.div
-          className="mx-auto mt-20 grid max-w-2xl grid-cols-3 gap-4 sm:gap-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.6, ease: easeOut }}
+          custom={3}
+          variants={fadeUpVariants}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto grid max-w-2xl grid-cols-3 gap-4 sm:gap-6 mb-20"
         >
           {stats.map((stat) => (
             <div
               key={stat.value}
-              className="glass-card rounded-xl px-4 py-5 text-center sm:px-6"
+              className="rounded-xl bg-white/[0.03] border border-white/[0.06] px-4 py-5 text-center backdrop-blur-sm"
             >
-              <div className="text-lg font-bold text-foreground sm:text-xl">
+              <div className="text-lg font-bold text-white sm:text-xl">
                 {stat.value}
               </div>
-              <div className="mt-1 text-xs text-muted/60 sm:text-sm">
+              <div className="mt-1 text-xs text-white/30 sm:text-sm">
                 {stat.label}
               </div>
             </div>
@@ -295,55 +385,33 @@ export default function Home() {
         </motion.div>
 
         {/* ============================================================ */}
-        {/*  FEATURE CARDS                                                */}
+        {/*  FEATURE CARDS (GlowCard with mouse-tracking spotlight)       */}
         {/* ============================================================ */}
-        <div
-          id="features"
-          className="mt-28 grid gap-6 sm:grid-cols-3 sm:gap-8"
-        >
+        <div id="features" className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
           {features.map((feature, i) => (
-            <motion.div
-              key={feature.title}
-              className="group relative cursor-pointer rounded-2xl glass-card gradient-border p-7 transition-colors duration-300 sm:p-8"
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.9 + i * 0.15,
-                duration: 0.6,
-                ease: easeOut,
-              }}
-              whileHover={{ y: -4, transition: { duration: 0.25 } }}
-            >
-              {/* Hover glow that follows cursor position (via CSS --mouse-x/y if wired, else centered) */}
-              <div
-                className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                style={{
-                  background: `radial-gradient(320px circle at 50% 50%, ${feature.glowColor}, transparent 60%)`,
-                }}
-              />
+            <GlowCard key={feature.title} glowColor={feature.glowColor} delay={0.6 + i * 0.2}>
+              <div className="flex flex-col h-full">
+                <div className={cn('flex items-center justify-center w-12 h-12 rounded-xl mb-5', feature.iconBg)}>
+                  <feature.icon className={cn('w-6 h-6', feature.iconColor)} strokeWidth={1.5} />
+                </div>
 
-              {/* Icon */}
-              <div
-                className={`relative mb-5 flex h-12 w-12 items-center justify-center rounded-xl ${feature.iconBg}`}
-              >
-                <feature.icon
-                  className={`h-6 w-6 ${feature.iconColor}`}
-                  strokeWidth={1.5}
-                />
+                <div className="mb-2 text-[11px] font-medium uppercase tracking-widest text-white/25">
+                  Step {i + 1}
+                </div>
+
+                <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
+                <p className="text-white/50 mb-4 flex-grow text-sm leading-relaxed">{feature.description}</p>
+
+                <ul className="space-y-2">
+                  {feature.bullets.map((bullet) => (
+                    <li key={bullet} className="flex items-center gap-2 text-sm text-white/40">
+                      <CheckCircle2 className={cn('w-4 h-4 flex-shrink-0', feature.iconColor)} />
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
               </div>
-
-              {/* Step label */}
-              <div className="mb-2 text-[11px] font-medium uppercase tracking-widest text-muted/40">
-                Step {i + 1}
-              </div>
-
-              <h3 className="text-lg font-semibold text-foreground">
-                {feature.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                {feature.description}
-              </p>
-            </motion.div>
+            </GlowCard>
           ))}
         </div>
       </div>
@@ -351,54 +419,33 @@ export default function Home() {
       {/* ============================================================ */}
       {/*  FOOTER                                                       */}
       {/* ============================================================ */}
-      <footer className="relative z-10 border-t border-white/5 mt-32">
+      <footer className="relative z-10 w-full border-t border-white/5 mt-12">
         <div className="mx-auto max-w-5xl px-6 py-16">
-          {/* Logo + tagline */}
           <div className="flex flex-col items-center text-center">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10">
-                <Shield className="h-4 w-4 text-accent" strokeWidth={1.5} />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10">
+                <Shield className="h-4 w-4 text-blue-400" strokeWidth={1.5} />
               </div>
-              <span
-                className="text-lg font-bold bg-clip-text text-transparent"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #22d3ee 100%)',
-                }}
-              >
-                PushBack
+              <span className="text-lg font-semibold text-white">
+                Push<span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Back</span>
               </span>
             </Link>
-            <p className="text-sm text-muted/60 max-w-md">
-              Built for immigrants, gig workers, renters &mdash; anyone
-              who&rsquo;s never been taught to push back.
+            <p className="text-base font-medium text-white/50 mb-2">
+              The fine print has met its match.
+            </p>
+            <p className="text-sm text-white/30 max-w-md">
+              Built for immigrants, gig workers, renters, and anyone
+              who has never been taught to push back.
             </p>
           </div>
 
-          {/* Links row */}
-          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted/50">
-            <Link
-              href="/pricing"
-              className="transition-colors duration-200 hover:text-foreground/80"
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/login"
-              className="transition-colors duration-200 hover:text-foreground/80"
-            >
-              Sign In
-            </Link>
-            <a
-              href="#features"
-              className="transition-colors duration-200 hover:text-foreground/80"
-            >
-              Features
-            </a>
+          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-white/25">
+            <Link href="/pricing" className="hover:text-white/60 transition-colors">Pricing</Link>
+            <Link href="/login" className="hover:text-white/60 transition-colors">Sign In</Link>
+            <a href="#features" className="hover:text-white/60 transition-colors">Features</a>
           </div>
 
-          {/* Bottom copyright */}
-          <div className="mt-8 text-center text-xs text-muted/30">
+          <div className="mt-8 text-center text-xs text-white/15">
             &copy; 2026 PushBack. Not legal advice.
           </div>
         </div>

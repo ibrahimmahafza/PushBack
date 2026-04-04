@@ -25,7 +25,7 @@ const tiers = [
   {
     name: 'Starter',
     icon: Zap,
-    price: '$20',
+    price: '$15',
     period: '/mo',
     features: [
       '7 AI contract consultations/month',
@@ -40,7 +40,7 @@ const tiers = [
   {
     name: 'Pro',
     icon: Sparkles,
-    price: '$49',
+    price: '$35',
     period: '/mo',
     badge: 'Most Popular',
     features: [
@@ -182,7 +182,7 @@ export default function PricingPage() {
           className="text-gradient-accent mx-auto mt-4 max-w-lg text-lg font-medium"
           {...fadeUp(0.1)}
         >
-          Know what you&apos;re paying for — no surprises, no hidden clauses.
+          Know what you&apos;re paying for. No surprises, no hidden clauses.
         </motion.p>
       </section>
 
@@ -257,7 +257,7 @@ export default function PricingPage() {
           className="mt-10 text-center text-sm text-muted"
           {...fadeUp(0.55)}
         >
-          Purchase additional consultations anytime — <span className="font-semibold text-foreground/80">$3 each</span>
+          Purchase additional consultations anytime for <span className="font-semibold text-foreground/80">$3 each</span>
         </motion.p>
       </section>
 

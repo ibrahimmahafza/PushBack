@@ -15,7 +15,7 @@ const STEPS = [
 
 const TIPS = [
   'Non-compete clauses are unenforceable in California',
-  'You can always ask — the worst they can say is no',
+  'You can always ask. The worst they can say is no.',
   '67% of contracts have at least one negotiable clause',
   'Most employers expect some level of negotiation',
   'Verbal promises not in writing are rarely enforceable',

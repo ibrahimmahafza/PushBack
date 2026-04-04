@@ -11,7 +11,7 @@
 
 ## 🎯 The Problem
 
-Every year, millions of workers — immigrants, gig workers, freelancers, first-time employees — sign contracts they don't fully understand. They don't know what's normal, what's exploitative, or that they even *can* negotiate. Legal consultations cost $200-500/hour, putting real contract review out of reach.
+Every year, millions of workers, immigrants, gig workers, freelancers, first-time employees, sign contracts they don't fully understand. They don't know what's normal, what's exploitative, or that they even *can* negotiate. Legal consultations cost $200-500/hour, putting real contract review out of reach.
 
 **PushBack changes that.**
 
@@ -24,18 +24,18 @@ Drop a PDF or paste contract text. PushBack extracts and processes every clause.
 
 ### 2. 🔍 AI-Powered Analysis
 In under 30 seconds, get:
-- **Severity-coded clauses** — each clause rated as 🔴 Dangerous, 🟡 Concerning, or 🟢 Fair
-- **Plain-language explanations** — no legal jargon, just what it actually means for you
-- **Your leverage points** — specific angles you can use to negotiate each clause
-- **Top 3 to Fight** — the three most important clauses to push back on
-- **Real Cost to You** — estimated financial impact of problematic clauses
-- **Visual analytics** — donut charts showing severity distribution, risk gauges, animated stats
+- **Severity-coded clauses**: each clause rated as 🔴 Dangerous, 🟡 Concerning, or 🟢 Fair
+- **Plain-language explanations**: no legal jargon, just what it actually means for you
+- **Your leverage points**: specific angles you can use to negotiate each clause
+- **Top 3 to Fight**: the three most important clauses to push back on
+- **Real Cost to You**: estimated financial impact of problematic clauses
+- **Visual analytics**: donut charts showing severity distribution, risk gauges, animated stats
 
 ### 3. 🤺 Practice Pushing Back
 Select any risky clause and enter a **negotiation sparring session**:
 - AI plays the role of your counterparty (HR manager, landlord, client, etc.)
 - Real-time **coaching notes** after each exchange evaluate your approach
-- After 5+ exchanges, get a **personalized negotiation script** — exact phrases to say, ask, and insist on
+- After 5+ exchanges, get a **personalized negotiation script**: exact phrases to say, ask, and insist on
 
 ## 🏗️ Architecture
 
@@ -88,15 +88,15 @@ Select any risky clause and enter a **negotiation sparring session**:
 
 ## ✨ Key Features
 
-- **🔒 Zero data storage** — Contracts are processed in memory and never saved
-- **🎯 Severity-coded analysis** — Visual red/amber/green system for instant risk assessment
-- **📊 Interactive analytics** — Animated donut charts, risk gauges, and stat counters
-- **🤺 AI sparring** — Practice negotiation against a realistic AI counterparty
-- **📝 Negotiation scripts** — Ready-to-use talking points generated from your sparring session
-- **💰 Financial impact** — Estimated real cost of problematic clauses
-- **📱 Mobile responsive** — Full experience on any device
-- **♿ Accessible** — Reduced motion support, semantic HTML, keyboard navigation
-- **⚡ Fast** — Analysis completes in 15-30 seconds with visual progress tracking
+- **🔒 Zero data storage**: Contracts are processed in memory and never saved
+- **🎯 Severity-coded analysis**: Visual red/amber/green system for instant risk assessment
+- **📊 Interactive analytics**: Animated donut charts, risk gauges, and stat counters
+- **🤺 AI sparring**: Practice negotiation against a realistic AI counterparty
+- **📝 Negotiation scripts**: Ready-to-use talking points generated from your sparring session
+- **💰 Financial impact**: Estimated real cost of problematic clauses
+- **📱 Mobile responsive**: Full experience on any device
+- **♿ Accessible**: Reduced motion support, semantic HTML, keyboard navigation
+- **⚡ Fast**: Analysis completes in 15-30 seconds with visual progress tracking
 
 ## 🚀 Getting Started
 
@@ -210,12 +210,12 @@ Landing Page → Sign In (Google OAuth) → Dashboard
 
 PushBack uses a custom dark-mode design system built on Tailwind v4:
 
-- **Glass-card morphism** — Semi-transparent cards with backdrop blur
-- **Severity color system** — Red (dangerous), Amber (concerning), Green (fair)
-- **Gradient borders** — CSS mask-based 1px gradient borders
-- **Glow effects** — Color-coded box-shadow glows for emphasis
-- **Motion animations** — Staggered entrance, spring physics, layout transitions
-- **Responsive** — Mobile-first with `sm:` breakpoint adaptations
+- **Glass-card morphism**: Semi-transparent cards with backdrop blur
+- **Severity color system**: Red (dangerous), Amber (concerning), Green (fair)
+- **Gradient borders**: CSS mask-based 1px gradient borders
+- **Glow effects**: Color-coded box-shadow glows for emphasis
+- **Motion animations**: Staggered entrance, spring physics, layout transitions
+- **Responsive**: Mobile-first with `sm:` breakpoint adaptations
 
 ## 🤝 Contributing
 
@@ -229,7 +229,7 @@ This is a hackathon project. Feel free to fork and build on it!
 
 ## 📜 License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License: see [LICENSE](LICENSE) for details.
 
 ## ⚠️ Disclaimer
 
@@ -239,5 +239,5 @@ PushBack is **not a substitute for legal advice**. It provides AI-generated anal
 
 <p align="center">
   <strong>Built for the people who need it most.</strong><br/>
-  <em>Immigrants, gig workers, renters — anyone who's never been taught to push back.</em>
+  <em>Immigrants, gig workers, renters: anyone who's never been taught to push back.</em>
 </p>

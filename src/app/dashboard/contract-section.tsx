@@ -109,7 +109,7 @@ export default function ContractSection() {
           return;
         }
         setError(
-          "The analysis timed out. The contract may be too complex — please try again."
+          "The analysis timed out. The contract may be too complex. Please try again."
         );
       } else if (err instanceof TypeError && err.message.includes("fetch")) {
         setError(
