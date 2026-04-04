@@ -11,555 +11,426 @@
 
   :root {
     --bg: #fffaf5;
-    --surface: #fff7ed;
     --fg: #1c1917;
-    --fg-secondary: #44403c;
-    --muted: #78716c;
+    --fg2: #44403c;
+    --muted: #a8a29e;
     --accent: #ea580c;
-    --accent-light: #fb923c;
-    --accent-bg: rgba(234,88,12,0.08);
     --danger: #dc2626;
-    --danger-bg: rgba(220,38,38,0.08);
     --warning: #d97706;
-    --warning-bg: rgba(217,119,6,0.08);
     --safe: #16a34a;
-    --safe-bg: rgba(22,163,74,0.08);
-    --border: rgba(0,0,0,0.06);
-    --glass: rgba(255,255,255,0.7);
-    --glass-border: rgba(0,0,0,0.08);
+    --glass: rgba(255,255,255,0.72);
+    --glass-border: rgba(0,0,0,0.06);
     --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06);
-    --shadow-lg: 0 4px 12px rgba(0,0,0,0.05), 0 20px 60px rgba(0,0,0,0.08);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.05), 0 24px 64px rgba(0,0,0,0.08);
   }
 
   html, body { height: 100%; overflow: hidden; font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--fg); }
 
-  /* ── Slide Container ── */
+  /* ── Deck ── */
   .deck { position: relative; width: 100vw; height: 100vh; }
   .slide {
     position: absolute; inset: 0;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    padding: 60px 80px;
-    opacity: 0; transform: translateX(60px); pointer-events: none;
-    transition: opacity 0.55s ease, transform 0.55s ease;
+    padding: 48px 72px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(.4,0,.2,1), transform 0.6s cubic-bezier(.4,0,.2,1);
+    transform: scale(0.97) translateY(12px);
     overflow: hidden;
   }
-  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
-  .slide.prev { opacity: 0; transform: translateX(-60px); }
+  .slide.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
 
-  /* ── Warm Background Blobs ── */
-  .blob {
-    position: absolute; border-radius: 50%; pointer-events: none; filter: blur(100px); opacity: 0.5;
-    animation: drift 25s ease-in-out infinite;
-  }
-  .blob-1 { width: 700px; height: 700px; top: -300px; left: -200px; background: radial-gradient(circle, rgba(251,146,60,0.3), transparent 70%); }
-  .blob-2 { width: 600px; height: 600px; bottom: -250px; right: -150px; background: radial-gradient(circle, rgba(253,186,116,0.25), transparent 70%); animation-delay: -8s; }
-  .blob-3 { width: 500px; height: 500px; top: 40%; left: 55%; background: radial-gradient(circle, rgba(254,215,170,0.3), transparent 70%); animation-delay: -15s; }
-  .blob-rose { width: 500px; height: 500px; top: -100px; right: -100px; background: radial-gradient(circle, rgba(251,113,133,0.15), transparent 70%); animation-delay: -5s; }
+  /* ── Warm Blobs ── */
+  .blob { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(100px); opacity: 0.45; }
+  .b1 { width: 700px; height: 700px; top: -280px; left: -200px; background: radial-gradient(circle, rgba(251,146,60,0.35), transparent 70%); animation: drift 22s ease-in-out infinite; }
+  .b2 { width: 550px; height: 550px; bottom: -220px; right: -120px; background: radial-gradient(circle, rgba(253,186,116,0.3), transparent 70%); animation: drift 22s ease-in-out infinite reverse; animation-delay: -6s; }
+  .b3 { width: 400px; height: 400px; top: 35%; left: 60%; background: radial-gradient(circle, rgba(251,113,133,0.18), transparent 70%); animation: drift 25s ease-in-out infinite; animation-delay: -14s; }
   @keyframes drift {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -20px) scale(1.04); }
-    66% { transform: translate(-15px, 15px) scale(0.97); }
+    0%, 100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(35px,-25px) scale(1.05); }
+    66% { transform: translate(-20px,20px) scale(0.96); }
   }
 
   /* ── Typography ── */
-  h1 { font-size: 4.2rem; font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; color: var(--fg); }
-  h2 { font-size: 3rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 20px; color: var(--fg); }
-  h3 { font-size: 1.35rem; font-weight: 600; margin-bottom: 10px; color: var(--fg); }
-  p, li { font-size: 1.25rem; line-height: 1.65; color: var(--fg-secondary); }
-  .big-quote { font-size: 2rem; font-weight: 500; line-height: 1.45; color: var(--fg); font-style: italic; max-width: 750px; }
+  h1 { font-size: 5rem; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+  h2 { font-size: 3.4rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+  .subtitle { font-size: 1.35rem; color: var(--fg2); line-height: 1.55; }
+  .big-num { font-size: 5.5rem; font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+  .medium-num { font-size: 3.5rem; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .label { font-size: 1.05rem; color: var(--muted); margin-top: 10px; line-height: 1.45; }
   .gradient-text {
-    background: linear-gradient(135deg, #ea580c, #c2410c, #9a3412);
+    background: linear-gradient(135deg, #ea580c, #c2410c);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
-  .gradient-text-warm {
-    background: linear-gradient(135deg, #f97316, #ea580c);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  }
-  .danger-text { color: var(--danger); }
-  .warning-text { color: var(--warning); }
-  .safe-text { color: var(--safe); }
-  .accent-text { color: var(--accent); }
 
   /* ── Cards ── */
   .card {
-    background: var(--glass); backdrop-filter: blur(16px);
+    background: var(--glass); backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border); border-radius: 20px;
-    padding: 32px; box-shadow: var(--shadow);
-    transition: transform 0.2s, box-shadow 0.2s;
+    padding: 36px; box-shadow: var(--shadow);
   }
-  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-  .card-sm { padding: 20px 24px; border-radius: 14px; }
-  .card-accent { border-color: rgba(234,88,12,0.15); background: linear-gradient(135deg, rgba(255,247,237,0.9), rgba(255,237,213,0.5)); }
-  .card-danger { border-color: rgba(220,38,38,0.12); background: linear-gradient(135deg, rgba(254,242,242,0.9), rgba(254,226,226,0.5)); }
-  .card-safe { border-color: rgba(22,163,74,0.12); background: linear-gradient(135deg, rgba(240,253,244,0.9), rgba(220,252,231,0.5)); }
 
-  /* ── Grid Layouts ── */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; width: 100%; max-width: 1000px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; width: 100%; max-width: 1100px; }
+  /* ── Severity Tags ── */
+  .tag { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 14px; font-size: 1.05rem; font-weight: 600; }
+  .tag-d { background: rgba(220,38,38,0.08); color: var(--danger); border: 1px solid rgba(220,38,38,0.12); }
+  .tag-w { background: rgba(217,119,6,0.08); color: var(--warning); border: 1px solid rgba(217,119,6,0.12); }
+  .tag-s { background: rgba(22,163,74,0.08); color: var(--safe); border: 1px solid rgba(22,163,74,0.12); }
 
-  /* ── Stat Cards ── */
-  .stat-value { font-size: 3.2rem; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
-  .stat-label { font-size: 1rem; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+  /* ── Flow ── */
+  .flow { display: flex; align-items: center; gap: 20px; }
+  .flow-step { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+  .flow-icon { width: 80px; height: 80px; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; background: var(--glass); border: 1px solid var(--glass-border); box-shadow: var(--shadow); }
+  .flow-label { font-size: 1rem; font-weight: 600; color: var(--fg); }
+  .flow-arrow { font-size: 1.6rem; color: var(--muted); opacity: 0.3; margin-top: -20px; }
 
-  /* ── Feature Lists ── */
-  .feature-list { list-style: none; }
-  .feature-list li {
-    display: flex; align-items: flex-start; gap: 14px;
-    padding: 8px 0; font-size: 1.1rem; color: var(--fg-secondary);
+  /* ── Chat Demo ── */
+  .chat { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 520px; }
+  .bubble { padding: 16px 22px; border-radius: 18px; font-size: 1.05rem; line-height: 1.5; }
+  .bubble-user { background: linear-gradient(135deg, #ea580c, #c2410c); color: white; border-bottom-right-radius: 6px; align-self: flex-end; max-width: 88%; }
+  .bubble-them { background: white; border: 1px solid var(--glass-border); color: var(--fg); border-bottom-left-radius: 6px; align-self: flex-start; max-width: 88%; box-shadow: var(--shadow); }
+  .bubble-coach { background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.12); border-radius: 14px; padding: 14px 18px; font-size: 0.95rem; color: var(--fg2); }
+
+  /* ── Shield ── */
+  .shield {
+    display: inline-flex; padding: 28px; border-radius: 28px;
+    background: linear-gradient(135deg, rgba(255,237,213,0.85), rgba(254,215,170,0.45));
+    border: 1px solid rgba(234,88,12,0.1); box-shadow: var(--shadow-lg);
+    animation: pulse 3s ease-in-out infinite;
   }
-  .feature-list .icon {
-    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; margin-top: 2px;
-    display: flex; align-items: center; justify-content: center; font-size: 0.85rem;
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 24px rgba(234,88,12,0.08), 0 20px 60px rgba(234,88,12,0.04); transform: scale(1); }
+    50% { box-shadow: 0 4px 36px rgba(234,88,12,0.18), 0 20px 80px rgba(234,88,12,0.08); transform: scale(1.03); }
   }
-  .icon-danger { background: var(--danger-bg); }
-  .icon-warning { background: var(--warning-bg); }
-  .icon-safe { background: var(--safe-bg); }
-  .icon-accent { background: var(--accent-bg); }
 
-  /* ── Flow Diagram ── */
-  .flow { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center; }
-  .flow-step { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; width: 150px; }
-  .flow-icon {
-    width: 72px; height: 72px; border-radius: 18px; display: flex; align-items: center; justify-content: center;
-    font-size: 2rem; box-shadow: var(--shadow);
+  /* ── Animations ── */
+  .slide.active .a { animation: fadeUp 0.55s cubic-bezier(.25,.46,.45,.94) forwards; }
+  .slide.active .d1 { animation-delay: 0.06s; opacity: 0; }
+  .slide.active .d2 { animation-delay: 0.14s; opacity: 0; }
+  .slide.active .d3 { animation-delay: 0.22s; opacity: 0; }
+  .slide.active .d4 { animation-delay: 0.30s; opacity: 0; }
+  .slide.active .d5 { animation-delay: 0.38s; opacity: 0; }
+  .slide.active .d6 { animation-delay: 0.46s; opacity: 0; }
+  .slide.active .d7 { animation-delay: 0.54s; opacity: 0; }
+  .slide.active .d8 { animation-delay: 0.62s; opacity: 0; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px) scale(0.98); filter: blur(4px); }
+    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
   }
-  .flow-arrow { font-size: 1.5rem; color: var(--muted); opacity: 0.35; }
 
-  /* ── Severity Demo ── */
-  .severity-bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; width: 100%; box-shadow: inset 0 1px 2px rgba(0,0,0,0.06); }
-  .severity-bar > div { transition: width 0.8s ease; }
+  /* ── Counting animation for numbers ── */
+  .count-up { display: inline-block; }
 
-  /* ── Sparring Demo ── */
-  .chat-bubble {
-    padding: 16px 20px; border-radius: 16px; font-size: 1.05rem; line-height: 1.55;
-    max-width: 90%; position: relative;
+  /* ── Grid ── */
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; width: 100%; max-width: 1050px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; width: 100%; max-width: 960px; }
+
+  /* ── Divider ── */
+  .divider { width: 56px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #f97316, #ea580c); }
+
+  /* ── Check/X list ── */
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .check-list li { display: flex; align-items: center; gap: 14px; font-size: 1.15rem; color: var(--fg2); }
+  .check-icon { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+  .ci-yes { background: rgba(22,163,74,0.1); color: var(--safe); }
+  .ci-no { background: rgba(220,38,38,0.08); color: var(--danger); }
+
+  /* ── Team ── */
+  .team-grid { display: flex; gap: 32px; justify-content: center; }
+  .team-member { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .team-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(251,146,60,0.2), rgba(234,88,12,0.1));
+    border: 2px solid rgba(234,88,12,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; box-shadow: var(--shadow);
   }
-  .chat-you { background: linear-gradient(135deg, #ea580c, #c2410c); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-  .chat-them { background: white; border: 1px solid var(--glass-border); color: var(--fg); align-self: flex-start; border-bottom-left-radius: 4px; box-shadow: var(--shadow); }
-  .chat-coach { background: var(--safe-bg); border: 1px solid rgba(22,163,74,0.15); color: var(--fg-secondary); border-radius: 12px; padding: 14px 18px; font-size: 0.95rem; }
-
-  /* ── Navigation ── */
+  .team-name { font-size: 1.1rem; font-weight: 600; color: var(--fg); }
+  
+  /* ── Nav ── */
   .nav {
     position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-    display: flex; align-items: center; gap: 12px; z-index: 100;
-    background: rgba(255,255,255,0.85); backdrop-filter: blur(16px);
+    display: flex; align-items: center; gap: 14px; z-index: 100;
+    background: rgba(255,255,255,0.88); backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border); border-radius: 99px;
-    padding: 8px 20px; box-shadow: var(--shadow-lg);
+    padding: 8px 22px; box-shadow: var(--shadow-lg);
   }
   .nav button {
     background: none; border: 1px solid var(--glass-border); color: var(--fg);
-    border-radius: 50%; width: 40px; height: 40px; cursor: pointer;
+    border-radius: 50%; width: 42px; height: 42px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s; font-size: 1rem;
+    transition: all 0.2s; font-size: 1.1rem;
   }
-  .nav button:hover { background: var(--accent-bg); border-color: rgba(234,88,12,0.2); }
-  .nav .counter { font-size: 0.85rem; color: var(--muted); min-width: 60px; text-align: center; font-weight: 500; }
+  .nav button:hover { background: rgba(234,88,12,0.06); border-color: rgba(234,88,12,0.2); }
+  .nav .ctr { font-size: 0.85rem; color: var(--muted); min-width: 56px; text-align: center; font-weight: 500; }
 
-  /* ── Progress Bar ── */
-  .progress-track {
-    position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100;
-    background: rgba(0,0,0,0.04);
-  }
-  .progress-fill {
-    height: 100%; background: linear-gradient(90deg, #f97316, #ea580c, #c2410c);
-    transition: width 0.4s ease;
-    box-shadow: 0 0 12px rgba(234,88,12,0.3);
-  }
+  /* ── Progress ── */
+  .prog { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100; background: rgba(0,0,0,0.03); }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, #fb923c, #ea580c, #c2410c); transition: width 0.4s ease; box-shadow: 0 0 14px rgba(234,88,12,0.3); border-radius: 0 2px 2px 0; }
 
   /* ── Utilities ── */
-  .text-center { text-align: center; }
-  .mt-6 { margin-top: 24px; }
-  .mt-8 { margin-top: 32px; }
-  .mt-10 { margin-top: 40px; }
-  .mt-12 { margin-top: 48px; }
-  .mb-4 { margin-bottom: 16px; }
-  .mb-6 { margin-bottom: 24px; }
-  .max-w-700 { max-width: 700px; }
-  .max-w-800 { max-width: 800px; }
-  .max-w-900 { max-width: 900px; }
-  .w-full { width: 100%; }
-  .flex-center { display: flex; flex-direction: column; align-items: center; }
-
-  /* ── Divider ── */
-  .divider { width: 60px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #f97316, #ea580c); margin: 20px auto; }
-
-  /* ── Tag ── */
-  .tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
-  }
-  .tag-accent { background: var(--accent-bg); color: var(--accent); border: 1px solid rgba(234,88,12,0.15); }
-  .tag-safe { background: var(--safe-bg); color: var(--safe); border: 1px solid rgba(22,163,74,0.15); }
-  .tag-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(217,119,6,0.15); }
-  .tag-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(220,38,38,0.15); }
-
-  /* ── Animations ── */
-  .slide.active .anim {
-    animation: fadeUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  }
-  .slide.active .d1 { animation-delay: 0.08s; opacity: 0; }
-  .slide.active .d2 { animation-delay: 0.16s; opacity: 0; }
-  .slide.active .d3 { animation-delay: 0.24s; opacity: 0; }
-  .slide.active .d4 { animation-delay: 0.32s; opacity: 0; }
-  .slide.active .d5 { animation-delay: 0.40s; opacity: 0; }
-  .slide.active .d6 { animation-delay: 0.48s; opacity: 0; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── Shield Pulse ── */
-  .shield-wrap {
-    display: inline-flex; padding: 24px; border-radius: 24px;
-    background: linear-gradient(135deg, rgba(255,237,213,0.8), rgba(254,215,170,0.4));
-    border: 1px solid rgba(234,88,12,0.12); box-shadow: var(--shadow-lg);
-    animation: shieldPulse 3s ease-in-out infinite;
-  }
-  @keyframes shieldPulse {
-    0%, 100% { box-shadow: 0 4px 20px rgba(234,88,12,0.1), 0 20px 60px rgba(234,88,12,0.05); }
-    50% { box-shadow: 0 4px 30px rgba(234,88,12,0.2), 0 20px 80px rgba(234,88,12,0.1); }
-  }
-
-  /* ── Emphasis block ── */
-  .emphasis {
-    border-left: 4px solid var(--accent);
-    padding: 16px 24px;
-    background: var(--accent-bg);
-    border-radius: 0 12px 12px 0;
-    font-size: 1.15rem;
-    color: var(--fg-secondary);
-    line-height: 1.6;
-  }
+  .tc { text-align: center; }
+  .fc { display: flex; flex-direction: column; align-items: center; }
 </style>
 </head>
 <body>
 
-<div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+<div class="prog"><div class="prog-fill" id="prog"></div></div>
 
 <div class="deck" id="deck">
 
-  <!-- ═══════════════ SLIDE 1: Hook ═══════════════ -->
+  <!-- ══ 1  HOOK ══ -->
   <div class="slide active" data-slide="0">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-rose"></div>
-    <div class="flex-center text-center" style="max-width:850px;">
-      <p class="anim big-quote" style="margin-bottom:32px;">
-        "Remember the first contract you had to sign?<br>
-        Your first job. Your first lease."
-      </p>
-      <p class="anim d1" style="font-size:1.35rem;color:var(--fg-secondary);max-width:650px;">
-        You probably paused, looked at the document and thought:
-      </p>
-      <h2 class="anim d2" style="margin-top:24px;font-size:2.8rem;color:var(--danger);">
-        "I have no idea what this means."
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="fc tc" style="max-width:800px;">
+      <h2 class="a" style="font-size:2.6rem;font-style:italic;font-weight:500;color:var(--fg2);">
+        Remember the first contract you had to sign?
       </h2>
-      <p class="anim d3" style="margin-top:24px;font-size:1.25rem;color:var(--muted);">
-        But you signed it anyway.<br>And you're not alone.
-      </p>
+      <div style="height:40px"></div>
+      <h1 class="a d2" style="color:var(--danger);font-size:3.2rem;">
+        "I have no idea what this means."
+      </h1>
+      <div style="height:28px"></div>
+      <p class="a d3 subtitle" style="color:var(--muted);font-size:1.3rem;">But you signed it anyway.</p>
     </div>
   </div>
 
-  <!-- ═══════════════ SLIDE 2: The Problem — Stats ═══════════════ -->
+  <!-- ══ 2  THE PROBLEM ══ -->
   <div class="slide" data-slide="1">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-3"></div>
-    <div class="flex-center text-center">
-      <h2 class="anim">The <span class="danger-text">Problem</span></h2>
-      <div class="divider anim d1"></div>
-      <div class="grid-3 mt-8">
-        <div class="card card-danger anim d2 text-center">
-          <div class="stat-value danger-text">80%</div>
-          <p class="stat-label">of Quebecers don't fully read their insurance contracts</p>
+    <div class="blob b1"></div><div class="blob b3"></div>
+    <div class="fc tc">
+      <h2 class="a">The <span class="gradient-text">Problem</span></h2>
+      <div class="divider a d1" style="margin:16px auto 36px;"></div>
+      <div class="grid-3 a d2">
+        <div class="card tc">
+          <div class="big-num" style="color:var(--danger);" data-count="80">0</div>
+          <div class="label" style="font-size:1.4rem;color:var(--danger);margin-top:4px;font-weight:600;">%</div>
+          <p class="label">don't fully read their contracts</p>
         </div>
-        <div class="card anim d3 text-center" style="border-color:rgba(217,119,6,0.12);background:linear-gradient(135deg,rgba(255,251,235,0.9),rgba(254,243,199,0.5));">
-          <div class="stat-value warning-text">50%</div>
-          <p class="stat-label">don't understand the exclusions in their own contracts</p>
+        <div class="card tc">
+          <div class="big-num" style="color:var(--warning);" data-count="50">0</div>
+          <div class="label" style="font-size:1.4rem;color:var(--warning);margin-top:4px;font-weight:600;">%</div>
+          <p class="label">don't understand the exclusions</p>
         </div>
-        <div class="card anim d4 text-center" style="border-color:rgba(234,88,12,0.12);background:linear-gradient(135deg,rgba(255,247,237,0.9),rgba(255,237,213,0.5));">
-          <div class="stat-value accent-text">Millions</div>
-          <p class="stat-label">sign contracts they don't understand every year</p>
+        <div class="card tc">
+          <div style="font-size:4rem;font-weight:700;color:var(--accent);line-height:1;">$300<span style="font-size:1.8rem;color:var(--muted);">/hr</span></div>
+          <p class="label">for a legal consultation</p>
         </div>
       </div>
-      <div class="emphasis anim d5 mt-10" style="max-width:750px;">
-        Immigrants taking their first job. Gig workers accepting terms they've never seen.
-        Renters unaware their leases limit their right to sue.
-      </div>
-      <p class="anim d6 mt-6" style="font-size:1.2rem;color:var(--fg);font-weight:600;max-width:650px;">
-        The problem isn't that people don't care — it's that they don't have the tools.
-      </p>
     </div>
   </div>
 
-  <!-- ═══════════════ SLIDE 3: Introducing PushBack ═══════════════ -->
+  <!-- ══ 3  INTRODUCING PUSHBACK ══ -->
   <div class="slide" data-slide="2">
-    <div class="blob blob-2"></div>
-    <div class="blob blob-rose"></div>
-    <div class="flex-center text-center">
-      <div class="anim" style="margin-bottom:20px;">
-        <div class="shield-wrap"><span style="font-size:3rem;">🛡️</span></div>
+    <div class="blob b2"></div><div class="blob b3"></div>
+    <div class="fc tc">
+      <div class="a shield"><span style="font-size:3.2rem;">🛡️</span></div>
+      <div style="height:24px;"></div>
+      <h1 class="a d1">Push<span class="gradient-text">Back</span></h1>
+      <div style="height:16px;"></div>
+      <p class="a d2 subtitle">AI-powered contract coach</p>
+      <div style="height:32px;"></div>
+      <div class="a d3" style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+        <span class="tag tag-d">🔴 Dangerous</span>
+        <span class="tag tag-w">🟡 Concerning</span>
+        <span class="tag tag-s">🟢 Fair</span>
       </div>
-      <h1 class="anim d1">Push<span class="gradient-text">Back</span></h1>
-      <p class="anim d2" style="font-size:1.3rem;margin-top:16px;max-width:600px;color:var(--fg-secondary);">
-        An AI-powered contract coach.
-      </p>
-      <div class="divider anim d2"></div>
-      <p class="anim d3" style="font-size:1.15rem;max-width:650px;color:var(--fg-secondary);">
-        Upload any contract and in <strong style="color:var(--fg);">under 30 seconds</strong>, it breaks it down clause by clause —
-      </p>
-      <div class="anim d4" style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;justify-content:center;">
-        <span class="tag tag-danger">🔴 Dangerous</span>
-        <span class="tag tag-warning">🟡 Concerning</span>
-        <span class="tag tag-safe">🟢 Fair</span>
-      </div>
-      <p class="anim d5 mt-8" style="font-size:1.15rem;max-width:650px;color:var(--fg-secondary);">
-        But understanding isn't enough. With PushBack, you can <strong style="color:var(--accent);">actually practice pushing back.</strong>
-      </p>
     </div>
   </div>
 
-  <!-- ═══════════════ SLIDE 4: How It Works ═══════════════ -->
+  <!-- ══ 4  HOW IT WORKS ══ -->
   <div class="slide" data-slide="3">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-3"></div>
-    <div class="flex-center text-center">
-      <h2 class="anim">How It <span class="gradient-text">Works</span></h2>
-      <div class="divider anim d1"></div>
-      <div class="flow mt-8 anim d2">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="fc tc">
+      <h2 class="a">How It <span class="gradient-text">Works</span></h2>
+      <div class="divider a d1" style="margin:16px auto 48px;"></div>
+      <div class="flow a d2">
         <div class="flow-step">
-          <div class="flow-icon card card-accent" style="padding:0;">📄</div>
-          <h3 style="font-size:1rem;">Upload</h3>
-          <p style="font-size:0.9rem;color:var(--muted);">Any contract — PDF or text</p>
+          <div class="flow-icon">📄</div>
+          <span class="flow-label">Upload</span>
         </div>
         <span class="flow-arrow">→</span>
         <div class="flow-step">
-          <div class="flow-icon card card-danger" style="padding:0;">🔍</div>
-          <h3 style="font-size:1rem;">Analyze</h3>
-          <p style="font-size:0.9rem;color:var(--muted);">Clause-by-clause severity</p>
+          <div class="flow-icon" style="border-color:rgba(220,38,38,0.1);">🔍</div>
+          <span class="flow-label">Analyze</span>
         </div>
         <span class="flow-arrow">→</span>
         <div class="flow-step">
-          <div class="flow-icon card" style="padding:0;border-color:rgba(217,119,6,0.15);background:linear-gradient(135deg,rgba(255,251,235,0.9),rgba(254,243,199,0.5));">🤺</div>
-          <h3 style="font-size:1rem;">Spar</h3>
-          <p style="font-size:0.9rem;color:var(--muted);">Practice negotiating</p>
+          <div class="flow-icon" style="border-color:rgba(234,88,12,0.1);">🤺</div>
+          <span class="flow-label">Practice</span>
         </div>
         <span class="flow-arrow">→</span>
         <div class="flow-step">
-          <div class="flow-icon card card-safe" style="padding:0;">✅</div>
-          <h3 style="font-size:1rem;">Confident</h3>
-          <p style="font-size:0.9rem;color:var(--muted);">Know what to say</p>
+          <div class="flow-icon" style="border-color:rgba(22,163,74,0.1);">💪</div>
+          <span class="flow-label">Confident</span>
         </div>
       </div>
-      <div class="card anim d3 mt-10" style="max-width:750px;">
-        <p style="font-size:1.1rem;color:var(--fg-secondary);line-height:1.65;">
-          The AI simulates a real conversation with an employer, landlord, or client.
-          It responds realistically, and after each exchange you get <strong style="color:var(--accent);">real-time coaching</strong>
-          on what worked and how to improve. By the end, you have a <strong style="color:var(--fg);">clear set of points on what to say.</strong>
-        </p>
-      </div>
+      <div style="height:40px;"></div>
+      <p class="a d3 subtitle" style="max-width:600px;font-size:1.15rem;">
+        Upload any contract. Get a severity-coded breakdown in <strong style="color:var(--accent);">under 30 seconds.</strong>
+      </p>
     </div>
   </div>
 
-  <!-- ═══════════════ SLIDE 5: Sparring Demo ═══════════════ -->
+  <!-- ══ 5  SPARRING ══ -->
   <div class="slide" data-slide="4">
-    <div class="blob blob-2"></div>
-    <div class="blob blob-rose"></div>
-    <div class="flex-center">
-      <h2 class="anim text-center">Negotiation <span class="gradient-text">Sparring</span></h2>
-      <div class="divider anim d1"></div>
-      <div class="grid-2 mt-8" style="align-items:start;">
-        <div class="anim d2" style="display:flex;flex-direction:column;gap:14px;">
-          <div class="chat-you">
-            "I'd like to discuss the non-compete clause. 18 months seems excessive for this role…"
-          </div>
-          <div class="chat-them">
-            <strong style="color:var(--muted);font-size:0.85rem;">🏢 HR Manager</strong><br>
-            "That's our standard agreement. It protects our client relationships and proprietary processes."
-          </div>
-          <div class="chat-you">
-            "I understand protecting relationships, but could we limit it to direct competitors within 50km? That still protects your interests."
-          </div>
-          <div class="chat-coach">
-            <strong style="color:var(--safe);">🎯 Coaching:</strong> Great move — you acknowledged their concern, then proposed a specific alternative. This is much stronger than just saying "that's too long."
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:16px;">
-          <div class="card card-accent anim d3">
-            <h3>🤺 Realistic Practice</h3>
-            <p style="font-size:1rem;">AI plays the counterparty — HR manager, landlord, or client. Responds like they would in real life.</p>
-          </div>
-          <div class="card card-safe anim d4">
-            <h3>🎯 Real-Time Coaching</h3>
-            <p style="font-size:1rem;">After each exchange, coaching notes tell you what worked, what to adjust, and what to try next.</p>
-          </div>
-          <div class="card anim d5">
-            <h3>📝 Ready-Made Scripts</h3>
-            <p style="font-size:1rem;">Walk away with exact phrases you can use in the real conversation.</p>
-          </div>
-        </div>
+    <div class="blob b1"></div><div class="blob b3"></div>
+    <div class="fc">
+      <h2 class="a tc">Negotiation <span class="gradient-text">Sparring</span></h2>
+      <div class="divider a d1" style="margin:16px auto 36px;"></div>
+      <div class="chat a d2">
+        <div class="bubble bubble-user">"I'd like to discuss the non-compete. 18 months seems excessive…"</div>
+        <div class="bubble bubble-them"><strong style="color:var(--muted);font-size:0.8rem;">🏢 HR Manager</strong><br>"That's our standard. It protects our client relationships."</div>
+        <div class="bubble bubble-user">"Could we limit to direct competitors within 50km?"</div>
+        <div class="bubble bubble-coach"><strong style="color:var(--safe);">🎯 Coaching:</strong> Strong — you acknowledged their concern, then proposed a specific counter.</div>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════ SLIDE 6: Who It's For ═══════════════ -->
+  <!-- ══ 6  WHO IT'S FOR ══ -->
   <div class="slide" data-slide="5">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-3"></div>
-    <div class="flex-center text-center">
-      <h2 class="anim">Who It's <span class="gradient-text">For</span></h2>
-      <div class="divider anim d1"></div>
-      <p class="anim d2" style="max-width:700px;font-size:1.15rem;margin-bottom:28px;">
-        People who are often overlooked by the system — those with little or no experience signing contracts or negotiating for their rights.
-      </p>
-      <div class="grid-3 anim d3">
-        <div class="card text-center">
-          <div style="font-size:2.2rem;margin-bottom:12px;">🌍</div>
-          <h3 style="font-size:1.1rem;">Immigrants</h3>
-          <p style="font-size:0.95rem;">Navigating unfamiliar labor laws in a new country</p>
+    <div class="blob b2"></div><div class="blob b3"></div>
+    <div class="fc tc">
+      <h2 class="a">Who It's <span class="gradient-text">For</span></h2>
+      <div class="divider a d1" style="margin:16px auto 36px;"></div>
+      <div class="grid-3 a d2" style="max-width:900px;">
+        <div class="card tc" style="padding:28px;">
+          <div style="font-size:2.5rem;margin-bottom:8px;">🌍</div>
+          <div style="font-size:1.15rem;font-weight:600;">Immigrants</div>
         </div>
-        <div class="card text-center">
-          <div style="font-size:2.2rem;margin-bottom:12px;">💼</div>
-          <h3 style="font-size:1.1rem;">First-Time Workers</h3>
-          <p style="font-size:0.95rem;">Who don't know they can negotiate</p>
+        <div class="card tc" style="padding:28px;">
+          <div style="font-size:2.5rem;margin-bottom:8px;">💼</div>
+          <div style="font-size:1.15rem;font-weight:600;">First-Time Workers</div>
         </div>
-        <div class="card text-center">
-          <div style="font-size:2.2rem;margin-bottom:12px;">📱</div>
-          <h3 style="font-size:1.1rem;">Gig Workers</h3>
-          <p style="font-size:0.95rem;">Accepting take-it-or-leave-it terms</p>
+        <div class="card tc" style="padding:28px;">
+          <div style="font-size:2.5rem;margin-bottom:8px;">📱</div>
+          <div style="font-size:1.15rem;font-weight:600;">Gig Workers</div>
         </div>
       </div>
-      <div class="grid-2 anim d4 mt-6" style="max-width:700px;">
-        <div class="card card-sm text-center">
-          <div style="font-size:1.5rem;margin-bottom:8px;">🏠</div>
-          <strong>Renters</strong>
-          <p style="font-size:0.9rem;margin-top:4px;">Signing leases with hidden traps</p>
+      <div style="display:flex;gap:24px;margin-top:20px;" class="a d3">
+        <div class="card tc" style="padding:24px 32px;">
+          <div style="font-size:2rem;margin-bottom:6px;">🏠</div>
+          <div style="font-size:1.05rem;font-weight:600;">Renters</div>
         </div>
-        <div class="card card-sm text-center">
-          <div style="font-size:1.5rem;margin-bottom:8px;">✏️</div>
-          <strong>Freelancers</strong>
-          <p style="font-size:0.9rem;margin-top:4px;">Facing one-sided agreements</p>
+        <div class="card tc" style="padding:24px 32px;">
+          <div style="font-size:2rem;margin-bottom:6px;">✏️</div>
+          <div style="font-size:1.05rem;font-weight:600;">Freelancers</div>
         </div>
       </div>
-      <p class="anim d5 mt-8" style="font-size:1.1rem;color:var(--muted);max-width:650px;">
-        Anyone with a computer and a Google account can get started. Currently English-only — expanding to French and other languages for Montreal.
-      </p>
     </div>
   </div>
 
-  <!-- ═══════════════ SLIDE 7: Responsible AI ═══════════════ -->
+  <!-- ══ 7  RESPONSIBLE AI ══ -->
   <div class="slide" data-slide="6">
-    <div class="blob blob-2"></div>
-    <div class="blob blob-rose"></div>
-    <div class="flex-center">
-      <h2 class="anim text-center">Responsible <span class="gradient-text">AI</span></h2>
-      <div class="divider anim d1"></div>
-      <p class="anim d2 text-center" style="max-width:700px;font-size:1.15rem;margin-bottom:28px;">
-        The biggest risk is AI giving bad advice — advice that could affect someone's job, income, or future.
-      </p>
-      <div class="grid-2 mt-6">
-        <div class="card anim d3">
-          <h3>🛡️ What PushBack Does</h3>
-          <ul class="feature-list">
-            <li><span class="icon icon-safe">✓</span><strong style="color:var(--fg);">Highlights</strong> what to watch for in your contract</li>
-            <li><span class="icon icon-safe">✓</span><strong style="color:var(--fg);">Points you</strong> to local legal help when needed</li>
-            <li><span class="icon icon-safe">✓</span>Lets you <strong style="color:var(--fg);">practice negotiating</strong> with confidence</li>
-            <li><span class="icon icon-safe">✓</span>Keeps <strong style="color:var(--fg);">you in control</strong> of every decision</li>
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="fc">
+      <h2 class="a tc">Responsible <span class="gradient-text">AI</span></h2>
+      <div class="divider a d1" style="margin:16px auto 36px;"></div>
+      <div class="grid-2 a d2">
+        <div class="card" style="border-color:rgba(22,163,74,0.1);">
+          <h3 style="font-size:1.15rem;margin-bottom:18px;color:var(--safe);">✓ What it does</h3>
+          <ul class="check-list">
+            <li><span class="check-icon ci-yes">✓</span>Highlights risks</li>
+            <li><span class="check-icon ci-yes">✓</span>Points to legal help</li>
+            <li><span class="check-icon ci-yes">✓</span>Coaches you to negotiate</li>
+            <li><span class="check-icon ci-yes">✓</span>Keeps you in control</li>
           </ul>
         </div>
-        <div class="card anim d4">
-          <h3>🚫 What PushBack Doesn't Do</h3>
-          <ul class="feature-list">
-            <li><span class="icon icon-danger">✕</span>Doesn't make decisions for you</li>
-            <li><span class="icon icon-danger">✕</span>Is <strong style="color:var(--fg);">not a lawyer</strong> — and says so clearly</li>
-            <li><span class="icon icon-danger">✕</span>Never stores your contracts</li>
-            <li><span class="icon icon-danger">✕</span>Not meant for complex commercial use</li>
+        <div class="card" style="border-color:rgba(220,38,38,0.08);">
+          <h3 style="font-size:1.15rem;margin-bottom:18px;color:var(--danger);">✕ What it doesn't</h3>
+          <ul class="check-list">
+            <li><span class="check-icon ci-no">✕</span>Make decisions for you</li>
+            <li><span class="check-icon ci-no">✕</span>Replace a lawyer</li>
+            <li><span class="check-icon ci-no">✕</span>Store your contracts</li>
+            <li><span class="check-icon ci-no">✕</span>Give legal advice</li>
           </ul>
         </div>
-      </div>
-      <div class="emphasis anim d5 mt-8" style="max-width:750px;">
-        We're not replacing lawyers. We're giving people the knowledge to advocate for themselves.
-        That's financial literacy. That's economic empowerment.
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════ SLIDE 8: Closing ═══════════════ -->
+  <!-- ══ 8  CLOSING ══ -->
   <div class="slide" data-slide="7">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-rose"></div>
-    <div class="flex-center text-center" style="max-width:800px;">
-      <div class="anim" style="margin-bottom:28px;">
-        <div class="shield-wrap"><span style="font-size:3.5rem;">🛡️</span></div>
-      </div>
-      <h1 class="anim d1" style="font-size:4.5rem;">Push<span class="gradient-text">Back</span></h1>
-      <div class="divider anim d2"></div>
-      <p class="anim d3" style="font-size:1.5rem;color:var(--fg);font-weight:600;max-width:600px;margin-top:8px;">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div class="fc tc" style="max-width:800px;">
+      <div class="a shield"><span style="font-size:3.5rem;">🛡️</span></div>
+      <div style="height:28px;"></div>
+      <h1 class="a d1" style="font-size:4.8rem;">Push<span class="gradient-text">Back</span></h1>
+      <div class="divider a d2" style="margin:20px auto;"></div>
+      <h2 class="a d3" style="font-size:2rem;font-weight:500;color:var(--fg2);letter-spacing:-0.01em;">
         Understanding what you sign<br>shouldn't be a privilege.
-      </p>
-      <p class="anim d4" style="font-size:1.15rem;color:var(--muted);margin-top:24px;max-width:550px;">
-        This is PushBack.
-      </p>
-      <div class="anim d5" style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
-        <div class="card card-sm">
-          <span style="font-size:0.85rem;color:var(--muted);">Live Demo</span><br>
-          <strong style="font-size:1rem;color:var(--accent);">pushback.vercel.app</strong>
+      </h2>
+      <div style="height:48px;"></div>
+      <div class="team-grid a d4">
+        <div class="team-member">
+          <div class="team-avatar">👨‍💻</div>
+          <span class="team-name">Ibrahim Mahafza</span>
         </div>
-        <div class="card card-sm">
-          <span style="font-size:0.85rem;color:var(--muted);">GitHub</span><br>
-          <strong style="font-size:1rem;">ibrahimmahafza/PushBack</strong>
+        <div class="team-member">
+          <div class="team-avatar">👨‍💻</div>
+          <span class="team-name">Levon Gyumishyan</span>
+        </div>
+        <div class="team-member">
+          <div class="team-avatar">👩‍💻</div>
+          <span class="team-name">Chloe Lai</span>
         </div>
       </div>
-      <p class="anim d6" style="margin-top:32px;font-size:1.1rem;color:var(--muted);">
-        Thank you! Questions?
-      </p>
     </div>
   </div>
 
 </div>
 
-<!-- ── Navigation ── -->
+<!-- Nav -->
 <div class="nav">
-  <button onclick="navigate(-1)" title="Previous">←</button>
-  <span class="counter" id="counter">1 / 8</span>
-  <button onclick="navigate(1)" title="Next">→</button>
+  <button onclick="go(-1)" title="Previous">←</button>
+  <span class="ctr" id="ctr">1 / 8</span>
+  <button onclick="go(1)" title="Next">→</button>
 </div>
 
 <script>
-  let current = 0;
+  let cur = 0;
   const slides = document.querySelectorAll('.slide');
   const total = slides.length;
-  const counter = document.getElementById('counter');
-  const progress = document.getElementById('progress');
 
-  function show(index) {
-    slides.forEach((s, i) => {
-      s.classList.remove('active', 'prev');
-      if (i === index) s.classList.add('active');
-      else if (i < index) s.classList.add('prev');
+  function show(i) {
+    slides.forEach((s, idx) => {
+      s.classList.remove('active');
+      if (idx === i) s.classList.add('active');
     });
-    counter.textContent = `${index + 1} / ${total}`;
-    progress.style.width = `${((index + 1) / total) * 100}%`;
+    document.getElementById('ctr').textContent = `${i + 1} / ${total}`;
+    document.getElementById('prog').style.width = `${((i + 1) / total) * 100}%`;
+
+    // Trigger count-up for numbers
+    const active = slides[i];
+    active.querySelectorAll('[data-count]').forEach(el => {
+      const target = +el.dataset.count;
+      const duration = 1200;
+      let start = null;
+      el.textContent = '0';
+      function step(ts) {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
   }
 
-  function navigate(dir) {
-    current = Math.max(0, Math.min(total - 1, current + dir));
-    show(current);
-  }
+  function go(d) { cur = Math.max(0, Math.min(total - 1, cur + d)); show(cur); }
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); navigate(1); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
-    if (e.key === 'Home') { e.preventDefault(); current = 0; show(0); }
-    if (e.key === 'End') { e.preventDefault(); current = total - 1; show(current); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    if (e.key === 'Home') { e.preventDefault(); cur = 0; show(0); }
+    if (e.key === 'End') { e.preventDefault(); cur = total - 1; show(cur); }
   });
 
-  let touchStartX = 0;
-  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
-  document.addEventListener('touchend', (e) => {
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) navigate(diff > 0 ? 1 : -1);
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const d = tx - e.changedTouches[0].clientX;
+    if (Math.abs(d) > 50) go(d > 0 ? 1 : -1);
   });
 
   show(0);
