@@ -138,7 +138,7 @@ export default function TopThreeFight({ analysis }: TopThreeFightProps) {
       </div>
 
       <div className="flex justify-center">
-        <div className="relative h-[420px] w-[320px] ml-[100px]">
+        <div className="relative h-[420px] w-[531px]">
           {fightClauses.map((item, i) => (
             <FightCard
               key={item.index}
