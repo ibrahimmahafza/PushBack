@@ -8,8 +8,6 @@ import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import {
   ArrowLeft,
-  Mic,
-  MicOff,
   Volume2,
   VolumeX,
   MessageSquare,
@@ -32,7 +30,7 @@ interface VoiceSparringProps {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Coaching delimiter                                                 */
+/*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 const COACHING_DELIMITER = '---COACHING---';
 
@@ -50,144 +48,111 @@ function getMessageText(message: { parts?: Array<{ type: string; text?: string }
 }
 
 /* ------------------------------------------------------------------ */
-/*  Tips shown during conversation                                     */
+/*  Tips                                                               */
 /* ------------------------------------------------------------------ */
 const TIPS = [
-  { icon: Lightbulb, text: 'Start by acknowledging their position before making your counter-argument.' },
-  { icon: Shield, text: 'Ask "what specifically are you trying to protect?" to narrow the scope.' },
-  { icon: Sparkles, text: 'Use phrases like "I understand, and..." instead of "but..."' },
-  { icon: Lightbulb, text: 'Reference industry standards: "Most contracts in this field typically..."' },
-  { icon: Shield, text: 'Propose alternatives: "What if we adjusted the timeframe to..."' },
-  { icon: Sparkles, text: 'Stay calm and professional. Confidence comes from preparation.' },
+  { icon: Lightbulb, text: 'Start by acknowledging their position before countering.' },
+  { icon: Shield, text: 'Ask "what specifically are you trying to protect?" to narrow scope.' },
+  { icon: Sparkles, text: 'Use "I understand, and..." instead of "but..."' },
+  { icon: Lightbulb, text: 'Reference industry standards: "Most contracts typically..."' },
+  { icon: Shield, text: 'Propose alternatives: "What if we adjusted the timeframe?"' },
+  { icon: Sparkles, text: 'Confidence comes from preparation. You are prepared.' },
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Siri-style animated orb                                            */
+/*  ElevenLabs-style metallic orb                                      */
 /* ------------------------------------------------------------------ */
-function VoiceOrb({
-  state,
-}: {
-  state: 'idle' | 'listening' | 'thinking' | 'speaking';
-}) {
-  const colors = {
-    idle: ['#d1d5db', '#9ca3af'],
-    listening: ['#3b82f6', '#06b6d4', '#8b5cf6'],
-    thinking: ['#f59e0b', '#f97316'],
-    speaking: ['#22c55e', '#10b981', '#06b6d4'],
+function MetallicOrb({ state }: { state: 'idle' | 'listening' | 'thinking' | 'speaking' }) {
+  const gradients: Record<string, string> = {
+    idle: 'conic-gradient(from 0deg, #c0c0c0, #808080, #d0d0d0, #909090, #c0c0c0, #707070, #b0b0b0, #808080, #c0c0c0)',
+    listening: 'conic-gradient(from 0deg, #93c5fd, #3b82f6, #bfdbfe, #60a5fa, #93c5fd, #2563eb, #bfdbfe, #3b82f6, #93c5fd)',
+    thinking: 'conic-gradient(from 0deg, #fde68a, #f59e0b, #fef3c7, #d97706, #fde68a, #b45309, #fef3c7, #f59e0b, #fde68a)',
+    speaking: 'conic-gradient(from 0deg, #bbf7d0, #22c55e, #dcfce7, #16a34a, #bbf7d0, #15803d, #dcfce7, #22c55e, #bbf7d0)',
   };
 
-  const currentColors = colors[state];
   const isActive = state !== 'idle';
+  const rotationDuration = state === 'listening' ? 2 : state === 'speaking' ? 3 : state === 'thinking' ? 4 : 8;
 
   return (
     <div className="relative flex items-center justify-center">
-      {/* Outer pulse rings */}
+      {/* Outer glow */}
       {isActive && (
-        <>
-          <motion.div
-            className="absolute rounded-full"
-            style={{
-              width: 200,
-              height: 200,
-              background: `radial-gradient(circle, ${currentColors[0]}15, transparent 70%)`,
-            }}
-            animate={{
-              scale: [1, 1.3, 1],
-              opacity: [0.3, 0.1, 0.3],
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute rounded-full"
-            style={{
-              width: 160,
-              height: 160,
-              background: `radial-gradient(circle, ${currentColors[0]}20, transparent 70%)`,
-            }}
-            animate={{
-              scale: [1.1, 0.9, 1.1],
-              opacity: [0.2, 0.4, 0.2],
-            }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
-          />
-        </>
+        <motion.div
+          className="absolute rounded-full"
+          style={{
+            width: 180,
+            height: 180,
+            background: state === 'listening'
+              ? 'radial-gradient(circle, rgba(59,130,246,0.15), transparent 70%)'
+              : state === 'speaking'
+                ? 'radial-gradient(circle, rgba(34,197,94,0.15), transparent 70%)'
+                : 'radial-gradient(circle, rgba(245,158,11,0.15), transparent 70%)',
+          }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.2, 0.4] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        />
       )}
 
-      {/* Main orb */}
-      <motion.div
-        className="relative w-28 h-28 rounded-full flex items-center justify-center overflow-hidden"
+      {/* Outer ring */}
+      <div
+        className="absolute rounded-full"
         style={{
-          background: `linear-gradient(135deg, ${currentColors.join(', ')})`,
+          width: 148,
+          height: 148,
+          background: 'conic-gradient(from 0deg, #1a1a1a, #333, #1a1a1a, #222, #1a1a1a)',
+          boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.1), 0 4px 20px rgba(0,0,0,0.3)',
         }}
-        animate={
-          state === 'listening'
-            ? { scale: [1, 1.08, 1.02, 1.06, 1], borderRadius: ['50%', '48%', '52%', '47%', '50%'] }
-            : state === 'speaking'
-              ? { scale: [1, 1.05, 0.98, 1.03, 1] }
-              : state === 'thinking'
-                ? { rotate: [0, 5, -5, 0], scale: [1, 1.02, 1] }
-                : { scale: 1 }
-        }
-        transition={
-          isActive
-            ? { duration: state === 'listening' ? 0.8 : 1.2, repeat: Infinity, ease: 'easeInOut' }
-            : { duration: 0.3 }
-        }
+      />
+
+      {/* Main metallic orb */}
+      <motion.div
+        className="relative rounded-full overflow-hidden"
+        style={{
+          width: 132,
+          height: 132,
+          background: gradients[state],
+          boxShadow: `
+            inset 0 -4px 12px rgba(0,0,0,0.3),
+            inset 0 4px 12px rgba(255,255,255,0.2),
+            0 0 ${isActive ? '40px' : '20px'} rgba(0,0,0,0.15)
+          `,
+        }}
+        animate={{ rotate: [0, 360] }}
+        transition={{ duration: rotationDuration, repeat: Infinity, ease: 'linear' }}
       >
-        {/* Inner glow */}
-        <div className="absolute inset-0 bg-white/20 rounded-full" />
-
-        {/* Waveform bars when listening */}
-        {state === 'listening' && (
-          <div className="flex items-center gap-[3px]">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <motion.div
-                key={i}
-                className="w-[3px] rounded-full bg-white/80"
-                animate={{ height: [8, 24 + Math.random() * 16, 8] }}
-                transition={{
-                  duration: 0.5 + Math.random() * 0.3,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                  delay: i * 0.1,
-                }}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Pulse when speaking */}
-        {state === 'speaking' && (
-          <div className="flex items-center gap-1">
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                className="w-2 h-2 rounded-full bg-white/80"
-                animate={{ scale: [1, 1.5, 1], opacity: [0.6, 1, 0.6] }}
-                transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.2 }}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Thinking spinner */}
-        {state === 'thinking' && (
-          <motion.div
-            className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-          />
-        )}
-
-        {/* Idle mic icon */}
-        {state === 'idle' && (
-          <Mic className="w-8 h-8 text-white/60" />
-        )}
+        {/* Central highlight/depth */}
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background: 'radial-gradient(circle at 40% 35%, rgba(255,255,255,0.25) 0%, transparent 50%)',
+          }}
+        />
+        {/* Pinch point in center */}
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.3) 0%, transparent 15%)',
+          }}
+        />
       </motion.div>
+
+      {/* Scale pulse when active */}
+      {isActive && (
+        <motion.div
+          className="absolute rounded-full border-2"
+          style={{
+            width: 152,
+            height: 152,
+            borderColor: state === 'listening' ? 'rgba(59,130,246,0.3)' : state === 'speaking' ? 'rgba(34,197,94,0.3)' : 'rgba(245,158,11,0.3)',
+          }}
+          animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0, 0.5] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeOut' }}
+        />
+      )}
 
       {/* State label */}
       <motion.p
-        className="absolute -bottom-8 text-sm font-medium text-muted"
+        className="absolute -bottom-10 text-sm font-medium text-muted whitespace-nowrap"
         key={state}
         initial={{ opacity: 0, y: 4 }}
         animate={{ opacity: 1, y: 0 }}
@@ -220,7 +185,8 @@ export default function VoiceSparring({
   const [speechSupported, setSpeechSupported] = useState(true);
 
   const recognitionRef = useRef<any>(null);
-  const synthRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const latestTranscriptRef = useRef('');
 
   const transport = useMemo(
     () => new DefaultChatTransport({ api: '/api/spar', body: { clause, contractType } }),
@@ -234,8 +200,7 @@ export default function VoiceSparring({
   // Check speech support
   useEffect(() => {
     const hasSR = typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
-    const hasSS = typeof window !== 'undefined' && 'speechSynthesis' in window;
-    setSpeechSupported(hasSR && hasSS);
+    setSpeechSupported(hasSR);
   }, []);
 
   // Rotate tips
@@ -244,10 +209,64 @@ export default function VoiceSparring({
     return () => clearInterval(interval);
   }, []);
 
-  // Watch for new assistant messages to speak
+  // Speak text via ElevenLabs API (with browser fallback)
+  const speakText = useCallback(async (text: string) => {
+    if (isMuted) { setOrbState('idle'); return; }
+    setOrbState('speaking');
+
+    try {
+      // Try ElevenLabs TTS first
+      const res = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text.slice(0, 1000) }),
+      });
+
+      const contentType = res.headers.get('content-type') ?? '';
+
+      if (res.ok && contentType.includes('audio')) {
+        // ElevenLabs audio available
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        audioRef.current = audio;
+        audio.onended = () => { setOrbState('idle'); URL.revokeObjectURL(url); };
+        audio.onerror = () => { setOrbState('idle'); URL.revokeObjectURL(url); };
+        await audio.play();
+        return;
+      }
+    } catch {
+      // ElevenLabs failed, fall through to browser TTS
+    }
+
+    // Browser SpeechSynthesis fallback
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.95;
+      utterance.pitch = 1;
+
+      // Wait for voices to load
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        const preferred = voices.find((v) =>
+          v.name.includes('Samantha') || v.name.includes('Google') || v.name.includes('Natural') || v.lang === 'en-US'
+        );
+        if (preferred) utterance.voice = preferred;
+      }
+
+      utterance.onend = () => setOrbState('idle');
+      utterance.onerror = () => setOrbState('idle');
+      window.speechSynthesis.speak(utterance);
+    } else {
+      setOrbState('idle');
+    }
+  }, [isMuted]);
+
+  // Watch for new assistant messages
   useEffect(() => {
     const lastMsg = [...messages].reverse().find((m) => m.role === 'assistant');
-    if (!lastMsg) return;
+    if (!lastMsg || status === 'streaming') return;
     const text = getMessageText(lastMsg);
     if (!text || text === lastResponse) return;
 
@@ -256,19 +275,14 @@ export default function VoiceSparring({
     setLastCoaching(coachingNote);
     setTipIndex((prev) => (prev + 1) % TIPS.length);
 
-    if (!isMuted && counterpartyText) {
-      speakText(counterpartyText);
-    } else {
-      setOrbState('idle');
-    }
-  }, [messages, isMuted]);
+    if (counterpartyText) speakText(counterpartyText);
+  }, [messages, status, lastResponse, speakText]);
 
-  // Start speech recognition
+  // Start listening
   const startListening = useCallback(() => {
     if (!speechSupported) return;
-
-    // Stop any ongoing speech
     window.speechSynthesis?.cancel();
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
 
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     const recognition = new SR();
@@ -283,14 +297,16 @@ export default function VoiceSparring({
         .map((r: any) => r[0].transcript)
         .join('');
       setTranscript(result);
+      latestTranscriptRef.current = result;
     };
 
     recognition.onend = () => {
-      const finalText = transcript.trim();
-      if (finalText && !isLoading) {
+      const finalText = latestTranscriptRef.current.trim();
+      if (finalText) {
         setOrbState('thinking');
         sendMessage({ text: finalText });
         setTranscript('');
+        latestTranscriptRef.current = '';
       } else {
         setOrbState('idle');
       }
@@ -299,49 +315,26 @@ export default function VoiceSparring({
     recognition.onerror = () => {
       setOrbState('idle');
       setTranscript('');
+      latestTranscriptRef.current = '';
     };
 
     recognitionRef.current = recognition;
     recognition.start();
-  }, [speechSupported, transcript, isLoading, sendMessage]);
+  }, [speechSupported, sendMessage]);
 
   const stopListening = useCallback(() => {
     recognitionRef.current?.stop();
   }, []);
 
-  // Text-to-speech
-  const speakText = useCallback((text: string) => {
-    if (!('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    setOrbState('speaking');
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.95;
-    utterance.pitch = 1;
-
-    // Prefer a natural-sounding voice
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find((v) => v.name.includes('Samantha') || v.name.includes('Google') || v.name.includes('Natural'));
-    if (preferred) utterance.voice = preferred;
-
-    utterance.onend = () => setOrbState('idle');
-    utterance.onerror = () => setOrbState('idle');
-
-    synthRef.current = utterance;
-    window.speechSynthesis.speak(utterance);
-  }, []);
-
   // Handle orb tap
   const handleOrbTap = useCallback(() => {
-    if (orbState === 'listening') {
-      stopListening();
-    } else if (orbState === 'speaking') {
+    if (orbState === 'listening') stopListening();
+    else if (orbState === 'speaking') {
       window.speechSynthesis?.cancel();
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
       setOrbState('idle');
-    } else if (orbState === 'idle') {
-      startListening();
-    }
-  }, [orbState, startListening, stopListening]);
+    } else if (orbState === 'idle' && !isLoading) startListening();
+  }, [orbState, isLoading, startListening, stopListening]);
 
   // Get script
   const handleGetScript = useCallback(() => {
@@ -360,48 +353,25 @@ export default function VoiceSparring({
   const tip = TIPS[tipIndex];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="flex flex-col items-center"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center">
       {/* Header */}
       <div className="w-full flex items-center justify-between mb-8">
-        <button
-          onClick={onBack}
-          className="text-sm text-muted hover:text-foreground transition-colors cursor-pointer flex items-center gap-1.5"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          Back
+        <button onClick={onBack} className="text-sm text-muted hover:text-foreground transition-colors cursor-pointer flex items-center gap-1.5">
+          <ArrowLeft className="h-3.5 w-3.5" /> Back
         </button>
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            className="p-2 rounded-lg hover:bg-black/5 transition-colors cursor-pointer"
-            title={isMuted ? 'Unmute' : 'Mute'}
-          >
+          <button onClick={() => setIsMuted(!isMuted)} className="p-2 rounded-lg hover:bg-black/5 transition-colors cursor-pointer" title={isMuted ? 'Unmute' : 'Mute'}>
             {isMuted ? <VolumeX className="h-4 w-4 text-muted" /> : <Volume2 className="h-4 w-4 text-muted" />}
           </button>
-          <button
-            onClick={onSwitchToChat}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-black/10 text-xs font-medium text-muted hover:text-foreground hover:bg-black/5 transition-colors cursor-pointer"
-          >
-            <MessageSquare className="h-3.5 w-3.5" />
-            Switch to Chat
+          <button onClick={onSwitchToChat} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-black/10 text-xs font-medium text-muted hover:text-foreground hover:bg-black/5 transition-colors cursor-pointer">
+            <MessageSquare className="h-3.5 w-3.5" /> Switch to Chat
           </button>
         </div>
       </div>
 
       {/* AI Identity */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="text-center mb-6"
-      >
-        <p className="text-xs font-medium text-muted uppercase tracking-wider mb-1">
-          Negotiation Partner
-        </p>
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center mb-8">
+        <p className="text-xs font-medium text-muted uppercase tracking-wider mb-1">Negotiation Partner</p>
         <h2 className="text-lg font-semibold text-foreground">
           {contractType === 'employment' || contractType === 'independent_contractor'
             ? 'Jordan, HR Director'
@@ -414,25 +384,16 @@ export default function VoiceSparring({
         </p>
       </motion.div>
 
-      {/* Orb */}
-      <motion.div
-        className="cursor-pointer mb-12"
-        onClick={handleOrbTap}
-        whileTap={{ scale: 0.95 }}
-      >
-        <VoiceOrb state={isLoading ? 'thinking' : orbState} />
+      {/* Metallic Orb */}
+      <motion.div className="cursor-pointer mb-14" onClick={handleOrbTap} whileTap={{ scale: 0.95 }}>
+        <MetallicOrb state={isLoading && orbState !== 'speaking' ? 'thinking' : orbState} />
       </motion.div>
 
       {/* Live transcript */}
       <AnimatePresence mode="wait">
         {transcript && (
-          <motion.div
-            key="transcript"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            className="w-full max-w-md rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 mb-6"
-          >
+          <motion.div key="transcript" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+            className="w-full max-w-md rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 mb-6">
             <p className="text-sm text-blue-800 text-center italic">&ldquo;{transcript}&rdquo;</p>
           </motion.div>
         )}
@@ -441,13 +402,8 @@ export default function VoiceSparring({
       {/* Last AI response */}
       <AnimatePresence mode="wait">
         {lastResponse && !transcript && orbState !== 'listening' && (
-          <motion.div
-            key="response"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="w-full max-w-md rounded-xl bg-white/70 border border-black/[0.06] px-4 py-3 mb-4"
-          >
+          <motion.div key="response" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+            className="w-full max-w-md rounded-xl bg-white/70 border border-black/[0.06] px-4 py-3 mb-4">
             <p className="text-sm text-foreground/80 leading-relaxed">
               {renderMarkdown(parseAssistantMessage(lastResponse).counterpartyText)}
             </p>
@@ -458,35 +414,21 @@ export default function VoiceSparring({
       {/* Coaching note */}
       <AnimatePresence>
         {lastCoaching && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="w-full max-w-md rounded-xl border border-blue-200 bg-blue-50/50 px-4 py-3 mb-6"
-          >
+          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+            className="w-full max-w-md rounded-xl border border-blue-200 bg-blue-50/50 px-4 py-3 mb-6">
             <p className="text-xs font-medium text-blue-600 mb-1">🎯 Coaching Note</p>
-            <p className="text-sm text-foreground/70 leading-relaxed">
-              {renderMarkdown(lastCoaching)}
-            </p>
+            <p className="text-sm text-foreground/70 leading-relaxed">{renderMarkdown(lastCoaching)}</p>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Tips panel */}
-      <motion.div
-        className="w-full max-w-md rounded-xl border border-dashed border-neutral-300 bg-white/40 px-4 py-3 mb-6"
-        layout
-      >
+      <motion.div className="w-full max-w-md rounded-xl border border-dashed border-neutral-300 bg-white/40 px-4 py-3 mb-6" layout>
         <div className="flex items-start gap-2">
           <tip.icon className="h-4 w-4 text-amber-600 mt-0.5 shrink-0" />
           <AnimatePresence mode="wait">
-            <motion.p
-              key={tipIndex}
-              initial={{ opacity: 0, x: 8 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -8 }}
-              className="text-sm text-muted leading-relaxed"
-            >
+            <motion.p key={tipIndex} initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }}
+              className="text-sm text-muted leading-relaxed">
               {tip.text}
             </motion.p>
           </AnimatePresence>
@@ -497,13 +439,9 @@ export default function VoiceSparring({
       <div className="w-full max-w-md flex items-center justify-between text-xs text-muted">
         <span>Exchange {exchangeCount} of 8</span>
         {exchangeCount >= 3 && onGetScript && (
-          <button
-            onClick={handleGetScript}
-            disabled={isLoading}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-black px-4 py-2 text-xs font-semibold text-yellow-50 hover:bg-neutral-800 disabled:opacity-50 transition-colors cursor-pointer"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            Get My Script
+          <button onClick={handleGetScript} disabled={isLoading}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-black px-4 py-2 text-xs font-semibold text-yellow-50 hover:bg-neutral-800 disabled:opacity-50 transition-colors cursor-pointer">
+            <Sparkles className="h-3.5 w-3.5" /> Get My Script
           </button>
         )}
       </div>
