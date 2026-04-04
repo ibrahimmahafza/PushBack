@@ -4,6 +4,7 @@ import { google } from "@ai-sdk/google";
 import { NegotiationScriptSchema, ClauseSchema } from "@/lib/types";
 import { buildScriptPrompt } from "@/lib/prompts/script";
 import { z } from "zod";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -21,6 +22,16 @@ function jsonError(message: string, status: number) {
 }
 
 export async function POST(request: NextRequest) {
+  // ── Rate limiting (20 scripts per hour per IP) ────────────────────────────
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const limited = rateLimit(ip, "script", { maxRequests: 20, windowMs: 60 * 60 * 1000 });
+  if (limited) {
+    return NextResponse.json(
+      { error: limited.error },
+      { status: 429, headers: { "Retry-After": String(limited.retryAfter) } }
+    );
+  }
+
   // ── Check API key configuration ───────────────────────────────────────────
   if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
     console.error("[script] GOOGLE_GENERATIVE_AI_API_KEY is not configured in environment");

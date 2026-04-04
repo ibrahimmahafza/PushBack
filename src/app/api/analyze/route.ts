@@ -3,6 +3,7 @@ import { generateObject } from "ai";
 import { google } from "@ai-sdk/google";
 import { ContractAnalysisSchema } from "@/lib/types";
 import { ANALYSIS_SYSTEM_PROMPT } from "@/lib/prompts/analysis";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -13,11 +14,33 @@ const MIN_TEXT_LENGTH = 50;
 /** Maximum contract text length to analyze (100K chars) */
 const MAX_TEXT_LENGTH = 100_000;
 
+/** Patterns that indicate prompt injection attempts */
+const INJECTION_PATTERNS = [
+  /ignore\s+(all\s+)?previous\s+instructions/i,
+  /ignore\s+(all\s+)?above/i,
+  /you\s+are\s+now\s+/i,
+  /system\s*prompt/i,
+  /reveal\s+your\s+(instructions|prompt|system)/i,
+  /pretend\s+you\s+are/i,
+  /act\s+as\s+if/i,
+  /disregard\s+(all|any|your)/i,
+];
+
 function jsonError(message: string, status: number) {
   return NextResponse.json({ error: message }, { status });
 }
 
 export async function POST(request: NextRequest) {
+  // ── Rate limiting (10 analyses per hour per IP) ───────────────────────────
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const limited = rateLimit(ip, "analyze", { maxRequests: 10, windowMs: 60 * 60 * 1000 });
+  if (limited) {
+    return NextResponse.json(
+      { error: limited.error },
+      { status: 429, headers: { "Retry-After": String(limited.retryAfter) } }
+    );
+  }
+
   // ── Check API key configuration ───────────────────────────────────────────
   if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
     console.error(
@@ -74,6 +97,15 @@ export async function POST(request: NextRequest) {
   if (text.length > MAX_TEXT_LENGTH) {
     return jsonError(
       `Contract text is too long (${text.length} characters). Please limit to ${MAX_TEXT_LENGTH.toLocaleString()} characters.`,
+      400
+    );
+  }
+
+  // ── Prompt injection check ──────────────────────────────────────────────
+  if (INJECTION_PATTERNS.some((pattern) => pattern.test(text))) {
+    console.warn("[analyze] Prompt injection attempt detected from IP:", ip);
+    return jsonError(
+      "The submitted text contains patterns that cannot be processed. Please submit a valid contract.",
       400
     );
   }

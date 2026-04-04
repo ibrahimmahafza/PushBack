@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { streamText, convertToModelMessages, type UIMessage } from "ai";
 import { google } from "@ai-sdk/google";
 import { buildSparringPrompt } from "@/lib/prompts/sparring";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -23,6 +24,16 @@ interface SparRequestBody {
 }
 
 export async function POST(request: NextRequest) {
+  // ── Rate limiting (50 sparring messages per hour per IP) ──────────────────
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const limited = rateLimit(ip, "spar", { maxRequests: 50, windowMs: 60 * 60 * 1000 });
+  if (limited) {
+    return NextResponse.json(
+      { error: limited.error },
+      { status: 429, headers: { "Retry-After": String(limited.retryAfter) } }
+    );
+  }
+
   // ── Check API key configuration ───────────────────────────────────────────
   if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
     console.error("[spar] GOOGLE_GENERATIVE_AI_API_KEY is not configured in environment");
