@@ -85,17 +85,17 @@ export default function RadialOrbitalTimeline({ items, onItemClick }: RadialOrbi
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[480px] sm:h-[520px] rounded-2xl glass-card overflow-hidden cursor-pointer"
+      className="relative w-full h-[480px] sm:h-[520px] rounded-2xl bg-white/60 backdrop-blur-sm border border-black/[0.06] overflow-hidden cursor-pointer"
       onClick={handleBgClick}
     >
       {/* Radial gradient bg */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.04)_0%,_transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(37,99,235,0.04)_0%,_transparent_70%)]" />
 
       {/* Orbit rings */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" data-orbit>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[380px] sm:h-[380px] rounded-full border border-white/[0.04]" data-orbit />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] sm:w-[260px] sm:h-[260px] rounded-full border border-white/[0.04]" data-orbit />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] rounded-full border border-white/[0.06]" data-orbit />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[380px] sm:h-[380px] rounded-full border border-black/[0.06]" data-orbit />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] sm:w-[260px] sm:h-[260px] rounded-full border border-black/[0.06]" data-orbit />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] rounded-full border border-black/[0.08]" data-orbit />
 
         {/* Center hub */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
@@ -104,7 +104,7 @@ export default function RadialOrbitalTimeline({ items, onItemClick }: RadialOrbi
             animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           />
-          <span className="mt-2 text-[10px] text-white/30 font-mono">{items.length} clauses</span>
+          <span className="mt-2 text-[10px] text-muted font-mono">{items.length} clauses</span>
         </div>
 
         {/* Orbital items */}
@@ -135,7 +135,7 @@ export default function RadialOrbitalTimeline({ items, onItemClick }: RadialOrbi
             >
               {/* Node */}
               <motion.div
-                className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${config.bg} ${config.border} ${isActive ? 'scale-125 ring-4 ring-white/20' : 'hover:scale-110'}`}
+                className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${config.bg} ${config.border} ${isActive ? 'scale-125 ring-4 ring-black/10' : 'hover:scale-110'}`}
                 whileHover={{ scale: 1.15 }}
               >
                 <Icon className={`w-4 h-4 ${config.text}`} />
@@ -147,7 +147,7 @@ export default function RadialOrbitalTimeline({ items, onItemClick }: RadialOrbi
               </motion.div>
 
               {/* Label */}
-              <div className={`absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-mono transition-all duration-300 max-w-[100px] truncate text-center ${isActive ? 'text-white' : 'text-white/40'}`}>
+              <div className={`absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-mono transition-all duration-300 max-w-[100px] truncate text-center ${isActive ? 'text-white' : 'text-muted'}`}>
                 {item.title}
               </div>
 
@@ -161,24 +161,24 @@ export default function RadialOrbitalTimeline({ items, onItemClick }: RadialOrbi
                     className="absolute top-16 left-1/2 -translate-x-1/2 w-64 z-50"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="glass-card rounded-xl p-4 border border-white/10">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 border border-black/10 shadow-lg">
                       <div className="flex items-center justify-between mb-2">
                         <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${config.bg} ${config.text} ${config.border} border`}>
                           {config.label}
                         </span>
                         <button
                           onClick={(e) => { e.stopPropagation(); setActiveId(null); setAutoRotate(true); }}
-                          className="text-white/30 hover:text-white/60 cursor-pointer"
+                          className="text-muted hover:text-foreground/60 cursor-pointer"
                         >
                           <X className="w-3 h-3" />
                         </button>
                       </div>
-                      <h4 className="text-sm font-semibold text-white mb-1">{item.title}</h4>
-                      <p className="text-xs text-white/50 leading-relaxed mb-3">{item.content}</p>
+                      <h4 className="text-sm font-semibold text-foreground mb-1">{item.title}</h4>
+                      <p className="text-xs text-muted leading-relaxed mb-3">{item.content}</p>
                       {onItemClick && (
                         <button
                           onClick={(e) => { e.stopPropagation(); onItemClick(item); }}
-                          className="w-full text-xs font-medium py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
+                          className="w-full text-xs font-medium py-1.5 rounded-lg bg-black/5 border border-black/10 text-white/70 hover:bg-white/10 hover:text-foreground transition-colors cursor-pointer"
                         >
                           Practice This Clause
                         </button>
@@ -193,7 +193,7 @@ export default function RadialOrbitalTimeline({ items, onItemClick }: RadialOrbi
       </div>
 
       {/* Legend */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-4 text-[10px] text-white/40">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-4 text-[10px] text-muted">
         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" />{counts.red} Dangerous</span>
         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500" />{counts.amber} Concerning</span>
         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500" />{counts.green} Fair</span>

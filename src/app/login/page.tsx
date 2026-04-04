@@ -53,11 +53,11 @@ function LoginContent() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center px-4 overflow-hidden">
-      {/* Animated background orbs */}
+    <div className="relative flex min-h-screen items-center justify-center px-4 overflow-hidden bg-yellow-50">
+      {/* Warm background blurs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
-          className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-accent/20 blur-[100px]"
+          className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-blue-200/30 blur-[100px]"
           animate={{
             x: [0, 60, 0],
             y: [0, 40, 0],
@@ -66,7 +66,7 @@ function LoginContent() {
           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-purple-500/15 blur-[120px]"
+          className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-amber-200/20 blur-[120px]"
           animate={{
             x: [0, -50, 0],
             y: [0, -60, 0],
@@ -75,7 +75,7 @@ function LoginContent() {
           transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute top-1/2 left-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-[80px]"
+          className="absolute top-1/2 left-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-200/15 blur-[80px]"
           animate={{
             scale: [1, 1.3, 1],
             opacity: [0.3, 0.6, 0.3],
@@ -84,15 +84,7 @@ function LoginContent() {
         />
       </div>
 
-      {/* Subtle grid pattern */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-          backgroundSize: '48px 48px',
-        }}
-      />
+      {/* End bg */}
 
       <motion.div
         className="relative z-10 w-full max-w-md space-y-8"
@@ -115,7 +107,7 @@ function LoginContent() {
             <Shield className="h-10 w-10 text-accent" strokeWidth={1.5} />
           </motion.div>
           <h1 className="text-5xl font-bold tracking-tight text-foreground">
-            Push<span className="bg-gradient-to-r from-accent via-blue-400 to-purple-400 bg-clip-text text-transparent">Back</span>
+            Push<span className="text-blue-600">Back</span>
           </h1>
           <p className="mt-3 text-lg text-muted">
             Understand your contract. Practice pushing back.
@@ -124,16 +116,16 @@ function LoginContent() {
 
         {/* Card */}
         <motion.div
-          className="relative rounded-2xl glass-card gradient-border p-8"
+          className="relative rounded-2xl bg-white/70 backdrop-blur-sm border border-black/[0.06] p-8 shadow-sm"
           initial={{ opacity: 0, y: 20, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
           style={{
-            boxShadow: '0 4px 40px rgba(0,0,0,0.4), 0 0 80px rgba(59,130,246,0.06)',
+            boxShadow: '0 4px 40px rgba(0,0,0,0.04)',
           }}
         >
-          {/* Top glow line */}
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
+          {/* Top accent line */}
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300/50 to-transparent" />
 
           <h2 className="mb-6 text-center text-xl font-semibold text-foreground">
             Sign in to continue
@@ -157,7 +149,7 @@ function LoginContent() {
             disabled={loading}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="group flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 text-sm font-medium text-foreground transition-all duration-200 hover:border-accent/40 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+            className="group flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-black/10 bg-white px-4 py-3.5 text-sm font-medium text-foreground transition-all duration-200 hover:border-black/20 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
