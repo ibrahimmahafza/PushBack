@@ -191,6 +191,25 @@ html {
   pointer-events: none;
 }
 
+/* CPU Architecture animated light paths */
+@keyframes cpu-line-1 { 0% { transform: translate(10px, 20px); } 40% { transform: translate(89.5px, 20px); } 60% { transform: translate(94.5px, 25px); } 100% { transform: translate(94.5px, 55px); } }
+@keyframes cpu-line-2 { 0% { transform: translate(180px, 10px); } 40% { transform: translate(110.3px, 10px); } 60% { transform: translate(105.3px, 15px); } 100% { transform: translate(105.3px, 45px); } }
+@keyframes cpu-line-3 { 0% { transform: translate(130px, 20px); } 50% { transform: translate(130px, 41.8px); } 70% { transform: translate(125px, 46.8px); } 100% { transform: translate(115px, 46.8px); } }
+@keyframes cpu-line-4 { 0% { transform: translate(170px, 80px); } 40% { transform: translate(170px, 58.2px); } 60% { transform: translate(165px, 53.2px); } 100% { transform: translate(115px, 53.2px); } }
+@keyframes cpu-line-5 { 0% { transform: translate(135px, 65px); } 20% { transform: translate(150px, 65px); } 30% { transform: translate(155px, 70px); } 50% { transform: translate(155px, 80px); } 60% { transform: translate(150px, 85px); } 80% { transform: translate(110.2px, 85px); } 90% { transform: translate(105.2px, 80px); } 100% { transform: translate(105.2px, 60px); } }
+@keyframes cpu-line-6 { 0% { transform: translate(94.8px, 95px); } 100% { transform: translate(94.8px, 59px); } }
+@keyframes cpu-line-7 { 0% { transform: translate(88px, 88px); } 25% { transform: translate(88px, 73px); } 35% { transform: translate(83px, 68px); } 50% { transform: translate(73px, 68px); } 60% { transform: translate(68px, 63px); } 75% { transform: translate(68px, 58px); } 85% { transform: translate(73px, 53px); } 100% { transform: translate(87px, 53px); } }
+@keyframes cpu-line-8 { 0% { transform: translate(30px, 30px); } 30% { transform: translate(55px, 30px); } 45% { transform: translate(60px, 35px); } 60% { transform: translate(60px, 41.5px); } 75% { transform: translate(65px, 46.5px); } 100% { transform: translate(85px, 46.5px); } }
+
+.cpu-line-1 { animation: cpu-line-1 3s ease-in-out infinite alternate; }
+.cpu-line-2 { animation: cpu-line-2 3.5s ease-in-out infinite alternate; }
+.cpu-line-3 { animation: cpu-line-3 2.8s ease-in-out infinite alternate; }
+.cpu-line-4 { animation: cpu-line-4 4s ease-in-out infinite alternate; }
+.cpu-line-5 { animation: cpu-line-5 5s ease-in-out infinite alternate; }
+.cpu-line-6 { animation: cpu-line-6 2s ease-in-out infinite alternate; }
+.cpu-line-7 { animation: cpu-line-7 4.5s ease-in-out infinite alternate; }
+.cpu-line-8 { animation: cpu-line-8 3.2s ease-in-out infinite alternate; }
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

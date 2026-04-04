@@ -17,6 +17,7 @@ import type { ContractAnalysis, Clause } from "@/lib/types";
 import TopThreeFight from "./TopThreeFight";
 import RealCostPanel from "./RealCostPanel";
 import ClauseCard from "./ClauseCard";
+import RadialOrbitalTimeline from "./ui/RadialOrbitalTimeline";
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
@@ -401,6 +402,26 @@ export default function AnalysisDashboard({
             </div>
           </div>
         </div>
+      </motion.div>
+
+      {/* ── Orbital Clause Map ──────────────────────────────────── */}
+      <motion.div variants={fadeUp}>
+        <div className="flex items-center gap-3 mb-4">
+          <h3 className="text-sm font-semibold text-foreground">Clause Map</h3>
+          <span className="text-xs text-muted/50">Click a node to inspect</span>
+        </div>
+        <RadialOrbitalTimeline
+          items={analysis.clauses.map((clause, i) => ({
+            id: i,
+            title: clause.title,
+            severity: clause.severity,
+            content: clause.explanation,
+          }))}
+          onItemClick={onStartSparring ? (item) => {
+            const clause = analysis.clauses[item.id];
+            if (clause && clause.severity !== 'green') onStartSparring(clause);
+          } : undefined}
+        />
       </motion.div>
 
       {/* ── Header: contract type + risk badge + start over ──────── */}

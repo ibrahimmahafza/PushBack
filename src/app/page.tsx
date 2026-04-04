@@ -12,64 +12,13 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import LandingNav from '@/components/LandingNav';
+import { BackgroundShader } from '@/components/ui/BackgroundShader';
 import { cn } from '@/lib/utils';
 
 /* ------------------------------------------------------------------ */
-/*  Elegant Shape (floating glass pill, 21st.dev style)                */
-/* ------------------------------------------------------------------ */
-function ElegantShape({
-  className,
-  delay = 0,
-  width = 400,
-  height = 100,
-  rotate = 0,
-  gradient = 'from-white/[0.08]',
-}: {
-  className?: string;
-  delay?: number;
-  width?: number;
-  height?: number;
-  rotate?: number;
-  gradient?: string;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: -150, rotate: rotate - 15 }}
-      animate={{ opacity: 1, y: 0, rotate }}
-      transition={{
-        duration: 2.4,
-        delay,
-        ease: [0.23, 0.86, 0.39, 0.96],
-        opacity: { duration: 1.2 },
-      }}
-      className={cn('absolute', className)}
-    >
-      <motion.div
-        animate={{ y: [0, 15, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-        style={{ width, height }}
-        className="relative"
-      >
-        <div
-          className={cn(
-            'absolute inset-0 rounded-full',
-            'bg-gradient-to-r to-transparent',
-            gradient,
-            'backdrop-blur-[2px] border-2 border-white/[0.15]',
-            'shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]',
-            'after:absolute after:inset-0 after:rounded-full',
-            'after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]',
-          )}
-        />
-      </motion.div>
-    </motion.div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Glow Card (mouse-tracking spotlight effect)                        */
+/*  Glow Card (mouse-tracking spotlight)                               */
 /* ------------------------------------------------------------------ */
 const glowColorMap: Record<string, { base: number; spread: number }> = {
   blue: { base: 220, spread: 200 },
@@ -96,7 +45,6 @@ function GlowCard({
         cardRef.current.style.setProperty('--x', e.clientX.toFixed(2));
         cardRef.current.style.setProperty('--xp', (e.clientX / window.innerWidth).toFixed(2));
         cardRef.current.style.setProperty('--y', e.clientY.toFixed(2));
-        cardRef.current.style.setProperty('--yp', (e.clientY / window.innerHeight).toFixed(2));
       }
     };
     document.addEventListener('pointermove', syncPointer);
@@ -120,7 +68,6 @@ function GlowCard({
         '--backdrop': 'hsl(0 0% 60% / 0.12)',
         '--backup-border': 'var(--backdrop)',
         '--size': '200',
-        '--outer': '1',
         '--border-size': 'calc(var(--border, 2) * 1px)',
         '--spotlight-size': 'calc(var(--size, 150) * 1px)',
         '--hue': 'calc(var(--base) + (var(--xp, 0) * var(--spread, 0)))',
@@ -128,7 +75,7 @@ function GlowCard({
           var(--spotlight-size) var(--spotlight-size) at
           calc(var(--x, 0) * 1px)
           calc(var(--y, 0) * 1px),
-          hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.1)), transparent
+          hsl(var(--hue, 210) 100% 70% / 0.1), transparent
         )`,
         backgroundColor: 'var(--backdrop, transparent)',
         backgroundSize: 'calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)))',
@@ -138,10 +85,7 @@ function GlowCard({
         position: 'relative',
         touchAction: 'none',
       } as React.CSSProperties}
-      className={cn(
-        'w-full h-full rounded-2xl relative backdrop-blur-[5px] p-6',
-        className,
-      )}
+      className={cn('w-full h-full rounded-2xl relative backdrop-blur-[5px] p-6', className)}
     >
       <div data-glow />
       {children}
@@ -150,63 +94,89 @@ function GlowCard({
 }
 
 /* ------------------------------------------------------------------ */
-/*  Glow card CSS (injected once)                                      */
+/*  Glow CSS                                                           */
 /* ------------------------------------------------------------------ */
 const GLOW_STYLES = `
-  [data-glow]::before,
-  [data-glow]::after {
-    pointer-events: none;
-    content: "";
-    position: absolute;
-    inset: calc(var(--border-size, 2px) * -1);
-    border: var(--border-size, 2px) solid transparent;
-    border-radius: calc(var(--radius, 14) * 1px);
-    background-attachment: fixed;
-    background-size: calc(100% + (2 * var(--border-size, 2px))) calc(100% + (2 * var(--border-size, 2px)));
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
-    mask-clip: padding-box, border-box;
-    mask-composite: intersect;
-  }
-  [data-glow]::before {
-    background-image: radial-gradient(
-      calc(var(--spotlight-size, 150px) * 0.75) calc(var(--spotlight-size, 150px) * 0.75) at
-      calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
-      hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 50) * 1%) / var(--border-spot-opacity, 1)), transparent 100%
-    );
-    filter: brightness(2);
-  }
-  [data-glow]::after {
-    background-image: radial-gradient(
-      calc(var(--spotlight-size, 150px) * 0.5) calc(var(--spotlight-size, 150px) * 0.5) at
-      calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
-      hsl(0 100% 100% / var(--border-light-opacity, 1)), transparent 100%
-    );
-  }
-  [data-glow] [data-glow] {
-    position: absolute; inset: 0;
-    will-change: filter;
-    opacity: var(--outer, 1);
-    border-radius: calc(var(--radius, 14) * 1px);
-    border-width: calc(var(--border-size, 2px) * 20);
-    filter: blur(calc(var(--border-size, 2px) * 10));
-    background: none; pointer-events: none; border: none;
-  }
-  [data-glow] > [data-glow]::before {
-    inset: -10px; border-width: 10px;
-  }
+[data-glow]::before,[data-glow]::after{pointer-events:none;content:"";position:absolute;inset:calc(var(--border-size,2px)*-1);border:var(--border-size,2px) solid transparent;border-radius:calc(var(--radius,14)*1px);background-attachment:fixed;background-size:calc(100% + (2*var(--border-size,2px))) calc(100% + (2*var(--border-size,2px)));background-repeat:no-repeat;background-position:50% 50%;mask:linear-gradient(transparent,transparent),linear-gradient(white,white);mask-clip:padding-box,border-box;mask-composite:intersect}
+[data-glow]::before{background-image:radial-gradient(calc(var(--spotlight-size,150px)*0.75) calc(var(--spotlight-size,150px)*0.75) at calc(var(--x,0)*1px) calc(var(--y,0)*1px),hsl(var(--hue,210) 100% 50%/1),transparent 100%);filter:brightness(2)}
+[data-glow]::after{background-image:radial-gradient(calc(var(--spotlight-size,150px)*0.5) calc(var(--spotlight-size,150px)*0.5) at calc(var(--x,0)*1px) calc(var(--y,0)*1px),hsl(0 100% 100%/1),transparent 100%)}
+[data-glow] [data-glow]{position:absolute;inset:0;will-change:filter;opacity:var(--outer,1);border-radius:calc(var(--radius,14)*1px);filter:blur(calc(var(--border-size,2px)*10));background:none;pointer-events:none;border:none}
+[data-glow]>[data-glow]::before{inset:-10px;border-width:10px}
 `;
 
 /* ------------------------------------------------------------------ */
-/*  Feature cards data                                                 */
+/*  Animated text reveal                                               */
+/* ------------------------------------------------------------------ */
+function AnimatedTitle() {
+  const words1 = ['Understand.'];
+  const words2 = ['Push', 'Back.'];
+  const [visible, setVisible] = useState(0);
+
+  useEffect(() => {
+    const total = words1.length + words2.length;
+    if (visible < total) {
+      const t = setTimeout(() => setVisible(visible + 1), 400);
+      return () => clearTimeout(t);
+    }
+  }, [visible, words1.length, words2.length]);
+
+  return (
+    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight leading-[1.1]">
+      <span className="block">
+        {words1.map((word, i) => (
+          <motion.span
+            key={`a-${i}`}
+            className="inline-block bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80"
+            initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
+            animate={i < visible ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+            transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+          >
+            {word}
+          </motion.span>
+        ))}
+      </span>
+      <span className="block">
+        {words2.map((word, i) => {
+          const globalIndex = words1.length + i;
+          return (
+            <motion.span
+              key={`b-${i}`}
+              className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-white/90 to-cyan-300 mr-4"
+              initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
+              animate={globalIndex < visible ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+              transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+            >
+              {word}
+            </motion.span>
+          );
+        })}
+      </span>
+    </h1>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Scan line effect                                                   */
+/* ------------------------------------------------------------------ */
+function ScanLine() {
+  return (
+    <motion.div
+      className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent/40 to-transparent pointer-events-none z-20"
+      initial={{ top: '0%' }}
+      animate={{ top: ['0%', '100%', '0%'] }}
+      transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Feature + stat data                                                */
 /* ------------------------------------------------------------------ */
 const features = [
   {
     icon: FileText,
     title: 'Upload & Analyze',
-    description:
-      'Drop a PDF or paste text. AI extracts every clause and rates it by severity: dangerous, concerning, or fair.',
+    description: 'Drop a PDF or paste text. AI extracts every clause and rates it by severity: dangerous, concerning, or fair.',
     iconColor: 'text-blue-400',
     iconBg: 'bg-blue-500/10',
     glowColor: 'blue',
@@ -215,8 +185,7 @@ const features = [
   {
     icon: Swords,
     title: 'Practice Negotiating',
-    description:
-      'Spar against an AI counterparty who responds like a real HR manager, landlord, or client. Get coaching after each exchange.',
+    description: 'Spar against an AI counterparty who responds like a real HR manager, landlord, or client. Get coaching after each exchange.',
     iconColor: 'text-cyan-400',
     iconBg: 'bg-cyan-500/10',
     glowColor: 'cyan',
@@ -225,8 +194,7 @@ const features = [
   {
     icon: ScrollText,
     title: 'Get Your Script',
-    description:
-      'Walk away with exact phrases to say, ask, and insist on. Personalized from your sparring session.',
+    description: 'Walk away with exact phrases to say, ask, and insist on. Personalized from your sparring session.',
     iconColor: 'text-teal-400',
     iconBg: 'bg-teal-500/10',
     glowColor: 'teal',
@@ -234,28 +202,18 @@ const features = [
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  Stats data                                                         */
-/* ------------------------------------------------------------------ */
 const stats = [
-  { value: '3 Steps', label: 'Upload → Analyze → Practice' },
+  { value: '3 Steps', label: 'Upload, Analyze, Practice' },
   { value: '< 30s', label: 'AI analysis time' },
   { value: 'AI-Powered', label: 'Powered by Claude Sonnet 4.5' },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  Fade-up variants                                                   */
-/* ------------------------------------------------------------------ */
-const fadeUpVariants = {
+const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 1,
-      delay: 0.5 + i * 0.2,
-      ease: [0.25, 0.4, 0.25, 1] as const,
-    },
+    transition: { duration: 1, delay: 0.5 + i * 0.2, ease: [0.25, 0.4, 0.25, 1] as const },
   }),
 };
 
@@ -268,54 +226,47 @@ export default function Home() {
       <style dangerouslySetInnerHTML={{ __html: GLOW_STYLES }} />
       <LandingNav />
 
-      {/* Gradient backdrop */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.05] via-transparent to-cyan-500/[0.05] blur-3xl" />
-
-      {/* Elegant floating shapes */}
-      <div className="absolute inset-0 overflow-hidden">
-        <ElegantShape delay={0.3} width={600} height={140} rotate={12} gradient="from-blue-500/[0.15]" className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]" />
-        <ElegantShape delay={0.5} width={500} height={120} rotate={-15} gradient="from-cyan-500/[0.15]" className="right-[-5%] md:right-[0%] top-[70%] md:top-[75%]" />
-        <ElegantShape delay={0.4} width={300} height={80} rotate={-8} gradient="from-teal-500/[0.15]" className="left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]" />
-        <ElegantShape delay={0.6} width={200} height={60} rotate={20} gradient="from-indigo-500/[0.15]" className="right-[15%] md:right-[20%] top-[10%] md:top-[15%]" />
+      {/* Animated shader background */}
+      <div className="absolute inset-0 z-0 opacity-60">
+        <BackgroundShader className="w-full h-full absolute inset-0" speed={0.3} />
       </div>
 
-      {/* Edge vignette */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/80 pointer-events-none" />
+      {/* Scan line */}
+      <ScanLine />
 
-      {/* ============================================================ */}
-      {/*  HERO                                                         */}
-      {/* ============================================================ */}
+      {/* Grid overlay for futuristic feel */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
+        }}
+      />
+
+      {/* Vignette */}
+      <div className="absolute inset-0 z-[2] bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/80 pointer-events-none" />
+
+      {/* ── HERO ── */}
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 md:px-6 pt-32 sm:pt-40">
-        <motion.div
-          custom={0}
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate="visible"
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8"
+          >
             <Sparkles className="h-4 w-4 text-blue-400" />
-            <span className="text-sm text-white/60 tracking-wide">
-              AI-Powered Contract Intelligence
-            </span>
-          </div>
+            <span className="text-sm text-white/60 tracking-wide">AI-Powered Contract Intelligence</span>
+          </motion.div>
 
-          {/* Title */}
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight">
-            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
-              Understand.
-            </span>
-            <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-white/90 to-cyan-300">
-              Push Back.
-            </span>
-          </h1>
+          {/* Animated title */}
+          <AnimatedTitle />
 
           {/* Tagline */}
           <motion.p
             custom={1}
-            variants={fadeUpVariants}
+            variants={fadeUp}
             initial="hidden"
             animate="visible"
             className="text-lg md:text-xl text-white/40 mb-12 leading-relaxed font-light max-w-2xl mx-auto"
@@ -324,10 +275,10 @@ export default function Home() {
             Practice negotiating with AI. Leave with a ready-to-use script.
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* CTA */}
           <motion.div
             custom={2}
-            variants={fadeUpVariants}
+            variants={fadeUp}
             initial="hidden"
             animate="visible"
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
@@ -337,19 +288,16 @@ export default function Home() {
               className="group relative cursor-pointer isolate overflow-hidden px-8 py-4 rounded-full font-semibold text-base text-white bg-gradient-to-b from-accent to-blue-600 border border-accent/50 shadow-[0_0_24px_rgba(59,130,246,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(59,130,246,0.5),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all duration-500 active:translate-y-0.5"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_50%_50%,rgba(147,197,253,0.15),transparent_70%)]" />
               <span className="relative z-10 flex items-center gap-2">
                 Get Started Free
-                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </span>
             </Link>
 
             <button
               type="button"
               className="px-8 py-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl text-white hover:bg-white/10 transition-all font-semibold cursor-pointer"
-              onClick={() =>
-                document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })
-              }
+              onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <span className="flex items-center gap-2">
                 See How It Works
@@ -357,36 +305,25 @@ export default function Home() {
               </span>
             </button>
           </motion.div>
-        </motion.div>
+        </div>
 
-        {/* ============================================================ */}
-        {/*  STATS ROW                                                    */}
-        {/* ============================================================ */}
+        {/* ── STATS ── */}
         <motion.div
           custom={3}
-          variants={fadeUpVariants}
+          variants={fadeUp}
           initial="hidden"
           animate="visible"
           className="mx-auto grid max-w-2xl grid-cols-3 gap-4 sm:gap-6 mb-20"
         >
           {stats.map((stat) => (
-            <div
-              key={stat.value}
-              className="rounded-xl bg-white/[0.03] border border-white/[0.06] px-4 py-5 text-center backdrop-blur-sm"
-            >
-              <div className="text-lg font-bold text-white sm:text-xl">
-                {stat.value}
-              </div>
-              <div className="mt-1 text-xs text-white/30 sm:text-sm">
-                {stat.label}
-              </div>
+            <div key={stat.value} className="rounded-xl bg-white/[0.03] border border-white/[0.06] px-4 py-5 text-center backdrop-blur-sm">
+              <div className="text-lg font-bold text-white sm:text-xl">{stat.value}</div>
+              <div className="mt-1 text-xs text-white/30 sm:text-sm">{stat.label}</div>
             </div>
           ))}
         </motion.div>
 
-        {/* ============================================================ */}
-        {/*  FEATURE CARDS (GlowCard with mouse-tracking spotlight)       */}
-        {/* ============================================================ */}
+        {/* ── FEATURES ── */}
         <div id="features" className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
           {features.map((feature, i) => (
             <GlowCard key={feature.title} glowColor={feature.glowColor} delay={0.6 + i * 0.2}>
@@ -394,19 +331,14 @@ export default function Home() {
                 <div className={cn('flex items-center justify-center w-12 h-12 rounded-xl mb-5', feature.iconBg)}>
                   <feature.icon className={cn('w-6 h-6', feature.iconColor)} strokeWidth={1.5} />
                 </div>
-
-                <div className="mb-2 text-[11px] font-medium uppercase tracking-widest text-white/25">
-                  Step {i + 1}
-                </div>
-
+                <div className="mb-2 text-[11px] font-medium uppercase tracking-widest text-white/25">Step {i + 1}</div>
                 <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
                 <p className="text-white/50 mb-4 flex-grow text-sm leading-relaxed">{feature.description}</p>
-
                 <ul className="space-y-2">
-                  {feature.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-center gap-2 text-sm text-white/40">
+                  {feature.bullets.map((b) => (
+                    <li key={b} className="flex items-center gap-2 text-sm text-white/40">
                       <CheckCircle2 className={cn('w-4 h-4 flex-shrink-0', feature.iconColor)} />
-                      {bullet}
+                      {b}
                     </li>
                   ))}
                 </ul>
@@ -416,9 +348,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ============================================================ */}
-      {/*  FOOTER                                                       */}
-      {/* ============================================================ */}
+      {/* ── FOOTER ── */}
       <footer className="relative z-10 w-full border-t border-white/5 mt-12">
         <div className="mx-auto max-w-5xl px-6 py-16">
           <div className="flex flex-col items-center text-center">
@@ -430,24 +360,17 @@ export default function Home() {
                 Push<span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Back</span>
               </span>
             </Link>
-            <p className="text-base font-medium text-white/50 mb-2">
-              The fine print has met its match.
-            </p>
+            <p className="text-base font-medium text-white/50 mb-2">The fine print has met its match.</p>
             <p className="text-sm text-white/30 max-w-md">
-              Built for immigrants, gig workers, renters, and anyone
-              who has never been taught to push back.
+              Built for immigrants, gig workers, renters, and anyone who has never been taught to push back.
             </p>
           </div>
-
           <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-white/25">
             <Link href="/pricing" className="hover:text-white/60 transition-colors">Pricing</Link>
             <Link href="/login" className="hover:text-white/60 transition-colors">Sign In</Link>
             <a href="#features" className="hover:text-white/60 transition-colors">Features</a>
           </div>
-
-          <div className="mt-8 text-center text-xs text-white/15">
-            &copy; 2026 PushBack. Not legal advice.
-          </div>
+          <div className="mt-8 text-center text-xs text-white/15">&copy; 2026 PushBack. Not legal advice.</div>
         </div>
       </footer>
     </div>
