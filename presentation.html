@@ -3,25 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PushBack. Hackathon Pitch Deck</title>
+<title>PushBack — Pitch Deck</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #030712;
-    --surface: #0f1729;
-    --fg: #f8fafc;
-    --muted: #94a3b8;
-    --accent: #3b82f6;
-    --cyan: #06b6d4;
-    --teal: #14b8a6;
-    --danger: #ef4444;
-    --warning: #f59e0b;
-    --safe: #22c55e;
-    --glass: rgba(15, 23, 42, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --bg: #fffaf5;
+    --surface: #fff7ed;
+    --fg: #1c1917;
+    --fg-secondary: #44403c;
+    --muted: #78716c;
+    --accent: #ea580c;
+    --accent-light: #fb923c;
+    --accent-bg: rgba(234,88,12,0.08);
+    --danger: #dc2626;
+    --danger-bg: rgba(220,38,38,0.08);
+    --warning: #d97706;
+    --warning-bg: rgba(217,119,6,0.08);
+    --safe: #16a34a;
+    --safe-bg: rgba(22,163,74,0.08);
+    --border: rgba(0,0,0,0.06);
+    --glass: rgba(255,255,255,0.7);
+    --glass-border: rgba(0,0,0,0.08);
+    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.05), 0 20px 60px rgba(0,0,0,0.08);
   }
 
   html, body { height: 100%; overflow: hidden; font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--fg); }
@@ -33,165 +40,197 @@
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     padding: 60px 80px;
     opacity: 0; transform: translateX(60px); pointer-events: none;
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.55s ease, transform 0.55s ease;
     overflow: hidden;
   }
   .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
   .slide.prev { opacity: 0; transform: translateX(-60px); }
 
-  /* ── Background Orbs ── */
-  .orb {
-    position: absolute; border-radius: 50%; pointer-events: none; filter: blur(80px);
-    animation: float 20s ease-in-out infinite;
+  /* ── Warm Background Blobs ── */
+  .blob {
+    position: absolute; border-radius: 50%; pointer-events: none; filter: blur(100px); opacity: 0.5;
+    animation: drift 25s ease-in-out infinite;
   }
-  .orb-1 { width: 600px; height: 600px; top: -200px; left: -200px; background: rgba(59,130,246,0.12); }
-  .orb-2 { width: 500px; height: 500px; bottom: -200px; right: -150px; background: rgba(6,182,212,0.1); animation-delay: -7s; }
-  .orb-3 { width: 400px; height: 400px; top: 30%; left: 60%; background: rgba(20,184,166,0.08); animation-delay: -13s; }
-  @keyframes float {
+  .blob-1 { width: 700px; height: 700px; top: -300px; left: -200px; background: radial-gradient(circle, rgba(251,146,60,0.3), transparent 70%); }
+  .blob-2 { width: 600px; height: 600px; bottom: -250px; right: -150px; background: radial-gradient(circle, rgba(253,186,116,0.25), transparent 70%); animation-delay: -8s; }
+  .blob-3 { width: 500px; height: 500px; top: 40%; left: 55%; background: radial-gradient(circle, rgba(254,215,170,0.3), transparent 70%); animation-delay: -15s; }
+  .blob-rose { width: 500px; height: 500px; top: -100px; right: -100px; background: radial-gradient(circle, rgba(251,113,133,0.15), transparent 70%); animation-delay: -5s; }
+  @keyframes drift {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(40px, -30px) scale(1.05); }
-    66% { transform: translate(-20px, 20px) scale(0.95); }
+    33% { transform: translate(30px, -20px) scale(1.04); }
+    66% { transform: translate(-15px, 15px) scale(0.97); }
   }
 
   /* ── Typography ── */
-  h1 { font-size: 4rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
-  h2 { font-size: 2.8rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 24px; }
-  h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 12px; }
-  p, li { font-size: 1.25rem; line-height: 1.6; color: var(--muted); }
+  h1 { font-size: 4.2rem; font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; color: var(--fg); }
+  h2 { font-size: 3rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 20px; color: var(--fg); }
+  h3 { font-size: 1.35rem; font-weight: 600; margin-bottom: 10px; color: var(--fg); }
+  p, li { font-size: 1.25rem; line-height: 1.65; color: var(--fg-secondary); }
+  .big-quote { font-size: 2rem; font-weight: 500; line-height: 1.45; color: var(--fg); font-style: italic; max-width: 750px; }
   .gradient-text {
-    background: linear-gradient(135deg, var(--accent), var(--cyan), #22d3ee);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: linear-gradient(135deg, #ea580c, #c2410c, #9a3412);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .gradient-text-warm {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
   .danger-text { color: var(--danger); }
   .warning-text { color: var(--warning); }
   .safe-text { color: var(--safe); }
   .accent-text { color: var(--accent); }
 
-  /* ── Glass Cards ── */
-  .glass {
-    background: var(--glass); backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border); border-radius: 16px;
-    padding: 32px;
+  /* ── Cards ── */
+  .card {
+    background: var(--glass); backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); border-radius: 20px;
+    padding: 32px; box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
   }
-  .glass-sm { padding: 20px 24px; border-radius: 12px; }
+  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .card-sm { padding: 20px 24px; border-radius: 14px; }
+  .card-accent { border-color: rgba(234,88,12,0.15); background: linear-gradient(135deg, rgba(255,247,237,0.9), rgba(255,237,213,0.5)); }
+  .card-danger { border-color: rgba(220,38,38,0.12); background: linear-gradient(135deg, rgba(254,242,242,0.9), rgba(254,226,226,0.5)); }
+  .card-safe { border-color: rgba(22,163,74,0.12); background: linear-gradient(135deg, rgba(240,253,244,0.9), rgba(220,252,231,0.5)); }
 
   /* ── Grid Layouts ── */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; max-width: 1000px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; width: 100%; max-width: 1000px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; width: 100%; max-width: 1100px; }
-  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; width: 100%; max-width: 1100px; }
 
   /* ── Stat Cards ── */
-  .stat { text-align: center; }
-  .stat-value { font-size: 3rem; font-weight: 700; line-height: 1; }
-  .stat-label { font-size: 0.95rem; color: var(--muted); margin-top: 8px; }
+  .stat-value { font-size: 3.2rem; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .stat-label { font-size: 1rem; color: var(--muted); margin-top: 10px; line-height: 1.5; }
 
   /* ── Feature Lists ── */
   .feature-list { list-style: none; }
   .feature-list li {
     display: flex; align-items: flex-start; gap: 14px;
-    padding: 10px 0; font-size: 1.15rem;
+    padding: 8px 0; font-size: 1.1rem; color: var(--fg-secondary);
   }
-  .feature-list .dot {
-    width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; flex-shrink: 0;
+  .feature-list .icon {
+    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center; font-size: 0.85rem;
   }
-  .dot-accent { background: var(--accent); box-shadow: 0 0 12px rgba(59,130,246,0.4); }
-  .dot-safe { background: var(--safe); box-shadow: 0 0 12px rgba(34,197,94,0.4); }
-  .dot-danger { background: var(--danger); box-shadow: 0 0 12px rgba(239,68,68,0.4); }
-  .dot-warning { background: var(--warning); box-shadow: 0 0 12px rgba(245,158,11,0.4); }
-
-  /* ── Badges ── */
-  .badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
-  }
-  .badge-danger { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
-  .badge-warning { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
-  .badge-safe { background: rgba(34,197,94,0.15); color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
-  .badge-accent { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+  .icon-danger { background: var(--danger-bg); }
+  .icon-warning { background: var(--warning-bg); }
+  .icon-safe { background: var(--safe-bg); }
+  .icon-accent { background: var(--accent-bg); }
 
   /* ── Flow Diagram ── */
   .flow { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center; }
-  .flow-step {
-    display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; width: 140px;
-  }
+  .flow-step { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; width: 150px; }
   .flow-icon {
-    width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
-    font-size: 1.8rem;
+    width: 72px; height: 72px; border-radius: 18px; display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; box-shadow: var(--shadow);
   }
-  .flow-arrow { font-size: 1.5rem; color: var(--muted); opacity: 0.4; }
+  .flow-arrow { font-size: 1.5rem; color: var(--muted); opacity: 0.35; }
 
-  /* ── Severity Bar ── */
-  .severity-bar { display: flex; height: 16px; border-radius: 8px; overflow: hidden; width: 100%; }
+  /* ── Severity Demo ── */
+  .severity-bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; width: 100%; box-shadow: inset 0 1px 2px rgba(0,0,0,0.06); }
   .severity-bar > div { transition: width 0.8s ease; }
+
+  /* ── Sparring Demo ── */
+  .chat-bubble {
+    padding: 16px 20px; border-radius: 16px; font-size: 1.05rem; line-height: 1.55;
+    max-width: 90%; position: relative;
+  }
+  .chat-you { background: linear-gradient(135deg, #ea580c, #c2410c); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .chat-them { background: white; border: 1px solid var(--glass-border); color: var(--fg); align-self: flex-start; border-bottom-left-radius: 4px; box-shadow: var(--shadow); }
+  .chat-coach { background: var(--safe-bg); border: 1px solid rgba(22,163,74,0.15); color: var(--fg-secondary); border-radius: 12px; padding: 14px 18px; font-size: 0.95rem; }
 
   /* ── Navigation ── */
   .nav {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
     display: flex; align-items: center; gap: 12px; z-index: 100;
-    background: var(--glass); backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border); border-radius: 99px;
-    padding: 8px 16px;
+    padding: 8px 20px; box-shadow: var(--shadow-lg);
   }
   .nav button {
     background: none; border: 1px solid var(--glass-border); color: var(--fg);
     border-radius: 50%; width: 40px; height: 40px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
+    transition: all 0.2s; font-size: 1rem;
   }
-  .nav button:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
-  .nav .counter { font-size: 0.85rem; color: var(--muted); min-width: 60px; text-align: center; }
+  .nav button:hover { background: var(--accent-bg); border-color: rgba(234,88,12,0.2); }
+  .nav .counter { font-size: 0.85rem; color: var(--muted); min-width: 60px; text-align: center; font-weight: 500; }
 
   /* ── Progress Bar ── */
   .progress-track {
     position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100;
-    background: rgba(255,255,255,0.05);
+    background: rgba(0,0,0,0.04);
   }
   .progress-fill {
-    height: 100%; background: linear-gradient(90deg, var(--accent), var(--cyan));
+    height: 100%; background: linear-gradient(90deg, #f97316, #ea580c, #c2410c);
     transition: width 0.4s ease;
-    box-shadow: 0 0 8px rgba(59,130,246,0.4);
+    box-shadow: 0 0 12px rgba(234,88,12,0.3);
   }
-
-  /* ── Glow ── */
-  .glow-accent { box-shadow: 0 0 30px rgba(59,130,246,0.15), 0 0 80px rgba(59,130,246,0.05); }
-  .glow-danger { box-shadow: 0 0 30px rgba(239,68,68,0.15), 0 0 80px rgba(239,68,68,0.05); }
-  .glow-safe { box-shadow: 0 0 30px rgba(34,197,94,0.15), 0 0 80px rgba(34,197,94,0.05); }
 
   /* ── Utilities ── */
   .text-center { text-align: center; }
+  .mt-6 { margin-top: 24px; }
   .mt-8 { margin-top: 32px; }
+  .mt-10 { margin-top: 40px; }
   .mt-12 { margin-top: 48px; }
-  .mt-16 { margin-top: 64px; }
   .mb-4 { margin-bottom: 16px; }
-  .mb-8 { margin-bottom: 32px; }
+  .mb-6 { margin-bottom: 24px; }
   .max-w-700 { max-width: 700px; }
   .max-w-800 { max-width: 800px; }
   .max-w-900 { max-width: 900px; }
   .w-full { width: 100%; }
   .flex-center { display: flex; flex-direction: column; align-items: center; }
 
-  /* ── Animations ── */
-  .slide.active .animate-in {
-    animation: slideUp 0.6s ease forwards;
-  }
-  .slide.active .delay-1 { animation-delay: 0.1s; opacity: 0; }
-  .slide.active .delay-2 { animation-delay: 0.2s; opacity: 0; }
-  .slide.active .delay-3 { animation-delay: 0.3s; opacity: 0; }
-  .slide.active .delay-4 { animation-delay: 0.4s; opacity: 0; }
-  .slide.active .delay-5 { animation-delay: 0.5s; opacity: 0; }
-  .slide.active .delay-6 { animation-delay: 0.6s; opacity: 0; }
+  /* ── Divider ── */
+  .divider { width: 60px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #f97316, #ea580c); margin: 20px auto; }
 
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(24px); }
+  /* ── Tag ── */
+  .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+  }
+  .tag-accent { background: var(--accent-bg); color: var(--accent); border: 1px solid rgba(234,88,12,0.15); }
+  .tag-safe { background: var(--safe-bg); color: var(--safe); border: 1px solid rgba(22,163,74,0.15); }
+  .tag-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(217,119,6,0.15); }
+  .tag-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(220,38,38,0.15); }
+
+  /* ── Animations ── */
+  .slide.active .anim {
+    animation: fadeUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  .slide.active .d1 { animation-delay: 0.08s; opacity: 0; }
+  .slide.active .d2 { animation-delay: 0.16s; opacity: 0; }
+  .slide.active .d3 { animation-delay: 0.24s; opacity: 0; }
+  .slide.active .d4 { animation-delay: 0.32s; opacity: 0; }
+  .slide.active .d5 { animation-delay: 0.40s; opacity: 0; }
+  .slide.active .d6 { animation-delay: 0.48s; opacity: 0; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.15), 0 0 60px rgba(59,130,246,0.05); }
-    50% { box-shadow: 0 0 40px rgba(59,130,246,0.3), 0 0 100px rgba(59,130,246,0.1); }
+  /* ── Shield Pulse ── */
+  .shield-wrap {
+    display: inline-flex; padding: 24px; border-radius: 24px;
+    background: linear-gradient(135deg, rgba(255,237,213,0.8), rgba(254,215,170,0.4));
+    border: 1px solid rgba(234,88,12,0.12); box-shadow: var(--shadow-lg);
+    animation: shieldPulse 3s ease-in-out infinite;
   }
-  .pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+  @keyframes shieldPulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(234,88,12,0.1), 0 20px 60px rgba(234,88,12,0.05); }
+    50% { box-shadow: 0 4px 30px rgba(234,88,12,0.2), 0 20px 80px rgba(234,88,12,0.1); }
+  }
+
+  /* ── Emphasis block ── */
+  .emphasis {
+    border-left: 4px solid var(--accent);
+    padding: 16px 24px;
+    background: var(--accent-bg);
+    border-radius: 0 12px 12px 0;
+    font-size: 1.15rem;
+    color: var(--fg-secondary);
+    line-height: 1.6;
+  }
 </style>
 </head>
 <body>
@@ -200,380 +239,279 @@
 
 <div class="deck" id="deck">
 
-  <!-- ═══════════════ SLIDE 1: Title ═══════════════ -->
+  <!-- ═══════════════ SLIDE 1: Hook ═══════════════ -->
   <div class="slide active" data-slide="0">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="flex-center text-center">
-      <div class="animate-in" style="margin-bottom:24px;">
-        <div class="glass glass-sm pulse-glow" style="display:inline-flex;padding:20px;border-radius:20px;">
-          <span style="font-size:3rem;">🛡️</span>
-        </div>
-      </div>
-      <h1 class="animate-in delay-1">Push<span class="gradient-text">Back</span></h1>
-      <p class="animate-in delay-2" style="font-size:1.4rem;margin-top:20px;max-width:600px;">
-        AI-powered contract analysis and negotiation coaching for workers who've never been taught to push back.
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-rose"></div>
+    <div class="flex-center text-center" style="max-width:850px;">
+      <p class="anim big-quote" style="margin-bottom:32px;">
+        "Remember the first contract you had to sign?<br>
+        Your first job. Your first lease."
       </p>
-      <div class="animate-in delay-3" style="margin-top:40px;display:flex;gap:12px;">
-        <span class="badge badge-accent">Next.js 16</span>
-        <span class="badge badge-safe">Claude Sonnet 4.5</span>
-        <span class="badge badge-warning">Vercel AI SDK</span>
-      </div>
+      <p class="anim d1" style="font-size:1.35rem;color:var(--fg-secondary);max-width:650px;">
+        You probably paused, looked at the document and thought:
+      </p>
+      <h2 class="anim d2" style="margin-top:24px;font-size:2.8rem;color:var(--danger);">
+        "I have no idea what this means."
+      </h2>
+      <p class="anim d3" style="margin-top:24px;font-size:1.25rem;color:var(--muted);">
+        But you signed it anyway.<br>And you're not alone.
+      </p>
     </div>
   </div>
 
-  <!-- ═══════════════ SLIDE 2: The Problem ═══════════════ -->
+  <!-- ═══════════════ SLIDE 2: The Problem — Stats ═══════════════ -->
   <div class="slide" data-slide="1">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-3"></div>
     <div class="flex-center text-center">
-      <h2 class="animate-in"><span class="danger-text">The Problem</span></h2>
+      <h2 class="anim">The <span class="danger-text">Problem</span></h2>
+      <div class="divider anim d1"></div>
       <div class="grid-3 mt-8">
-        <div class="glass animate-in delay-1 text-center" style="padding:28px;">
-          <div class="stat-value danger-text">60%</div>
-          <p class="stat-label">of workers sign contracts they don't fully understand</p>
+        <div class="card card-danger anim d2 text-center">
+          <div class="stat-value danger-text">80%</div>
+          <p class="stat-label">of Quebecers don't fully read their insurance contracts</p>
         </div>
-        <div class="glass animate-in delay-2 text-center" style="padding:28px;">
-          <div class="stat-value warning-text">$300+/hr</div>
-          <p class="stat-label">average cost of a legal consultation</p>
+        <div class="card anim d3 text-center" style="border-color:rgba(217,119,6,0.12);background:linear-gradient(135deg,rgba(255,251,235,0.9),rgba(254,243,199,0.5));">
+          <div class="stat-value warning-text">50%</div>
+          <p class="stat-label">don't understand the exclusions in their own contracts</p>
         </div>
-        <div class="glass animate-in delay-3 text-center" style="padding:28px;">
-          <div class="stat-value accent-text">0</div>
-          <p class="stat-label">affordable tools to understand & negotiate contracts</p>
+        <div class="card anim d4 text-center" style="border-color:rgba(234,88,12,0.12);background:linear-gradient(135deg,rgba(255,247,237,0.9),rgba(255,237,213,0.5));">
+          <div class="stat-value accent-text">Millions</div>
+          <p class="stat-label">sign contracts they don't understand every year</p>
         </div>
       </div>
-      <p class="animate-in delay-4 mt-12" style="max-width:700px;font-size:1.2rem;">
-        Immigrants, gig workers, freelancers, first-time employees. they don't know what's normal, what's exploitative, or that they <em>can</em> negotiate.
+      <div class="emphasis anim d5 mt-10" style="max-width:750px;">
+        Immigrants taking their first job. Gig workers accepting terms they've never seen.
+        Renters unaware their leases limit their right to sue.
+      </div>
+      <p class="anim d6 mt-6" style="font-size:1.2rem;color:var(--fg);font-weight:600;max-width:650px;">
+        The problem isn't that people don't care — it's that they don't have the tools.
       </p>
     </div>
   </div>
 
-  <!-- ═══════════════ SLIDE 3: The Solution ═══════════════ -->
+  <!-- ═══════════════ SLIDE 3: Introducing PushBack ═══════════════ -->
   <div class="slide" data-slide="2">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-3"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-rose"></div>
     <div class="flex-center text-center">
-      <h2 class="animate-in">The <span class="gradient-text">Solution</span></h2>
-      <p class="animate-in delay-1 mb-8" style="max-width:600px;">Three steps from confused to confident.</p>
-      <div class="flow animate-in delay-2">
-        <div class="flow-step">
-          <div class="flow-icon glass glow-accent" style="background:rgba(59,130,246,0.1);">📄</div>
-          <h3 style="font-size:1rem;">Upload</h3>
-          <p style="font-size:0.85rem;">PDF or paste text</p>
-        </div>
-        <span class="flow-arrow">→</span>
-        <div class="flow-step">
-          <div class="flow-icon glass glow-danger" style="background:rgba(239,68,68,0.1);">🔍</div>
-          <h3 style="font-size:1rem;">Analyze</h3>
-          <p style="font-size:0.85rem;">AI severity analysis</p>
-        </div>
-        <span class="flow-arrow">→</span>
-        <div class="flow-step">
-          <div class="flow-icon glass" style="background:rgba(245,158,11,0.1);box-shadow:0 0 30px rgba(245,158,11,0.15);">🤺</div>
-          <h3 style="font-size:1rem;">Spar</h3>
-          <p style="font-size:0.85rem;">Practice negotiating</p>
-        </div>
-        <span class="flow-arrow">→</span>
-        <div class="flow-step">
-          <div class="flow-icon glass glow-safe" style="background:rgba(34,197,94,0.1);">📝</div>
-          <h3 style="font-size:1rem;">Script</h3>
-          <p style="font-size:0.85rem;">Ready-to-use phrases</p>
-        </div>
+      <div class="anim" style="margin-bottom:20px;">
+        <div class="shield-wrap"><span style="font-size:3rem;">🛡️</span></div>
       </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════ SLIDE 4: AI Analysis ═══════════════ -->
-  <div class="slide" data-slide="3">
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="flex-center">
-      <h2 class="animate-in text-center">AI-Powered <span class="gradient-text">Analysis</span></h2>
-      <div class="grid-2 mt-8">
-        <div class="glass animate-in delay-1">
-          <h3>🔴 Severity-Coded Clauses</h3>
-          <p style="font-size:1rem;margin-bottom:16px;">Every clause rated as Dangerous, Concerning, or Fair</p>
-          <div class="severity-bar" style="margin-bottom:12px;">
-            <div style="width:35%;background:var(--danger);"></div>
-            <div style="width:40%;background:var(--warning);"></div>
-            <div style="width:25%;background:var(--safe);"></div>
-          </div>
-          <div style="display:flex;gap:16px;font-size:0.85rem;">
-            <span class="danger-text">● 3 Dangerous</span>
-            <span class="warning-text">● 4 Concerning</span>
-            <span class="safe-text">● 2 Fair</span>
-          </div>
-        </div>
-        <div class="glass animate-in delay-2">
-          <h3>📊 Visual Analytics & Safety</h3>
-          <ul class="feature-list">
-            <li><span class="dot dot-accent"></span>Animated donut severity chart</li>
-            <li><span class="dot dot-danger"></span>Risk gauge with needle indicator</li>
-            <li><span class="dot dot-warning"></span>Animated stat counters</li>
-            <li><span class="dot dot-safe"></span>Financial impact callout</li>
-            <li><span class="dot dot-safe"></span>Built-in legal disclaimers & human handoff for critical risks</li>
-            <li><span class="dot dot-accent"></span>AI quotes exact contract text to prevent hallucinations</li>
-          </ul>
-        </div>
-      </div>
-      <div class="grid-2 mt-8" style="margin-top:20px;">
-        <div class="glass animate-in delay-3">
-          <h3>🎯 Top 3 to Fight</h3>
-          <p style="font-size:1rem;">AI identifies the three most important clauses to negotiate. prioritized by impact.</p>
-        </div>
-        <div class="glass animate-in delay-4">
-          <h3>💰 Real Cost to You</h3>
-          <p style="font-size:1rem;">Estimated financial impact of problematic clauses. E.g. "Non-compete could cost you $5,000-$15,000/year"</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════ SLIDE 5: Sparring ═══════════════ -->
-  <div class="slide" data-slide="4">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-3"></div>
-    <div class="flex-center">
-      <h2 class="animate-in text-center">Negotiation <span class="gradient-text">Sparring</span></h2>
-      <div class="grid-2 mt-8" style="align-items:start;">
-        <div class="animate-in delay-1">
-          <div class="glass" style="margin-bottom:16px;">
-            <h3>🤺 Practice Against AI</h3>
-            <p style="font-size:1rem;">AI plays the counterparty. HR manager, landlord, or client. Responds realistically to your arguments.</p>
-          </div>
-          <div class="glass">
-            <h3>🎯 Real-Time Coaching</h3>
-            <p style="font-size:1rem;">After each exchange, get coaching notes evaluating your approach. what worked, what to try next.</p>
-          </div>
-        </div>
-        <div class="glass animate-in delay-2" style="font-family:monospace;font-size:0.9rem;line-height:1.8;">
-          <div style="color:var(--accent);margin-bottom:8px;">💬 You:</div>
-          <div style="margin-bottom:12px;color:var(--fg);opacity:0.9;">"I'd like to discuss the non-compete clause. 18 months seems excessive for this role..."</div>
-          <div style="color:var(--warning);margin-bottom:8px;">🏢 HR Manager:</div>
-          <div style="margin-bottom:12px;color:var(--fg);opacity:0.9;">"That's our standard agreement. It protects our client relationships..."</div>
-          <div style="border-top:1px solid var(--glass-border);padding-top:12px;margin-top:8px;">
-            <div style="color:var(--safe);font-size:0.8rem;">🎯 Coaching: Strong opening. Now ask what specifically they're trying to protect. it opens negotiation on scope.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════ SLIDE 6: Tech Stack ═══════════════ -->
-  <div class="slide" data-slide="5">
-    <div class="orb orb-2"></div>
-    <div class="orb orb-1"></div>
-    <div class="flex-center">
-      <h2 class="animate-in text-center">Tech <span class="gradient-text">Stack</span></h2>
-      <div class="grid-3 mt-8">
-        <div class="glass animate-in delay-1 text-center">
-          <div style="font-size:2.5rem;margin-bottom:12px;">⚡</div>
-          <h3>Frontend</h3>
-          <p style="font-size:0.95rem;">Next.js 16<br>React 19<br>Tailwind v4<br>Motion (Framer v12)</p>
-        </div>
-        <div class="glass animate-in delay-2 text-center glow-accent">
-          <div style="font-size:2.5rem;margin-bottom:12px;">🧠</div>
-          <h3>AI Layer</h3>
-          <p style="font-size:0.95rem;">Claude Sonnet 4.5<br>Vercel AI SDK v6<br>Zod structured output<br>Streaming chat</p>
-        </div>
-        <div class="glass animate-in delay-3 text-center">
-          <div style="font-size:2.5rem;margin-bottom:12px;">🔒</div>
-          <h3>Infrastructure</h3>
-          <p style="font-size:0.95rem;">Supabase Auth<br>Google OAuth<br>SSR cookies<br>Zero data storage</p>
-        </div>
-      </div>
-      <div class="grid-4 mt-8 animate-in delay-4" style="margin-top:24px;">
-        <div class="glass glass-sm text-center"><strong style="color:var(--safe);">Type-safe</strong><br><small style="color:var(--muted);">Zod schemas validate every AI response</small></div>
-        <div class="glass glass-sm text-center"><strong style="color:var(--accent);">Streaming</strong><br><small style="color:var(--muted);">Real-time sparring via streamText()</small></div>
-        <div class="glass glass-sm text-center"><strong style="color:var(--warning);">Structured</strong><br><small style="color:var(--muted);">generateObject() for typed analysis</small></div>
-        <div class="glass glass-sm text-center"><strong style="color:var(--danger);">Private</strong><br><small style="color:var(--muted);">Contracts never saved to disk or DB</small></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════ SLIDE 7: Safety & Security ═══════════════ -->
-  <div class="slide" data-slide="6">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-3"></div>
-    <div class="flex-center">
-      <h2 class="animate-in text-center">Safety & <span class="gradient-text">Security</span></h2>
-      <p class="animate-in delay-1 text-center" style="max-width:600px;margin-bottom:32px;font-size:1.1rem;color:var(--muted);">AI that helps people understand, not AI that pretends to be a lawyer.</p>
-      <div class="grid-2 mt-8">
-        <div class="glass animate-in delay-2">
-          <h3>🛡️ Against Hallucinations</h3>
-          <ul class="feature-list">
-            <li><span class="dot dot-safe"></span>AI forced to quote <strong style="color:var(--fg);">exact contract text</strong> for every clause</li>
-            <li><span class="dot dot-safe"></span>Zod schemas validate every AI response structure</li>
-            <li><span class="dot dot-safe"></span>Cannot fabricate terms that don't exist in the document</li>
-            <li><span class="dot dot-safe"></span>Severity ratings tied to actual clause content</li>
-          </ul>
-        </div>
-        <div class="glass animate-in delay-3">
-          <h3>🚨 Against Manipulation</h3>
-          <ul class="feature-list">
-            <li><span class="dot dot-danger"></span><strong style="color:var(--fg);">Prompt injection detection</strong> on all contract uploads</li>
-            <li><span class="dot dot-danger"></span>Rate limiting: 10 analyses, 50 sparring msgs, 20 scripts/hr</li>
-            <li><span class="dot dot-danger"></span>Input validation: Zod schemas on every API route</li>
-            <li><span class="dot dot-danger"></span>Auth-gated: Google OAuth required to access</li>
-          </ul>
-        </div>
-      </div>
-      <div class="grid-3 mt-8" style="margin-top:20px;">
-        <div class="glass glass-sm animate-in delay-4 text-center">
-          <strong style="color:var(--safe);">Not a Lawyer</strong><br>
-          <small style="color:var(--muted);">Legal disclaimer on every screen. Coaching tool, not legal counsel.</small>
-        </div>
-        <div class="glass glass-sm animate-in delay-5 text-center">
-          <strong style="color:var(--warning);">Human Handoff</strong><br>
-          <small style="color:var(--muted);">Critical risks surface legal aid resources. We don't advise, we connect.</small>
-        </div>
-        <div class="glass glass-sm animate-in delay-6 text-center">
-          <strong style="color:var(--danger);">Zero Storage</strong><br>
-          <small style="color:var(--muted);">Contracts processed in memory only. Never saved to any database.</small>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════ SLIDE 8: Design & UX ═══════════════ -->
-  <div class="slide" data-slide="7">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="flex-center">
-      <h2 class="animate-in text-center">Design & <span class="gradient-text">UX</span></h2>
-      <div class="grid-2 mt-8">
-        <div>
-          <div class="glass animate-in delay-1" style="margin-bottom:16px;">
-            <h3>🎨 Glass-Card Design System</h3>
-            <ul class="feature-list">
-              <li><span class="dot dot-accent"></span>Dark-mode glass morphism with backdrop blur</li>
-              <li><span class="dot dot-accent"></span>CSS gradient borders via mask trick</li>
-              <li><span class="dot dot-accent"></span>Severity-coded glow effects</li>
-              <li><span class="dot dot-accent"></span>Floating animated gradient orbs</li>
-            </ul>
-          </div>
-        </div>
-        <div>
-          <div class="glass animate-in delay-2" style="margin-bottom:16px;">
-            <h3>✨ Motion & Animation</h3>
-            <ul class="feature-list">
-              <li><span class="dot dot-safe"></span>Staggered entrance with blur-up</li>
-              <li><span class="dot dot-safe"></span>Spring physics on interactions</li>
-              <li><span class="dot dot-safe"></span>Animated SVG charts (donut, gauge)</li>
-              <li><span class="dot dot-safe"></span>Progress bar with step checklist</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="glass animate-in delay-3 mt-8 text-center" style="margin-top:20px;max-width:700px;">
-        <h3>📱 Fully Mobile Responsive</h3>
-        <p style="font-size:1rem;">Hamburger menu, stacking grids, touch-friendly targets. Works on every device.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════ SLIDE 9: Business Model ═══════════════ -->
-  <div class="slide" data-slide="8">
-    <div class="orb orb-3"></div>
-    <div class="orb orb-2"></div>
-    <div class="flex-center text-center">
-      <h2 class="animate-in">Business <span class="gradient-text">Model</span></h2>
-      <div class="grid-3 mt-8">
-        <div class="glass animate-in delay-1 glow-safe" style="border-color:rgba(34,197,94,0.3);">
-          <span class="badge badge-safe" style="margin-bottom:12px;">Always Free</span>
-          <p style="font-size:0.85rem;color:var(--muted);margin-bottom:8px;">COMMUNITY</p>
-          <div class="stat-value" style="font-size:2.5rem;">$0<span style="font-size:1rem;color:var(--muted);">/mo</span></div>
-          <div style="margin-top:16px;text-align:left;">
-            <p style="font-size:0.95rem;">✅ 7 free consultations</p>
-            <p style="font-size:0.95rem;">✅ Negotiation sparring</p>
-            <p style="font-size:0.95rem;">✅ Severity analysis</p>
-            <p style="font-size:0.95rem;">✅ Scripts</p>
-          </div>
-        </div>
-        <div class="glass animate-in delay-2 glow-accent" style="border-color:rgba(59,130,246,0.3);transform:scale(1.02);">
-          <span class="badge badge-accent" style="margin-bottom:12px;">Most Popular</span>
-          <p style="font-size:0.85rem;color:var(--muted);margin-bottom:8px;">PRO</p>
-          <div class="stat-value" style="font-size:2.5rem;">$15<span style="font-size:1rem;color:var(--muted);">/mo</span></div>
-          <div style="margin-top:16px;text-align:left;">
-            <p style="font-size:0.95rem;">✅ Unlimited consultations</p>
-            <p style="font-size:0.95rem;">✅ Priority processing</p>
-            <p style="font-size:0.95rem;">✅ PDF export</p>
-            <p style="font-size:0.95rem;">✅ Team sharing</p>
-          </div>
-        </div>
-        <div class="glass animate-in delay-3">
-          <p style="font-size:0.85rem;color:var(--muted);margin-bottom:8px;">ENTERPRISE</p>
-          <div class="stat-value" style="font-size:2.5rem;">Custom</div>
-          <div style="margin-top:16px;text-align:left;">
-            <p style="font-size:0.95rem;">✅ Custom AI training</p>
-            <p style="font-size:0.95rem;">✅ API access</p>
-            <p style="font-size:0.95rem;">✅ SSO & compliance</p>
-            <p style="font-size:0.95rem;">✅ Account manager</p>
-          </div>
-        </div>
-      </div>
-      <p class="animate-in delay-4 mt-8" style="font-size:1rem;">Additional consultations: <strong style="color:var(--fg);">$3 each</strong> on-demand</p>
-    </div>
-  </div>
-
-  <!-- ═══════════════ SLIDE 10: Impact ═══════════════ -->
-  <div class="slide" data-slide="9">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="flex-center text-center">
-      <h2 class="animate-in"><span class="safe-text">Impact</span> & Vision</h2>
-      <div class="grid-2 mt-8">
-        <div class="glass animate-in delay-1">
-          <h3>🌍 Who It's For</h3>
-          <ul class="feature-list">
-            <li><span class="dot dot-safe"></span><span style="color:var(--fg);">Immigrants</span> navigating unfamiliar labor laws</li>
-            <li><span class="dot dot-safe"></span><span style="color:var(--fg);">Gig workers</span> with take-it-or-leave-it contracts</li>
-            <li><span class="dot dot-safe"></span><span style="color:var(--fg);">Freelancers</span> facing one-sided agreements</li>
-            <li><span class="dot dot-safe"></span><span style="color:var(--fg);">First-time employees</span> who don't know they can negotiate</li>
-            <li><span class="dot dot-safe"></span><span style="color:var(--fg);">Renters</span> signing leases with hidden traps</li>
-          </ul>
-        </div>
-        <div class="glass animate-in delay-2">
-          <h3>🚀 What's Next</h3>
-          <ul class="feature-list">
-            <li><span class="dot dot-accent"></span>PDF report export</li>
-            <li><span class="dot dot-accent"></span>Clause comparison database</li>
-            <li><span class="dot dot-accent"></span>Multi-language support</li>
-            <li><span class="dot dot-accent"></span>Browser extension for online contracts</li>
-            <li><span class="dot dot-accent"></span>Team/organization features</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════ SLIDE 11: Thank You ═══════════════ -->
-  <div class="slide" data-slide="10">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="flex-center text-center">
-      <div class="animate-in" style="margin-bottom:24px;">
-        <div class="glass glass-sm pulse-glow" style="display:inline-flex;padding:24px;border-radius:24px;">
-          <span style="font-size:4rem;">🛡️</span>
-        </div>
-      </div>
-      <h1 class="animate-in delay-1">Push<span class="gradient-text">Back</span></h1>
-      <p class="animate-in delay-2" style="font-size:1.3rem;margin-top:16px;max-width:500px;">
-        Everyone deserves to understand what they're signing.
+      <h1 class="anim d1">Push<span class="gradient-text">Back</span></h1>
+      <p class="anim d2" style="font-size:1.3rem;margin-top:16px;max-width:600px;color:var(--fg-secondary);">
+        An AI-powered contract coach.
       </p>
-      <div class="animate-in delay-3" style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
-        <div class="glass glass-sm">
-          <span style="font-size:0.9rem;color:var(--muted);">GitHub</span><br>
+      <div class="divider anim d2"></div>
+      <p class="anim d3" style="font-size:1.15rem;max-width:650px;color:var(--fg-secondary);">
+        Upload any contract and in <strong style="color:var(--fg);">under 30 seconds</strong>, it breaks it down clause by clause —
+      </p>
+      <div class="anim d4" style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;justify-content:center;">
+        <span class="tag tag-danger">🔴 Dangerous</span>
+        <span class="tag tag-warning">🟡 Concerning</span>
+        <span class="tag tag-safe">🟢 Fair</span>
+      </div>
+      <p class="anim d5 mt-8" style="font-size:1.15rem;max-width:650px;color:var(--fg-secondary);">
+        But understanding isn't enough. With PushBack, you can <strong style="color:var(--accent);">actually practice pushing back.</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE 4: How It Works ═══════════════ -->
+  <div class="slide" data-slide="3">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-3"></div>
+    <div class="flex-center text-center">
+      <h2 class="anim">How It <span class="gradient-text">Works</span></h2>
+      <div class="divider anim d1"></div>
+      <div class="flow mt-8 anim d2">
+        <div class="flow-step">
+          <div class="flow-icon card card-accent" style="padding:0;">📄</div>
+          <h3 style="font-size:1rem;">Upload</h3>
+          <p style="font-size:0.9rem;color:var(--muted);">Any contract — PDF or text</p>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <div class="flow-icon card card-danger" style="padding:0;">🔍</div>
+          <h3 style="font-size:1rem;">Analyze</h3>
+          <p style="font-size:0.9rem;color:var(--muted);">Clause-by-clause severity</p>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <div class="flow-icon card" style="padding:0;border-color:rgba(217,119,6,0.15);background:linear-gradient(135deg,rgba(255,251,235,0.9),rgba(254,243,199,0.5));">🤺</div>
+          <h3 style="font-size:1rem;">Spar</h3>
+          <p style="font-size:0.9rem;color:var(--muted);">Practice negotiating</p>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <div class="flow-icon card card-safe" style="padding:0;">✅</div>
+          <h3 style="font-size:1rem;">Confident</h3>
+          <p style="font-size:0.9rem;color:var(--muted);">Know what to say</p>
+        </div>
+      </div>
+      <div class="card anim d3 mt-10" style="max-width:750px;">
+        <p style="font-size:1.1rem;color:var(--fg-secondary);line-height:1.65;">
+          The AI simulates a real conversation with an employer, landlord, or client.
+          It responds realistically, and after each exchange you get <strong style="color:var(--accent);">real-time coaching</strong>
+          on what worked and how to improve. By the end, you have a <strong style="color:var(--fg);">clear set of points on what to say.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE 5: Sparring Demo ═══════════════ -->
+  <div class="slide" data-slide="4">
+    <div class="blob blob-2"></div>
+    <div class="blob blob-rose"></div>
+    <div class="flex-center">
+      <h2 class="anim text-center">Negotiation <span class="gradient-text">Sparring</span></h2>
+      <div class="divider anim d1"></div>
+      <div class="grid-2 mt-8" style="align-items:start;">
+        <div class="anim d2" style="display:flex;flex-direction:column;gap:14px;">
+          <div class="chat-you">
+            "I'd like to discuss the non-compete clause. 18 months seems excessive for this role…"
+          </div>
+          <div class="chat-them">
+            <strong style="color:var(--muted);font-size:0.85rem;">🏢 HR Manager</strong><br>
+            "That's our standard agreement. It protects our client relationships and proprietary processes."
+          </div>
+          <div class="chat-you">
+            "I understand protecting relationships, but could we limit it to direct competitors within 50km? That still protects your interests."
+          </div>
+          <div class="chat-coach">
+            <strong style="color:var(--safe);">🎯 Coaching:</strong> Great move — you acknowledged their concern, then proposed a specific alternative. This is much stronger than just saying "that's too long."
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card card-accent anim d3">
+            <h3>🤺 Realistic Practice</h3>
+            <p style="font-size:1rem;">AI plays the counterparty — HR manager, landlord, or client. Responds like they would in real life.</p>
+          </div>
+          <div class="card card-safe anim d4">
+            <h3>🎯 Real-Time Coaching</h3>
+            <p style="font-size:1rem;">After each exchange, coaching notes tell you what worked, what to adjust, and what to try next.</p>
+          </div>
+          <div class="card anim d5">
+            <h3>📝 Ready-Made Scripts</h3>
+            <p style="font-size:1rem;">Walk away with exact phrases you can use in the real conversation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE 6: Who It's For ═══════════════ -->
+  <div class="slide" data-slide="5">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-3"></div>
+    <div class="flex-center text-center">
+      <h2 class="anim">Who It's <span class="gradient-text">For</span></h2>
+      <div class="divider anim d1"></div>
+      <p class="anim d2" style="max-width:700px;font-size:1.15rem;margin-bottom:28px;">
+        People who are often overlooked by the system — those with little or no experience signing contracts or negotiating for their rights.
+      </p>
+      <div class="grid-3 anim d3">
+        <div class="card text-center">
+          <div style="font-size:2.2rem;margin-bottom:12px;">🌍</div>
+          <h3 style="font-size:1.1rem;">Immigrants</h3>
+          <p style="font-size:0.95rem;">Navigating unfamiliar labor laws in a new country</p>
+        </div>
+        <div class="card text-center">
+          <div style="font-size:2.2rem;margin-bottom:12px;">💼</div>
+          <h3 style="font-size:1.1rem;">First-Time Workers</h3>
+          <p style="font-size:0.95rem;">Who don't know they can negotiate</p>
+        </div>
+        <div class="card text-center">
+          <div style="font-size:2.2rem;margin-bottom:12px;">📱</div>
+          <h3 style="font-size:1.1rem;">Gig Workers</h3>
+          <p style="font-size:0.95rem;">Accepting take-it-or-leave-it terms</p>
+        </div>
+      </div>
+      <div class="grid-2 anim d4 mt-6" style="max-width:700px;">
+        <div class="card card-sm text-center">
+          <div style="font-size:1.5rem;margin-bottom:8px;">🏠</div>
+          <strong>Renters</strong>
+          <p style="font-size:0.9rem;margin-top:4px;">Signing leases with hidden traps</p>
+        </div>
+        <div class="card card-sm text-center">
+          <div style="font-size:1.5rem;margin-bottom:8px;">✏️</div>
+          <strong>Freelancers</strong>
+          <p style="font-size:0.9rem;margin-top:4px;">Facing one-sided agreements</p>
+        </div>
+      </div>
+      <p class="anim d5 mt-8" style="font-size:1.1rem;color:var(--muted);max-width:650px;">
+        Anyone with a computer and a Google account can get started. Currently English-only — expanding to French and other languages for Montreal.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE 7: Responsible AI ═══════════════ -->
+  <div class="slide" data-slide="6">
+    <div class="blob blob-2"></div>
+    <div class="blob blob-rose"></div>
+    <div class="flex-center">
+      <h2 class="anim text-center">Responsible <span class="gradient-text">AI</span></h2>
+      <div class="divider anim d1"></div>
+      <p class="anim d2 text-center" style="max-width:700px;font-size:1.15rem;margin-bottom:28px;">
+        The biggest risk is AI giving bad advice — advice that could affect someone's job, income, or future.
+      </p>
+      <div class="grid-2 mt-6">
+        <div class="card anim d3">
+          <h3>🛡️ What PushBack Does</h3>
+          <ul class="feature-list">
+            <li><span class="icon icon-safe">✓</span><strong style="color:var(--fg);">Highlights</strong> what to watch for in your contract</li>
+            <li><span class="icon icon-safe">✓</span><strong style="color:var(--fg);">Points you</strong> to local legal help when needed</li>
+            <li><span class="icon icon-safe">✓</span>Lets you <strong style="color:var(--fg);">practice negotiating</strong> with confidence</li>
+            <li><span class="icon icon-safe">✓</span>Keeps <strong style="color:var(--fg);">you in control</strong> of every decision</li>
+          </ul>
+        </div>
+        <div class="card anim d4">
+          <h3>🚫 What PushBack Doesn't Do</h3>
+          <ul class="feature-list">
+            <li><span class="icon icon-danger">✕</span>Doesn't make decisions for you</li>
+            <li><span class="icon icon-danger">✕</span>Is <strong style="color:var(--fg);">not a lawyer</strong> — and says so clearly</li>
+            <li><span class="icon icon-danger">✕</span>Never stores your contracts</li>
+            <li><span class="icon icon-danger">✕</span>Not meant for complex commercial use</li>
+          </ul>
+        </div>
+      </div>
+      <div class="emphasis anim d5 mt-8" style="max-width:750px;">
+        We're not replacing lawyers. We're giving people the knowledge to advocate for themselves.
+        That's financial literacy. That's economic empowerment.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE 8: Closing ═══════════════ -->
+  <div class="slide" data-slide="7">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-rose"></div>
+    <div class="flex-center text-center" style="max-width:800px;">
+      <div class="anim" style="margin-bottom:28px;">
+        <div class="shield-wrap"><span style="font-size:3.5rem;">🛡️</span></div>
+      </div>
+      <h1 class="anim d1" style="font-size:4.5rem;">Push<span class="gradient-text">Back</span></h1>
+      <div class="divider anim d2"></div>
+      <p class="anim d3" style="font-size:1.5rem;color:var(--fg);font-weight:600;max-width:600px;margin-top:8px;">
+        Understanding what you sign<br>shouldn't be a privilege.
+      </p>
+      <p class="anim d4" style="font-size:1.15rem;color:var(--muted);margin-top:24px;max-width:550px;">
+        This is PushBack.
+      </p>
+      <div class="anim d5" style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+        <div class="card card-sm">
+          <span style="font-size:0.85rem;color:var(--muted);">Live Demo</span><br>
+          <strong style="font-size:1rem;color:var(--accent);">pushback.vercel.app</strong>
+        </div>
+        <div class="card card-sm">
+          <span style="font-size:0.85rem;color:var(--muted);">GitHub</span><br>
           <strong style="font-size:1rem;">ibrahimmahafza/PushBack</strong>
         </div>
-        <div class="glass glass-sm">
-          <span style="font-size:0.9rem;color:var(--muted);">Stack</span><br>
-          <strong style="font-size:1rem;">Next.js · Claude · Supabase</strong>
-        </div>
       </div>
-      <p class="animate-in delay-4" style="margin-top:32px;font-size:1rem;color:var(--muted);">
+      <p class="anim d6" style="margin-top:32px;font-size:1.1rem;color:var(--muted);">
         Thank you! Questions?
       </p>
     </div>
@@ -584,7 +522,7 @@
 <!-- ── Navigation ── -->
 <div class="nav">
   <button onclick="navigate(-1)" title="Previous">←</button>
-  <span class="counter" id="counter">1 / 11</span>
+  <span class="counter" id="counter">1 / 8</span>
   <button onclick="navigate(1)" title="Next">→</button>
 </div>
 
@@ -610,7 +548,6 @@
     show(current);
   }
 
-  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); navigate(1); }
     if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
@@ -618,7 +555,6 @@
     if (e.key === 'End') { e.preventDefault(); current = total - 1; show(current); }
   });
 
-  // Touch swipe
   let touchStartX = 0;
   document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
   document.addEventListener('touchend', (e) => {
