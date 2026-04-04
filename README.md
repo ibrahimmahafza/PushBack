@@ -217,6 +217,15 @@ PushBack uses a custom dark-mode design system built on Tailwind v4:
 - **Motion animations**: Staggered entrance, spring physics, layout transitions
 - **Responsive**: Mobile-first with `sm:` breakpoint adaptations
 
+## 🎬 Presentation
+
+A self-contained pitch deck is included at [`presentation.html`](presentation.html). Open it in any browser to present.
+
+- **10 slides:** Title, Problem, Solution, AI Analysis, Sparring, Tech Stack, Design/UX, Business Model, Impact, Thank You
+- **Controls:** Arrow keys, spacebar, or swipe on mobile
+- **Progress bar** at top, slide counter at bottom
+- No dependencies, no internet required
+
 ## 🤝 Contributing
 
 This is a hackathon project. Feel free to fork and build on it!
