@@ -63,22 +63,22 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center py-16 px-6"
+      className="flex flex-col items-center justify-center py-20 px-8 min-h-[70vh]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
       {/* CPU Architecture Animation */}
       <motion.div
-        className="relative mb-8 w-full max-w-md"
+        className="relative mb-10 w-full max-w-lg"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <div className="relative rounded-2xl glass-card p-6 overflow-hidden">
+        <div className="relative rounded-2xl glass-card p-8 overflow-hidden">
           {/* Subtle glow behind the chip */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-32 h-32 rounded-full bg-accent/10 blur-3xl" />
+            <div className="w-40 h-40 rounded-full bg-accent/10 blur-3xl" />
           </div>
           <CpuArchitecture
             text="AI"
@@ -90,17 +90,17 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
       </motion.div>
 
       {/* Progress bar */}
-      <div className="w-full max-w-sm mb-8">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-foreground">Analyzing</span>
-          <span className="text-sm font-mono text-accent">{Math.round(progress)}%</span>
+      <div className="w-full max-w-lg mb-10">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-lg font-semibold text-foreground">Analyzing your contract</span>
+          <span className="text-lg font-mono font-semibold text-accent">{Math.round(progress)}%</span>
         </div>
-        <div className="h-1.5 w-full rounded-full bg-black/[0.07] overflow-hidden">
+        <div className="h-2.5 w-full rounded-full bg-black/[0.07] overflow-hidden">
           <motion.div
             className="h-full rounded-full"
             style={{
               background: 'linear-gradient(90deg, #f97316, #c2410c)',
-              boxShadow: '0 0 12px rgba(194,65,12,0.4)',
+              boxShadow: '0 0 16px rgba(194,65,12,0.4)',
             }}
             initial={{ width: '0%' }}
             animate={{ width: `${progress}%` }}
@@ -110,13 +110,13 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
       </div>
 
       {/* Step checklist */}
-      <div className="w-full max-w-sm space-y-2.5 mb-10">
+      <div className="w-full max-w-lg space-y-4 mb-12">
         {STEPS.map((step, i) => {
           const status = getStepStatus(step.threshold, i);
           return (
             <motion.div
               key={step.label}
-              className="flex items-center gap-3"
+              className="flex items-center gap-4"
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1, duration: 0.3 }}
@@ -127,9 +127,9 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
                     key="done"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="flex h-5 w-5 items-center justify-center rounded-full bg-safe/20"
+                    className="flex h-7 w-7 items-center justify-center rounded-full bg-safe/20"
                   >
-                    <Check className="h-3 w-3 text-safe" />
+                    <Check className="h-4 w-4 text-safe" />
                   </motion.div>
                 )}
                 {status === 'active' && (
@@ -137,27 +137,27 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
                     key="active"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="flex h-5 w-5 items-center justify-center"
+                    className="flex h-7 w-7 items-center justify-center"
                   >
-                    <Loader2 className="h-4 w-4 text-accent animate-spin" />
+                    <Loader2 className="h-5 w-5 text-accent animate-spin" />
                   </motion.div>
                 )}
                 {status === 'pending' && (
                   <motion.div
                     key="pending"
-                    className="flex h-5 w-5 items-center justify-center"
+                    className="flex h-7 w-7 items-center justify-center"
                   >
-                    <Circle className="h-3 w-3 text-muted/30" />
+                    <Circle className="h-4 w-4 text-muted/30" />
                   </motion.div>
                 )}
               </AnimatePresence>
               <span
                 className={
                   status === 'done'
-                    ? 'text-sm text-safe/70'
+                    ? 'text-base text-safe/70'
                     : status === 'active'
-                      ? 'text-sm font-medium text-foreground'
-                      : 'text-sm text-muted/40'
+                      ? 'text-base font-semibold text-foreground'
+                      : 'text-base text-muted/40'
                 }
               >
                 {step.label}
@@ -168,15 +168,15 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
       </div>
 
       {/* Did you know tip */}
-      <div className="w-full max-w-sm mb-8">
-        <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="h-3.5 w-3.5 text-accent/60" />
-          <span className="text-xs font-medium text-accent/60 uppercase tracking-wider">Did you know?</span>
+      <div className="w-full max-w-lg mb-10">
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles className="h-4 w-4 text-accent/60" />
+          <span className="text-sm font-semibold text-accent/60 uppercase tracking-wider">Did you know?</span>
         </div>
         <AnimatePresence mode="wait">
           <motion.p
             key={tipIndex}
-            className="text-sm text-muted/70 leading-relaxed"
+            className="text-base text-muted/70 leading-relaxed"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
@@ -191,9 +191,9 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
       {onCancel && (
         <button
           onClick={onCancel}
-          className="flex items-center gap-1.5 rounded-xl border border-black/[0.08] px-5 py-2 text-sm text-muted transition-colors hover:border-danger/30 hover:text-danger cursor-pointer"
+          className="flex items-center gap-2 rounded-xl border border-black/[0.08] px-6 py-2.5 text-base text-muted transition-colors hover:border-danger/30 hover:text-danger cursor-pointer"
         >
-          <X className="h-3.5 w-3.5" />
+          <X className="h-4 w-4" />
           Cancel
         </button>
       )}

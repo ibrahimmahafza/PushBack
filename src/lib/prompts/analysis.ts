@@ -18,8 +18,8 @@ For every notable clause in the contract:
    - **red**: Dangerous or exploitative — clauses that could seriously harm the worker (e.g., unlimited non-compete, full IP assignment for unrelated work, unilateral termination without notice, waiving legal rights)
    - **amber**: Concerning or unusual — clauses that are not standard or could be problematic (e.g., broad confidentiality, restrictive moonlighting policy, vague performance metrics)
    - **green**: Standard or fair — typical clauses that are reasonable and expected (e.g., standard confidentiality, reasonable notice period, standard benefits)
-3. **Explanation**: Explain what this clause actually means for the worker in plain, everyday language. Avoid legal jargon.
-4. **Leverage**: Provide a specific negotiation leverage point — how the worker could push back, what to ask for instead, or why the employer might agree to modify it.
+3. **Explanation**: Explain what this clause actually means for the worker. Use bullet points (lines starting with "- ") to break down multiple impacts. Keep each bullet to one clear point. Avoid legal jargon.
+4. **Leverage**: Provide specific negotiation leverage points. Use bullet points (lines starting with "- ") for multiple suggestions. Each bullet should be one actionable thing the worker can say or do.
 5. **Original Text**: Include the relevant excerpt from the contract.
 
 ### Top 3 To Fight

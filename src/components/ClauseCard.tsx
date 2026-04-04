@@ -46,7 +46,7 @@ export default function ClauseCard({ clause, index = 0, onPractice }: ClauseCard
         hidden: { opacity: 0, y: 14, filter: "blur(3px)" },
         show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] as const } },
       }}
-      className={`glass-card-interactive rounded-2xl p-6 ${style.border} ${style.glow}`}
+      className={`glass-card-interactive rounded-2xl p-7 sm:p-8 ${style.border} ${style.glow}`}
     >
       {/* Header: severity badge + title */}
       <div className="flex items-start gap-3 mb-3">
