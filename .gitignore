@@ -1,0 +1,53 @@
+
+# ── GSD planning files ──
+.gsd/
+.gsd-id
+
+# ── Claude / AI tool configs ──
+.claude/
+.bg-shell/
+.mcp.json
+
+# ── OS files ──
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ── IDE ──
+.idea/
+.vscode/
+*.code-workspace
+
+# ── Environment ──
+.env
+.env.*
+!.env.example
+
+# ── Dependencies ──
+node_modules/
+
+# ── Build output ──
+.next/
+dist/
+build/
+out/
+
+# ── Python (skills engine) ──
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ── GSD artifacts ──
+design-system/
+scripts/
+
+# ── Other ──
+target/
+vendor/
+*.log
+coverage/
+.cache/
+tmp/
