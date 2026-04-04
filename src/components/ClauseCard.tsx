@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Dumbbell, Zap, ChevronRight } from "lucide-react";
 import type { Clause } from "@/lib/types";
+import { renderMarkdown } from "@/lib/markdown";
 
 const SEVERITY_STYLES: Record<
   string,
@@ -68,7 +69,7 @@ export default function ClauseCard({ clause, index = 0, onPractice }: ClauseCard
 
       {/* Explanation */}
       <p className="text-sm text-foreground/80 leading-relaxed mb-4">
-        {clause.explanation}
+        {renderMarkdown(clause.explanation)}
       </p>
 
       {/* Leverage callout */}
@@ -78,7 +79,7 @@ export default function ClauseCard({ clause, index = 0, onPractice }: ClauseCard
           Your Leverage
         </p>
         <p className="text-sm text-foreground/80 leading-relaxed">
-          {clause.leverage}
+          {renderMarkdown(clause.leverage)}
         </p>
       </div>
 

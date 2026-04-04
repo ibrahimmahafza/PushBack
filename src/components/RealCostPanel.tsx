@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { DollarSign } from "lucide-react";
 import type { RealCost } from "@/lib/types";
+import { renderMarkdown } from "@/lib/markdown";
 
 interface RealCostPanelProps {
   realCost: RealCost;
@@ -38,7 +39,7 @@ export default function RealCostPanel({ realCost }: RealCostPanelProps) {
 
           {realCost.explanation && (
             <p className="text-sm text-foreground/80 leading-relaxed">
-              {realCost.explanation}
+              {renderMarkdown(realCost.explanation)}
             </p>
           )}
         </div>

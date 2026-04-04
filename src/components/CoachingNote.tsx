@@ -1,5 +1,7 @@
 "use client";
 
+import { renderMarkdown } from "@/lib/markdown";
+
 interface CoachingNoteProps {
   note: string;
 }
@@ -11,7 +13,7 @@ export default function CoachingNote({ note }: CoachingNoteProps) {
         🎯 Coaching Note
       </p>
       <div className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">
-        {note.trim()}
+        {renderMarkdown(note.trim())}
       </div>
     </div>
   );

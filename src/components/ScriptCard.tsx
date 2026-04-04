@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { ClipboardList, Copy, Check, Lightbulb, ArrowLeft } from "lucide-react";
 import type { NegotiationScript } from "@/lib/types";
+import { renderMarkdown } from "@/lib/markdown";
 
 const SEVERITY_STYLES: Record<string, { badge: string; label: string }> = {
   red: {
@@ -134,10 +135,10 @@ export default function ScriptCard({
                     {parsed ? (
                       <>
                         <strong className="text-accent-light">{parsed.verb}</strong>{" "}
-                        {parsed.rest}
+                        {renderMarkdown(parsed.rest)}
                       </>
                     ) : (
-                      bullet
+                      renderMarkdown(bullet)
                     )}
                   </p>
                 </motion.div>
@@ -152,7 +153,7 @@ export default function ScriptCard({
               Tone Tip
             </p>
             <p className="text-sm text-foreground/80 leading-relaxed">
-              {script.toneTip}
+              {renderMarkdown(script.toneTip)}
             </p>
           </div>
 

@@ -44,6 +44,10 @@ venv/
 design-system/
 scripts/
 
+# ── User uploads ──
+*.pdf
+contract.pdf
+
 # ── Other ──
 target/
 vendor/

@@ -6,6 +6,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { ArrowLeft, Sparkles, Send, Swords, RotateCcw } from "lucide-react";
 import type { Clause } from "@/lib/types";
+import { renderMarkdown } from "@/lib/markdown";
 import CoachingNote from "./CoachingNote";
 
 // ─── Severity badge styles (mirrors ClauseCard pattern) ───────────────────────
@@ -250,7 +251,7 @@ export default function SparringSession({
             >
               <div className="glass-card rounded-2xl rounded-bl-md bg-white/5 px-4 py-3">
                 <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
-                  {counterpartyText}
+                  {renderMarkdown(counterpartyText)}
                 </p>
               </div>
               {coachingNote && <CoachingNote note={coachingNote} />}

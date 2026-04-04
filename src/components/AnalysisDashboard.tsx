@@ -14,6 +14,7 @@ import {
   ArrowDown,
 } from "lucide-react";
 import type { ContractAnalysis, Clause } from "@/lib/types";
+import { renderMarkdown } from "@/lib/markdown";
 import TopThreeFight from "./TopThreeFight";
 import RealCostPanel from "./RealCostPanel";
 import ClauseCard from "./ClauseCard";
@@ -348,54 +349,54 @@ export default function AnalysisDashboard({
           </div>
         </div>
 
-        {/* Risk Gauge */}
+        {/* Risk Gauge — full 180° semicircle */}
         <div className="glass-card rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-foreground mb-3">Overall Risk</h3>
           <div className="flex flex-col items-center">
-            <svg viewBox="0 0 200 120" className="w-48 h-28">
-              {/* Background arc */}
+            <svg viewBox="0 0 200 130" className="w-52 h-[135px]">
+              {/* Background arc: full semicircle left→right */}
               <path
-                d={describeArc(100, 110, 80, 180, 360)}
+                d="M 20 105 A 80 80 0 0 1 180 105"
                 fill="none"
                 stroke="currentColor"
-                className="text-surface-light/40"
-                strokeWidth="16"
+                className="text-surface-light/30"
+                strokeWidth="14"
                 strokeLinecap="round"
               />
-              {/* Foreground arc — animated */}
+              {/* Foreground arc: animated to fill percentage */}
               <motion.path
-                d={describeArc(100, 110, 80, 180, gauge.endAngle)}
+                d="M 20 105 A 80 80 0 0 1 180 105"
                 fill="none"
                 stroke={gauge.color}
-                strokeWidth="16"
+                strokeWidth="14"
                 strokeLinecap="round"
                 initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
+                animate={{ pathLength: gauge.fillPercent, opacity: 1 }}
                 transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
               />
-              {/* End indicator dot */}
+              {/* End indicator dot — positioned along arc */}
               <motion.circle
-                cx={100 + 80 * Math.cos(((gauge.endAngle - 90) * Math.PI) / 180)}
-                cy={110 + 80 * Math.sin(((gauge.endAngle - 90) * Math.PI) / 180)}
-                r="6"
+                cx={100 + 80 * Math.cos(Math.PI * (1 - gauge.fillPercent))}
+                cy={105 - 80 * Math.sin(Math.PI * gauge.fillPercent)}
+                r="7"
                 fill={gauge.color}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.3, delay: 1.4 }}
               />
-              {/* Center label */}
+              {/* Risk label below arc center */}
               <text
                 x="100"
-                y="105"
+                y="95"
                 textAnchor="middle"
-                style={{ fontSize: "14px", fontWeight: 600 }}
+                style={{ fontSize: "15px", fontWeight: 700 }}
                 fill={gauge.color}
               >
                 {gauge.label}
               </text>
             </svg>
             {/* Scale labels */}
-            <div className="flex justify-between w-48 text-[10px] text-muted -mt-1">
+            <div className="flex justify-between w-52 text-[10px] text-muted mt-1">
               <span>Low</span>
               <span>Medium</span>
               <span>High</span>
@@ -452,7 +453,7 @@ export default function AnalysisDashboard({
       {/* ── Summary ────────────────────────────────────────────────── */}
       <motion.div variants={fadeUp} className="glass-card rounded-2xl p-4 sm:p-6">
         <p className="text-sm text-foreground/80 leading-relaxed">
-          {analysis.summary}
+          {renderMarkdown(analysis.summary)}
         </p>
       </motion.div>
 
