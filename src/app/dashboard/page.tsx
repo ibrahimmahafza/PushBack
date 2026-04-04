@@ -34,7 +34,7 @@ export default async function DashboardPage() {
 
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
             Welcome back,{' '}
-            <span className="text-blue-600">{firstName}</span>
+            <span className="text-orange-600">{firstName}</span>
           </h2>
 
           <p className="mt-4 text-base text-muted leading-relaxed max-w-xl mx-auto">

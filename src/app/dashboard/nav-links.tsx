@@ -27,7 +27,7 @@ export default function NavLinks() {
             className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
               isActive
                 ? 'bg-accent/10 text-accent'
-                : 'text-muted hover:text-foreground hover:bg-white/[0.04]'
+                : 'text-muted hover:text-foreground hover:bg-black/[0.04]'
             }`}
           >
             <Icon className="h-3.5 w-3.5" />

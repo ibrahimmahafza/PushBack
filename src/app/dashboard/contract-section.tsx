@@ -335,7 +335,7 @@ export default function ContractSection() {
               <button
                 key={`${entry.timestamp.getTime()}-${i}`}
                 onClick={() => handleLoadFromHistory(entry)}
-                className="group flex w-full cursor-pointer items-center gap-4 rounded-xl glass-card p-4 text-left transition-colors hover:bg-white/[0.04]"
+                className="group flex w-full cursor-pointer items-center gap-4 rounded-xl glass-card p-4 text-left transition-colors hover:bg-black/[0.04]"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10">
                   <History className="h-4 w-4 text-accent" />

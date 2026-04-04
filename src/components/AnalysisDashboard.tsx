@@ -244,7 +244,7 @@ export default function AnalysisDashboard({
                 s.clickable
                   ? "cursor-pointer hover:scale-[1.03] hover:brightness-110 select-none"
                   : ""
-              } ${isActive ? "ring-2 ring-white/20 brightness-110 scale-[1.03]" : ""}`}
+              } ${isActive ? "ring-2 ring-accent/30 brightness-105 scale-[1.03]" : ""}`}
             >
               <div className={`rounded-full p-2 ${s.colorClass}`}>
                 <s.icon className="h-4 w-4" />
@@ -485,7 +485,7 @@ export default function AnalysisDashboard({
           {severityFilter && (
             <button
               onClick={() => setSeverityFilter(null)}
-              className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-surface-light/40 px-3 py-1 text-xs text-muted hover:text-foreground transition-colors cursor-pointer"
+              className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-surface-light/60 px-3 py-1 text-xs text-muted hover:text-foreground transition-colors cursor-pointer"
             >
               <X className="h-3 w-3" />
               Show all

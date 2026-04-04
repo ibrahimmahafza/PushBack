@@ -31,7 +31,7 @@ export default function ContractPreview({
       transition={{ duration: 0.3 }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 px-6 py-4">
+      <div className="flex items-center justify-between border-b border-black/[0.06] px-6 py-4">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-safe/10">
             <CheckCircle className="h-5 w-5 text-safe" />
@@ -47,7 +47,7 @@ export default function ContractPreview({
         </div>
         <button
           onClick={onStartOver}
-          className="flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-white/20 hover:text-foreground cursor-pointer"
+          className="flex items-center gap-1.5 rounded-lg border border-black/[0.08] px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-black/[0.15] hover:text-foreground cursor-pointer"
         >
           <RotateCcw className="h-3 w-3" />
           Start Over
@@ -56,7 +56,7 @@ export default function ContractPreview({
 
       {/* Text preview */}
       <div className="p-5 sm:p-6">
-        <pre className="max-h-80 overflow-y-auto whitespace-pre-wrap rounded-xl border border-white/5 bg-black/20 p-4 font-mono text-xs leading-relaxed text-foreground/70">
+        <pre className="max-h-80 overflow-y-auto whitespace-pre-wrap rounded-xl border border-black/[0.06] bg-white/60 p-4 font-mono text-xs leading-relaxed text-foreground/70">
           {displayText}
         </pre>
         {isTruncated && (

@@ -126,7 +126,7 @@ export default function ScriptCard({
                 <motion.div
                   key={i}
                   variants={{ hidden: { opacity: 0, x: -8 }, show: { opacity: 1, x: 0, transition: { duration: 0.35 } } }}
-                  className="flex gap-2 sm:gap-3 rounded-xl border border-white/5 bg-surface/40 backdrop-blur-sm px-3 py-2.5 sm:px-4 sm:py-3 glow-accent-hover transition-shadow"
+                  className="flex gap-2 sm:gap-3 rounded-xl border border-black/[0.06] bg-surface/40 backdrop-blur-sm px-3 py-2.5 sm:px-4 sm:py-3 glow-accent-hover transition-shadow"
                 >
                   <span className="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-accent/15 border border-accent/20 text-accent-light text-xs font-bold">
                     {i + 1}
@@ -168,7 +168,7 @@ export default function ScriptCard({
             </button>
             <button
               onClick={onPracticeAnother}
-              className="flex-1 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent/90 transition-all hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] cursor-pointer"
+              className="flex-1 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent/90 transition-all hover:shadow-[0_0_20px_rgba(194,65,12,0.3)] cursor-pointer"
             >
               Practice Another
             </button>

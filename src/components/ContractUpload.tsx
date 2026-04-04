@@ -190,7 +190,7 @@ export default function ContractUpload({ onTextExtracted }: ContractUploadProps)
       {/* Outer glass container with gradient border */}
       <div className="glass-card rounded-2xl gradient-border">
         {/* ── Tab Switcher ── */}
-        <div className="relative flex border-b border-white/[0.06]">
+        <div className="relative flex border-b border-black/[0.06]">
           {TAB_CONFIG.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -232,7 +232,7 @@ export default function ContractUpload({ onTextExtracted }: ContractUploadProps)
                     layoutId="upload-tab-glow"
                     className="absolute inset-x-0 -bottom-px h-8 pointer-events-none"
                     style={{
-                      background: 'radial-gradient(ellipse at bottom, rgba(59,130,246,0.08), transparent 70%)',
+                      background: 'radial-gradient(ellipse at bottom, rgba(194,65,12,0.08), transparent 70%)',
                     }}
                     transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
                   />
@@ -289,7 +289,7 @@ export default function ContractUpload({ onTextExtracted }: ContractUploadProps)
                     transition-all duration-300
                     ${dragActive
                       ? 'border-accent/60 bg-accent/[0.06]'
-                      : 'border-white/[0.08] hover:border-accent/30 hover:bg-white/[0.015]'
+                      : 'border-black/[0.08] hover:border-accent/30 hover:bg-black/[0.01]'
                     }
                     ${loading ? 'pointer-events-none opacity-60' : ''}
                   `}
@@ -311,7 +311,7 @@ export default function ContractUpload({ onTextExtracted }: ContractUploadProps)
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       style={{
-                        background: `radial-gradient(600px circle at ${glowX.get()} ${glowY.get()}, rgba(59,130,246,0.06), transparent 40%)`,
+                        background: `radial-gradient(600px circle at ${glowX.get()} ${glowY.get()}, rgba(194,65,12,0.06), transparent 40%)`,
                       }}
                     />
                   )}
@@ -332,7 +332,7 @@ export default function ContractUpload({ onTextExtracted }: ContractUploadProps)
                           className="absolute inset-0 rounded-full"
                           animate={shouldReduce ? {} : { opacity: [0.3, 0.6, 0.3] }}
                           transition={{ duration: 2, repeat: Infinity }}
-                          style={{ boxShadow: '0 0 30px rgba(59,130,246,0.3)' }}
+                          style={{ boxShadow: '0 0 30px rgba(194,65,12,0.3)' }}
                         />
                         <Loader2 className="h-10 w-10 animate-spin text-accent relative z-10" />
                       </div>
@@ -350,7 +350,7 @@ export default function ContractUpload({ onTextExtracted }: ContractUploadProps)
                           border transition-all duration-300
                           ${dragActive
                             ? 'border-accent/40 bg-accent/15 glow-accent'
-                            : 'border-white/[0.08] bg-white/[0.03] group-hover:border-accent/25 group-hover:bg-accent/[0.06]'
+                            : 'border-black/[0.06] bg-white/30 group-hover:border-accent/25 group-hover:bg-accent/[0.06]'
                           }
                         `}
                         animate={dragActive && !shouldReduce
@@ -375,7 +375,7 @@ export default function ContractUpload({ onTextExtracted }: ContractUploadProps)
                       </p>
 
                       {/* File specs badge */}
-                      <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.02] px-4 py-1.5">
+                      <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-black/[0.06] bg-white/40 px-4 py-1.5">
                         <FileText className="h-3.5 w-3.5 text-muted/60" />
                         <span className="text-xs text-muted/60">PDF only · Max 20 MB</span>
                       </div>
@@ -403,17 +403,17 @@ export default function ContractUpload({ onTextExtracted }: ContractUploadProps)
                     placeholder="Paste your contract text here…"
                     rows={10}
                     className="
-                      w-full resize-y rounded-xl border border-white/[0.08] bg-white/[0.02]
-                      px-5 py-4 text-sm text-foreground placeholder-muted/40 leading-relaxed
+                      w-full resize-y rounded-xl border border-black/[0.08] bg-white/50
+                      px-5 py-4 text-sm text-foreground placeholder-muted/60 leading-relaxed
                       transition-all duration-300
                       focus:border-accent/30 focus:outline-none focus:ring-1 focus:ring-accent/15
-                      focus:bg-white/[0.03]
+                      focus:bg-white/60
                     "
                   />
                   {/* Focus glow effect */}
                   {!shouldReduce && (
                     <div className="absolute inset-0 rounded-xl opacity-0 group-focus-within/textarea:opacity-100 transition-opacity duration-500 pointer-events-none"
-                      style={{ boxShadow: '0 0 40px rgba(59,130,246,0.06)' }}
+                      style={{ boxShadow: '0 0 40px rgba(194,65,12,0.06)' }}
                     />
                   )}
                 </div>

@@ -82,7 +82,7 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
           </div>
           <CpuArchitecture
             text="AI"
-            className="relative z-10 text-white/40"
+            className="relative z-10 text-muted/50"
             width="100%"
             height="100%"
           />
@@ -95,12 +95,12 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
           <span className="text-sm font-medium text-foreground">Analyzing</span>
           <span className="text-sm font-mono text-accent">{Math.round(progress)}%</span>
         </div>
-        <div className="h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
+        <div className="h-1.5 w-full rounded-full bg-black/[0.07] overflow-hidden">
           <motion.div
             className="h-full rounded-full"
             style={{
-              background: 'linear-gradient(90deg, #3b82f6, #06b6d4)',
-              boxShadow: '0 0 12px rgba(59,130,246,0.4)',
+              background: 'linear-gradient(90deg, #f97316, #c2410c)',
+              boxShadow: '0 0 12px rgba(194,65,12,0.4)',
             }}
             initial={{ width: '0%' }}
             animate={{ width: `${progress}%` }}
@@ -147,7 +147,7 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
                     key="pending"
                     className="flex h-5 w-5 items-center justify-center"
                   >
-                    <Circle className="h-3 w-3 text-white/15" />
+                    <Circle className="h-3 w-3 text-muted/30" />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -157,7 +157,7 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
                     ? 'text-sm text-safe/70'
                     : status === 'active'
                       ? 'text-sm font-medium text-foreground'
-                      : 'text-sm text-white/20'
+                      : 'text-sm text-muted/40'
                 }
               >
                 {step.label}
@@ -176,7 +176,7 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
         <AnimatePresence mode="wait">
           <motion.p
             key={tipIndex}
-            className="text-sm text-white/40 leading-relaxed"
+            className="text-sm text-muted/70 leading-relaxed"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
@@ -191,7 +191,7 @@ export default function AnalysisLoading({ onCancel }: AnalysisLoadingProps) {
       {onCancel && (
         <button
           onClick={onCancel}
-          className="flex items-center gap-1.5 rounded-xl border border-white/10 px-5 py-2 text-sm text-muted transition-colors hover:border-danger/30 hover:text-danger cursor-pointer"
+          className="flex items-center gap-1.5 rounded-xl border border-black/[0.08] px-5 py-2 text-sm text-muted transition-colors hover:border-danger/30 hover:text-danger cursor-pointer"
         >
           <X className="h-3.5 w-3.5" />
           Cancel

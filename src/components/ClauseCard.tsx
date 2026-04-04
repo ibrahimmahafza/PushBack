@@ -117,7 +117,7 @@ export default function ClauseCard({ clause, index = 0, onPractice }: ClauseCard
             transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="overflow-hidden"
           >
-            <div className="mt-3 rounded-xl border border-white/5 bg-background/60 backdrop-blur-sm px-4 py-3">
+            <div className="mt-3 rounded-xl border border-black/[0.06] bg-white/60 backdrop-blur-sm px-4 py-3">
               <p className="text-xs text-muted leading-relaxed font-mono whitespace-pre-wrap">
                 {clause.originalText}
               </p>

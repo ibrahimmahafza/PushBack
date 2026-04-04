@@ -19,25 +19,25 @@ interface RadialOrbitalTimelineProps {
 const SEVERITY_CONFIG = {
   red: {
     color: '#ef4444',
-    bg: 'bg-red-500/20',
+    bg: 'bg-red-500/15',
     border: 'border-red-500/40',
-    text: 'text-red-300',
+    text: 'text-red-600',
     label: 'Dangerous',
     icon: ShieldAlert,
   },
   amber: {
     color: '#f59e0b',
-    bg: 'bg-amber-500/20',
+    bg: 'bg-amber-500/15',
     border: 'border-amber-500/40',
-    text: 'text-amber-300',
+    text: 'text-amber-600',
     label: 'Concerning',
     icon: AlertTriangle,
   },
   green: {
     color: '#22c55e',
-    bg: 'bg-green-500/20',
+    bg: 'bg-green-500/15',
     border: 'border-green-500/40',
-    text: 'text-green-300',
+    text: 'text-green-600',
     label: 'Fair',
     icon: ShieldCheck,
   },
@@ -89,7 +89,7 @@ export default function RadialOrbitalTimeline({ items, onItemClick }: RadialOrbi
       onClick={handleBgClick}
     >
       {/* Radial gradient bg */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(37,99,235,0.04)_0%,_transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(194,65,12,0.04)_0%,_transparent_70%)]" />
 
       {/* Orbit rings */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" data-orbit>
@@ -147,7 +147,7 @@ export default function RadialOrbitalTimeline({ items, onItemClick }: RadialOrbi
               </motion.div>
 
               {/* Label */}
-              <div className={`absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-mono transition-all duration-300 max-w-[100px] truncate text-center ${isActive ? 'text-white' : 'text-muted'}`}>
+              <div className={`absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-mono transition-all duration-300 max-w-[100px] truncate text-center ${isActive ? 'text-foreground font-semibold' : 'text-muted'}`}>
                 {item.title}
               </div>
 
@@ -178,7 +178,7 @@ export default function RadialOrbitalTimeline({ items, onItemClick }: RadialOrbi
                       {onItemClick && (
                         <button
                           onClick={(e) => { e.stopPropagation(); onItemClick(item); }}
-                          className="w-full text-xs font-medium py-1.5 rounded-lg bg-black/5 border border-black/10 text-white/70 hover:bg-white/10 hover:text-foreground transition-colors cursor-pointer"
+                          className="w-full text-xs font-medium py-1.5 rounded-lg bg-black/5 border border-black/10 text-foreground/70 hover:bg-black/[0.08] hover:text-foreground transition-colors cursor-pointer"
                         >
                           Practice This Clause
                         </button>

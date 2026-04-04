@@ -128,7 +128,7 @@ export default function PricingPage() {
           className="absolute -top-40 -left-40 h-[650px] w-[650px] rounded-full"
           style={{
             background:
-              'radial-gradient(circle, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.04) 50%, transparent 70%)',
+              'radial-gradient(circle, rgba(194,65,12,0.12) 0%, rgba(194,65,12,0.03) 50%, transparent 70%)',
           }}
           animate={{ x: [0, 90, 0], y: [0, 50, 0], scale: [1, 1.12, 1] }}
           transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
@@ -137,7 +137,7 @@ export default function PricingPage() {
           className="absolute -right-24 top-1/4 h-[520px] w-[520px] rounded-full"
           style={{
             background:
-              'radial-gradient(circle, rgba(6,182,212,0.14) 0%, rgba(6,182,212,0.03) 50%, transparent 70%)',
+              'radial-gradient(circle, rgba(251,146,60,0.14) 0%, rgba(251,146,60,0.03) 50%, transparent 70%)',
           }}
           animate={{ x: [0, -70, 0], y: [0, 90, 0], scale: [1.05, 0.92, 1.05] }}
           transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
@@ -146,22 +146,13 @@ export default function PricingPage() {
           className="absolute -bottom-44 left-1/3 h-[560px] w-[560px] rounded-full"
           style={{
             background:
-              'radial-gradient(circle, rgba(20,184,166,0.11) 0%, rgba(20,184,166,0.02) 50%, transparent 70%)',
+              'radial-gradient(circle, rgba(253,186,116,0.18) 0%, rgba(253,186,116,0.04) 50%, transparent 70%)',
           }}
           animate={{ x: [0, 50, -30, 0], y: [0, -50, 0], scale: [1, 1.15, 1] }}
           transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
 
-      {/* Radial vignette */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-        style={{
-          background:
-            'radial-gradient(ellipse 80% 60% at 50% 40%, transparent 0%, rgba(3,7,18,0.6) 100%)',
-        }}
-      />
 
       {/* ============================================================ */}
       {/*  NAV                                                          */}
@@ -242,7 +233,7 @@ export default function PricingPage() {
                   className={`w-full cursor-default rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-200 ${
                     tier.featured
                       ? 'bg-accent text-white shadow-lg shadow-accent/20 hover:bg-accent/90'
-                      : 'border border-white/10 bg-white/[0.03] text-foreground/80 backdrop-blur-sm hover:border-white/20 hover:bg-white/[0.06]'
+                      : 'border border-black/[0.08] bg-white/60 text-foreground/80 backdrop-blur-sm hover:border-black/[0.14] hover:bg-white/80'
                   }`}
                 >
                   {tier.cta}

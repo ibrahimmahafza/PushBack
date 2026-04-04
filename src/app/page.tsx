@@ -93,8 +93,8 @@ const steps = [
     icon: FileText,
     title: 'Upload Your Contract',
     description: 'Drop a PDF or paste text. AI extracts every clause and rates it by severity.',
-    iconColor: 'text-blue-600',
-    iconBg: 'bg-blue-100',
+    iconColor: 'text-orange-600',
+    iconBg: 'bg-orange-100',
     bullets: ['PDF & text support', 'Severity-coded clauses'],
   },
   {
@@ -143,7 +143,7 @@ export default function Home() {
                 <Shield className="h-4 w-4 text-yellow-50" strokeWidth={1.5} />
               </div>
               <span className="text-lg font-semibold text-foreground">
-                Push<span className="text-blue-600">Back</span>
+                Push<span className="text-orange-600">Back</span>
               </span>
             </Link>
             <div className="hidden sm:flex items-center gap-6">
@@ -169,7 +169,7 @@ export default function Home() {
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-200 text-orange-700 text-sm font-medium"
             >
               <Sparkles className="h-4 w-4" />
               Powered by Claude Sonnet 4.5
@@ -339,7 +339,7 @@ export default function Home() {
                 <Shield className="h-4 w-4 text-yellow-50" strokeWidth={1.5} />
               </div>
               <span className="text-lg font-semibold text-foreground">
-                Push<span className="text-blue-600">Back</span>
+                Push<span className="text-orange-600">Back</span>
               </span>
             </Link>
             <p className="text-base font-medium text-foreground/70 mb-2">The fine print has met its match.</p>

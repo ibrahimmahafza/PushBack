@@ -13,7 +13,7 @@ function Logo() {
       </div>
       <span className="text-lg font-semibold text-foreground">
         Push
-        <span className="bg-gradient-to-r from-accent to-cyan-400 bg-clip-text text-transparent">
+        <span className="text-orange-600">
           Back
         </span>
       </span>
@@ -48,7 +48,7 @@ export default function LandingNav() {
           {/* Desktop sign-in */}
           <Link
             href="/login"
-            className="hidden sm:inline-flex rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-accent/40 hover:bg-white/5"
+            className="hidden sm:inline-flex rounded-lg border border-black/[0.08] px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-accent/40 hover:bg-black/[0.04]"
           >
             Sign In
           </Link>

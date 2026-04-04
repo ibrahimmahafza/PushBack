@@ -57,7 +57,7 @@ function LoginContent() {
       {/* Warm background blurs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
-          className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-blue-200/30 blur-[100px]"
+          className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-orange-200/30 blur-[100px]"
           animate={{
             x: [0, 60, 0],
             y: [0, 40, 0],
@@ -101,13 +101,13 @@ function LoginContent() {
         >
           <motion.div
             className="mb-6 inline-flex items-center justify-center rounded-2xl glass-card p-5"
-            animate={{ boxShadow: ['0 0 20px rgba(59,130,246,0.1)', '0 0 40px rgba(59,130,246,0.2)', '0 0 20px rgba(59,130,246,0.1)'] }}
+            animate={{ boxShadow: ['0 0 20px rgba(194,65,12,0.1)', '0 0 40px rgba(194,65,12,0.2)', '0 0 20px rgba(194,65,12,0.1)'] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
           >
             <Shield className="h-10 w-10 text-accent" strokeWidth={1.5} />
           </motion.div>
           <h1 className="text-5xl font-bold tracking-tight text-foreground">
-            Push<span className="text-blue-600">Back</span>
+            Push<span className="text-orange-600">Back</span>
           </h1>
           <p className="mt-3 text-lg text-muted">
             Understand your contract. Practice pushing back.
@@ -125,7 +125,7 @@ function LoginContent() {
           }}
         >
           {/* Top accent line */}
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300/50 to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-300/50 to-transparent" />
 
           <h2 className="mb-6 text-center text-xl font-semibold text-foreground">
             Sign in to continue

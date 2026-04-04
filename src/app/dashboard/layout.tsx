@@ -46,7 +46,7 @@ export default async function DashboardLayout({
                 </svg>
               </div>
               <span className="text-lg font-semibold text-foreground">
-                Push<span className="text-blue-600">Back</span>
+                Push<span className="text-orange-600">Back</span>
               </span>
             </Link>
             <NavLinks />

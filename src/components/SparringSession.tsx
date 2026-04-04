@@ -151,7 +151,7 @@ export default function SparringSession({
       className="flex flex-col h-full max-h-[80vh] glass-card rounded-2xl"
     >
       {/* ── Header ────────────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-3 border-b border-white/5 bg-surface/40 backdrop-blur-md px-5 py-4 rounded-t-2xl">
+      <div className="flex items-center gap-3 border-b border-black/[0.06] bg-surface/60 backdrop-blur-md px-5 py-4 rounded-t-2xl">
         <button
           onClick={onBack}
           className="text-sm text-muted hover:text-foreground transition-colors cursor-pointer flex items-center gap-1.5"
@@ -175,7 +175,7 @@ export default function SparringSession({
       </div>
 
       {/* ── Exchange counter ──────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between px-5 py-2 border-b border-white/5 text-xs text-muted">
+      <div className="flex items-center justify-between px-5 py-2 border-b border-black/[0.06] text-xs text-muted">
         <span>
           Exchange {exchangeCount} of 8
         </span>
@@ -249,7 +249,7 @@ export default function SparringSession({
               transition={{ duration: 0.25 }}
               className="flex flex-col items-start max-w-[85%]"
             >
-              <div className="glass-card rounded-2xl rounded-bl-md bg-white/5 px-4 py-3">
+              <div className="glass-card rounded-2xl rounded-bl-md bg-surface/60 px-4 py-3">
                 <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
                   {renderMarkdown(counterpartyText)}
                 </p>
@@ -289,7 +289,7 @@ export default function SparringSession({
             </button>
             <button
               onClick={onBack}
-              className="rounded-lg bg-surface border border-white/10 px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground transition-colors cursor-pointer"
+              className="rounded-lg bg-surface border border-black/[0.08] px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground transition-colors cursor-pointer"
             >
               Back to Analysis
             </button>
@@ -298,7 +298,7 @@ export default function SparringSession({
       )}
 
       {/* ── Input area ────────────────────────────────────────────────────── */}
-      <div className="border-t border-white/5 bg-surface/30 backdrop-blur-md px-3 py-3 sm:px-5 sm:py-4 rounded-b-2xl">
+      <div className="border-t border-black/[0.06] bg-surface/50 backdrop-blur-md px-3 py-3 sm:px-5 sm:py-4 rounded-b-2xl">
         <div className="flex gap-3">
           <textarea
             value={input}
@@ -307,7 +307,7 @@ export default function SparringSession({
             placeholder="Make your case…"
             disabled={isLoading}
             rows={1}
-            className="flex-1 resize-none rounded-xl border border-white/5 bg-background/80 backdrop-blur-sm px-4 py-2.5 text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/20 disabled:opacity-50 transition-all"
+            className="flex-1 resize-none rounded-xl border border-black/[0.08] bg-background/80 backdrop-blur-sm px-4 py-2.5 text-sm text-foreground placeholder-muted focus:outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/20 disabled:opacity-50 transition-all"
           />
           <button
             onClick={handleSend}
