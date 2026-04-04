@@ -431,7 +431,7 @@ export default function AnalysisDashboard({
         className="flex flex-wrap items-center justify-between gap-4"
       >
         <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold text-foreground tracking-tight">
+          <h1 className="text-3xl font-bold text-foreground tracking-tight">
             {CONTRACT_TYPE_LABELS[analysis.contractType] ?? "Contract"} Analysis
           </h1>
           <span
@@ -451,8 +451,8 @@ export default function AnalysisDashboard({
       </motion.div>
 
       {/* ── Summary ────────────────────────────────────────────────── */}
-      <motion.div variants={fadeUp} className="glass-card rounded-2xl p-4 sm:p-6">
-        <p className="text-sm text-foreground/80 leading-relaxed">
+      <motion.div variants={fadeUp} className="glass-card rounded-2xl p-5 sm:p-8">
+        <p className="text-base text-foreground/80 leading-relaxed">
           {renderMarkdown(analysis.summary)}
         </p>
       </motion.div>
@@ -470,7 +470,7 @@ export default function AnalysisDashboard({
       {/* ── All Clauses ────────────────────────────────────────────── */}
       <motion.section variants={fadeUp} ref={clausesSectionRef}>
         <div className="flex items-center gap-3 mb-5 flex-wrap">
-          <h2 className="text-xl font-bold text-foreground tracking-tight">
+          <h2 className="text-2xl font-bold text-foreground tracking-tight">
             {severityFilter === "red"
               ? "Issues"
               : severityFilter === "amber"

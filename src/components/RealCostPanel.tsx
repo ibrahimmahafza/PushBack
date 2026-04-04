@@ -38,7 +38,7 @@ export default function RealCostPanel({ realCost }: RealCostPanelProps) {
           )}
 
           {realCost.explanation && (
-            <p className="text-sm text-foreground/80 leading-relaxed">
+            <p className="text-base text-foreground/80 leading-relaxed">
               {renderMarkdown(realCost.explanation)}
             </p>
           )}

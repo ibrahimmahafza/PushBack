@@ -62,23 +62,23 @@ export default function ClauseCard({ clause, index = 0, onPractice }: ClauseCard
           />
           {style.label}
         </span>
-        <h3 className="text-base font-semibold text-foreground leading-snug">
+        <h3 className="text-lg font-semibold text-foreground leading-snug">
           {clause.title}
         </h3>
       </div>
 
       {/* Explanation */}
-      <p className="text-sm text-foreground/80 leading-relaxed mb-4">
+      <p className="text-base text-foreground/80 leading-relaxed mb-4">
         {renderMarkdown(clause.explanation)}
       </p>
 
       {/* Leverage callout */}
-      <div className="rounded-xl border border-accent/20 bg-accent/5 px-4 py-3 mb-4">
-        <p className="text-xs font-medium text-accent-light mb-1 flex items-center gap-1.5">
-          <Dumbbell className="h-3.5 w-3.5" />
+      <div className="rounded-xl border border-accent/20 bg-accent/5 px-4 py-3.5 mb-4">
+        <p className="text-sm font-medium text-accent-light mb-1.5 flex items-center gap-1.5">
+          <Dumbbell className="h-4 w-4" />
           Your Leverage
         </p>
-        <p className="text-sm text-foreground/80 leading-relaxed">
+        <p className="text-base text-foreground/80 leading-relaxed">
           {renderMarkdown(clause.leverage)}
         </p>
       </div>

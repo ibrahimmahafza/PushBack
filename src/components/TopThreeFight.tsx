@@ -84,7 +84,7 @@ function FightCard({ item, position, handleShuffle }: CardProps) {
       </h3>
 
       {/* Explanation */}
-      <p className="text-sm text-foreground/65 leading-relaxed line-clamp-[8]">
+      <p className="text-base text-foreground/65 leading-relaxed line-clamp-[8]">
         {clause?.explanation ?? fightItem}
       </p>
 
