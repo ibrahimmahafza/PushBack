@@ -8,11 +8,10 @@ import ContractPreview from "@/components/ContractPreview";
 import AnalysisLoading from "@/components/AnalysisLoading";
 import AnalysisDashboard from "@/components/AnalysisDashboard";
 import SparringSession from "@/components/SparringSession";
-import VoiceSparring from "@/components/VoiceSparring";
 import ScriptCard from "@/components/ScriptCard";
 import type { ContractAnalysis, Clause, NegotiationScript } from "@/lib/types";
 
-type Phase = "upload" | "preview" | "analyzing" | "analysis" | "sparring-choose" | "sparring" | "sparring-voice" | "generating-script" | "script" | "error";
+type Phase = "upload" | "preview" | "analyzing" | "analysis" | "sparring" | "generating-script" | "script" | "error";
 
 interface ExtractedContract {
   text: string;
@@ -143,7 +142,7 @@ export default function ContractSection() {
 
   const handleStartSparring = useCallback((clause: Clause) => {
     setSelectedClause(clause);
-    setPhase("sparring-choose");
+    setPhase("sparring");
   }, []);
 
   const handleBackToAnalysis = useCallback(() => {
@@ -244,72 +243,12 @@ export default function ContractSection() {
     );
   }
 
-  if (phase === "sparring-choose" && selectedClause) {
-    return (
-      <motion.div
-        className="flex flex-col items-center py-16 px-6"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
-      >
-        <h2 className="text-2xl font-bold text-foreground mb-2">Choose Your Mode</h2>
-        <p className="text-sm text-muted mb-8 text-center max-w-md">
-          Practice negotiating <span className="font-semibold text-foreground">{selectedClause.title}</span>
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg">
-          <button
-            onClick={() => setPhase("sparring")}
-            className="flex flex-col items-center gap-3 rounded-2xl border border-black/[0.06] bg-white/60 backdrop-blur-sm p-6 hover:shadow-md transition-all cursor-pointer text-center group"
-          >
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-100 group-hover:bg-blue-200 transition-colors">
-              <svg className="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-foreground">Text Chat</h3>
-            <p className="text-xs text-muted">Type your arguments. Read AI responses and coaching notes.</p>
-          </button>
-          <button
-            onClick={() => setPhase("sparring-voice")}
-            className="flex flex-col items-center gap-3 rounded-2xl border border-black/[0.06] bg-white/60 backdrop-blur-sm p-6 hover:shadow-md transition-all cursor-pointer text-center group"
-          >
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-green-100 group-hover:bg-green-200 transition-colors">
-              <svg className="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-foreground">Voice Mode</h3>
-            <p className="text-xs text-muted">Speak naturally. AI responds with voice and real-time tips.</p>
-          </button>
-        </div>
-        <button
-          onClick={handleBackToAnalysis}
-          className="mt-6 text-sm text-muted hover:text-foreground transition-colors cursor-pointer"
-        >
-          Back to Analysis
-        </button>
-      </motion.div>
-    );
-  }
-
   if (phase === "sparring" && selectedClause && analysis) {
     return (
       <SparringSession
         clause={selectedClause}
         contractType={analysis.contractType}
         onBack={handleBackToAnalysis}
-        onGetScript={handleGetScript}
-      />
-    );
-  }
-
-  if (phase === "sparring-voice" && selectedClause && analysis) {
-    return (
-      <VoiceSparring
-        clause={selectedClause}
-        contractType={analysis.contractType}
-        onBack={handleBackToAnalysis}
-        onSwitchToChat={() => setPhase("sparring")}
         onGetScript={handleGetScript}
       />
     );

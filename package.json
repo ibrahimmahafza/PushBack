@@ -12,7 +12,6 @@
     "@ai-sdk/anthropic": "^3.0.66",
     "@ai-sdk/google": "^3.0.58",
     "@ai-sdk/react": "^3.0.148",
-    "@elevenlabs/react": "^1.0.2",
     "@paper-design/shaders-react": "^0.0.72",
     "@supabase/ssr": "^0.10.0",
     "@supabase/supabase-js": "^2.101.1",
