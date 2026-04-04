@@ -64,7 +64,7 @@ Select any risky clause and enter a **negotiation sparring session**:
                │
 ┌──────────────▼───────────────────────────────────┐
 │              AI Layer                             │
-│  Claude Sonnet 4.5 via Vercel AI SDK v6          │
+│  AI model via Vercel AI SDK v6                    │
 │  generateObject() → typed structured output       │
 │  streamText() → real-time streaming chat          │
 │  convertToModelMessages() → UIMessage conversion  │
@@ -85,7 +85,7 @@ Select any risky clause and enter a **negotiation sparring session**:
 |-------|-----------|---------|
 | **Framework** | Next.js 16 (App Router) | Server components, API routes, SSR |
 | **Language** | TypeScript 5 | Full-stack type safety |
-| **AI Model** | Claude Sonnet 4.5 (Anthropic) | Contract analysis, sparring, script generation |
+| **AI Model** | Anthropic Claude | Contract analysis, sparring, script generation |
 | **AI SDK** | Vercel AI SDK v6 | `generateObject()` for typed responses, `streamText()` for chat, `DefaultChatTransport` for streaming UI |
 | **Validation** | Zod v4 | Runtime schema validation for all AI outputs and API inputs |
 | **Auth** | Supabase SSR + Google OAuth | Cookie-based auth with `createServerClient` / `createBrowserClient` |

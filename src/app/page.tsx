@@ -173,7 +173,7 @@ export default function Home() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-200 text-orange-700 text-sm font-medium"
             >
               <Sparkles className="h-4 w-4" />
-              Powered by Claude Sonnet 4.5
+              Powered by AI
             </motion.div>
 
             <motion.h1
