@@ -8,7 +8,7 @@
 ![Tailwind](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Live Demo:** [pushback.vercel.app](https://pushback.vercel.app)
+
 
 ---
 
